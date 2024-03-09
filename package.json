@@ -32,6 +32,6 @@
 	"type": "module",
 	"dependencies": {
 		"@supabase/supabase-js": "^2.39.7",
-		"pixijs": "^7.1.4"
+		"pixi.js": "^8.0.1"
 	}
 }

@@ -10,8 +10,6 @@
 		"sourceMap": true,
 		"strict": true,
 		"moduleResolution": "Bundler",
-		// "moduleResolution": "nodenext"
-		// "moduleResolution": "node16"
 	}
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
 	//

@@ -3,8 +3,15 @@
 	export let data;
 	import { onMount } from 'svelte';
 
+	let isHidden = true;
+
+	const startVideo = () => {
+		isHidden = false;
+	};
+
 	onMount(() => {
-		pixiJsMain();
+		const pixiElement = document.getElementById('pixiElement');
+		if (pixiElement) pixiJsMain(pixiElement);
 	});
 </script>
 
@@ -16,3 +23,7 @@
 		<li>{country.name}</li>
 	{/each}
 </ul>
+
+<button on:click={startVideo}>Start video</button>
+
+<div hidden={isHidden} id="pixiElement"></div>
