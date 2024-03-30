@@ -13,6 +13,12 @@ async function initializeMainVideo() {
     videoTexture.source.resource.loop = true;
     videoTexture.source.resource.muted = true;
     videoTexture.source.resource.autoplay = false;
+    videoTexture.source.resource.updateFPS = 30;
+    // videoTexture.source.resource.preload = true;
+    videoTexture.source.resource.autoLoad = true;
+    // videoTexture.source.resource.playsinline = true;
+    videoTexture.source.resource.crossorigin = true;
+
     mainVideo = new Sprite(videoTexture);
 }
 
@@ -40,6 +46,8 @@ export function playCurrentVideo() {
         }
     });
 
+    console.log('Current video: ', mainVideo.texture.source.resource);
+    console.log('Is ready: ', mainVideo.texture.source.resource.isReady);
     mainVideo.texture.source.resource.muted = false;
     mainVideo.texture.source.resource.play();
 }
@@ -95,4 +103,8 @@ export async function pixiJsMain(element: HTMLElement) {
     initailizeVideoSprites(videos).then(() => {
         console.log('Video sprites loaded');
     });
+
+    // app.ticker.add(() => {
+    //     console.log('Is ready: ', mainVideo.texture.source.resource.isReady);
+    // });
 }

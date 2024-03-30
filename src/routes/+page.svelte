@@ -24,7 +24,7 @@
 			playCurrentVideo();
 
 			isHidden = !isHidden;
-		}, 1000);
+		}, 2000);
 	};
 
 	onMount(async () => {
