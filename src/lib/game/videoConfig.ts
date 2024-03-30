@@ -1,36 +1,44 @@
 export const videos: VideoObject[] = [
     {
-        id: "1",
+        id: "0",
         bucket: 'pirate-videos',
-        name: 'hub.mp4',
+        sourceName: 'hub.mp4',
+        name: 'Hub',
         nextVideos: [
             "lamp.mp4",
             "painting.mp4",
             "wheel.mp4"
-        ]
+        ],
+        loop: true
+    },
+    {
+        id: "1",
+        bucket: 'pirate-videos',
+        sourceName: 'lamp.mp4',
+        name: 'Lamp',
+        nextVideos: [
+            "hub.mp4"
+        ],
+        loop: true
     },
     {
         id: "2",
         bucket: 'pirate-videos',
-        name: 'lamp.mp4',
+        sourceName: 'painting.mp4',
+        name: 'Painting',
         nextVideos: [
             "hub.mp4"
-        ]
+        ],
+        loop: true
     },
     {
         id: "3",
         bucket: 'pirate-videos',
-        name: 'painting.mp4',
+        sourceName: 'wheel.mp4',
+        name: 'Wheel',
         nextVideos: [
             "hub.mp4"
-        ]
-    },
-    {
-        id: "4",
-        bucket: 'pirate-videos',
-        name: 'wheel.mp4',
-        nextVideos: [
-            "hub.mp4"
-        ]
+        ],
+        loop: true
     },
 ]

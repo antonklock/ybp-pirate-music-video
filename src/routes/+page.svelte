@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { pixiJsMain } from '$lib/components/pixijs/pixiMain';
+	import { pixiJsMain, setCurrentVideo } from '$lib/components/pixijs/pixiMain';
 	export let data;
 	import { onMount } from 'svelte';
-	import { gameState } from '$lib/stores/gameStore';
 	import { videos } from '$lib/game/videoConfig';
 
 	let isHidden = true;
 
 	const startVideo = () => {
-		isHidden = false;
+		isHidden = !isHidden;
 	};
 
 	onMount(() => {
@@ -40,20 +39,14 @@
 
 <button
 	on:click={() => {
-		const newVideoObject = getVideoObjectByName('hub.mp4');
-		if (newVideoObject) {
-			console.log(newVideoObject.nextVideos);
-			gameState.set({ currentVideoObject: newVideoObject });
-		}
+		const newVideoObject = getVideoObjectByName('Hub');
+		setCurrentVideo(newVideoObject);
 	}}>Hub</button
 >
 
 <button
 	on:click={() => {
-		const newVideoObject = getVideoObjectByName('wheel.mp4');
-		if (newVideoObject) {
-			console.log(newVideoObject.nextVideos);
-			gameState.set({ currentVideoObject: newVideoObject });
-		}
+		const newVideoObject = getVideoObjectByName('Wheel');
+		setCurrentVideo(newVideoObject);
 	}}>Wheel</button
 >

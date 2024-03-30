@@ -12,8 +12,11 @@ declare global {
 	type VideoObject = {
 		id: string,
 		bucket: string,
+		sourceName: string,
 		name: string,
 		nextVideos: string[]
+		loop: boolean
+		videoSprite?: PIXI.Sprite
 	}
 
 	type GameState = {
