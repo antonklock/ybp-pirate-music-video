@@ -31,6 +31,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@pixi/sound": "^6.0.0",
 		"@supabase/supabase-js": "^2.39.7",
 		"pixi.js": "^8.0.1"
 	}

@@ -11,6 +11,8 @@ async function initializeMainVideo() {
     const videoTextureURL = await getVidUrlFromSupabase(video.bucket, video.sourceName);
     const videoTexture = await Assets.load(videoTextureURL);
     videoTexture.source.resource.loop = true;
+    videoTexture.source.resource.muted = true;
+    videoTexture.source.resource.autoplay = false;
     mainVideo = new Sprite(videoTexture);
 }
 
@@ -28,6 +30,46 @@ export function setCurrentVideo(video: VideoObject) {
     } catch (error) {
         console.warn(error);
     }
+}
+
+export function playCurrentVideo() {
+    //Pause all other videos
+    videos.forEach((video) => {
+        if (video.videoSprite !== mainVideo) {
+            video.videoSprite.texture.source.resource.pause();
+        }
+    });
+
+    mainVideo.texture.source.resource.muted = false;
+    mainVideo.texture.source.resource.play();
+}
+
+export function pauseCurrentVideo() {
+    mainVideo.texture.source.resource.pause();
+}
+
+export function stopCurrentVideo() {
+    mainVideo.texture.source.resource.pause();
+    mainVideo.texture.source.resource.currentTime = 0;
+}
+
+export function stopAllVideos() {
+    videos.forEach((video) => {
+        video.videoSprite.texture.source.resource.pause();
+        video.videoSprite.texture.source.resource.currentTime = 0;
+    });
+}
+
+export function pauseAllVideos() {
+    videos.forEach((video) => {
+        video.videoSprite.texture.source.resource.pause();
+    });
+}
+
+export function playAllVideos() {
+    videos.forEach((video) => {
+        video.videoSprite.texture.source.resource.play();
+    });
 }
 
 export async function pixiJsMain(element: HTMLElement) {

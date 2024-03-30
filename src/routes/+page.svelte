@@ -1,16 +1,33 @@
 <script lang="ts">
-	import { pixiJsMain, setCurrentVideo } from '$lib/components/pixijs/pixiMain';
 	export let data;
+	import {
+		pixiJsMain,
+		playAllVideos,
+		playCurrentVideo,
+		setCurrentVideo
+	} from '$lib/components/pixijs/pixiMain';
 	import { onMount } from 'svelte';
 	import { videos } from '$lib/game/videoConfig';
+	import PixiSound from '$lib/components/PixiSound.svelte';
 
 	let isHidden = true;
 
 	const startVideo = () => {
-		isHidden = !isHidden;
+		const newVideoObject = getVideoObjectByName('Hub');
+		setCurrentVideo(newVideoObject);
+
+		playAllVideos();
+
+		setTimeout(() => {
+			// pauseAllVideos();
+			// stopAllVideos();
+			playCurrentVideo();
+
+			isHidden = !isHidden;
+		}, 1000);
 	};
 
-	onMount(() => {
+	onMount(async () => {
 		const pixiElement = document.getElementById('pixiElement');
 		if (pixiElement) pixiJsMain(pixiElement);
 	});
@@ -33,20 +50,46 @@
 	{/each}
 </ul>
 
-<button on:click={startVideo}>Start video</button>
+<button on:click={startVideo}>Start videos</button>
 
 <div hidden={isHidden} id="pixiElement"></div>
 
-<button
-	on:click={() => {
-		const newVideoObject = getVideoObjectByName('Hub');
-		setCurrentVideo(newVideoObject);
-	}}>Hub</button
->
+<div hidden={isHidden}>
+	<button
+		on:click={() => {
+			const newVideoObject = getVideoObjectByName('Hub');
+			setCurrentVideo(newVideoObject);
 
-<button
-	on:click={() => {
-		const newVideoObject = getVideoObjectByName('Wheel');
-		setCurrentVideo(newVideoObject);
-	}}>Wheel</button
->
+			playCurrentVideo();
+		}}>Hub</button
+	>
+
+	<button
+		on:click={() => {
+			const newVideoObject = getVideoObjectByName('Wheel');
+			setCurrentVideo(newVideoObject);
+
+			playCurrentVideo();
+		}}>Wheel</button
+	>
+
+	<button
+		on:click={() => {
+			const newVideoObject = getVideoObjectByName('Painting');
+			setCurrentVideo(newVideoObject);
+
+			playCurrentVideo();
+		}}>Painting</button
+	>
+
+	<button
+		on:click={() => {
+			const newVideoObject = getVideoObjectByName('Lamp');
+			setCurrentVideo(newVideoObject);
+
+			playCurrentVideo();
+		}}>Lamp</button
+	>
+</div>
+
+<PixiSound />

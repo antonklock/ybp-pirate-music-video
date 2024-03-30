@@ -1,7 +1,7 @@
 export const videos: VideoObject[] = [
     {
         id: "0",
-        bucket: 'pirate-videos',
+        bucket: 'pirate-videos-audio-sync',
         sourceName: 'hub.mp4',
         name: 'Hub',
         nextVideos: [
@@ -13,7 +13,7 @@ export const videos: VideoObject[] = [
     },
     {
         id: "1",
-        bucket: 'pirate-videos',
+        bucket: 'pirate-videos-audio-sync',
         sourceName: 'lamp.mp4',
         name: 'Lamp',
         nextVideos: [
@@ -23,7 +23,7 @@ export const videos: VideoObject[] = [
     },
     {
         id: "2",
-        bucket: 'pirate-videos',
+        bucket: 'pirate-videos-audio-sync',
         sourceName: 'painting.mp4',
         name: 'Painting',
         nextVideos: [
@@ -33,7 +33,7 @@ export const videos: VideoObject[] = [
     },
     {
         id: "3",
-        bucket: 'pirate-videos',
+        bucket: 'pirate-videos-audio-sync',
         sourceName: 'wheel.mp4',
         name: 'Wheel',
         nextVideos: [
