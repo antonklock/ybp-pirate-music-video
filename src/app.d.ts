@@ -8,6 +8,17 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
+
+	type VideoObject = {
+		id: string,
+		bucket: string,
+		name: string,
+		nextVideos: string[]
+	}
+
+	type GameState = {
+		currentVideoObject: VideoObject
+	}
 }
 
-export {};
+export { };
