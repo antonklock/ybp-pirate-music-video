@@ -3,7 +3,6 @@
 	import { onMount } from 'svelte';
 
 	// This is a workaround to import the sound module from PixiJS
-	// let sound: any;
 	let sound: SoundLibrary;
 
 	onMount(async () => {});

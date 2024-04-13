@@ -1,0 +1,49 @@
+{
+    "start": {
+        "video": "hub_01.mp4",
+        "choises": [
+            {   "name": "wheel",
+                "clickArea": {
+                    "position": {
+                        "x": 10,
+                        "y": 10
+                    },
+                    "size": {
+                        "width": 10,
+                        "height": 10
+                    }
+                },
+                "video": "wheel.mp4",
+                "completed": false
+            },
+            {   "name": "painting",
+                "clickArea": {
+                    "position": {
+                        "x": 40,
+                        "y": 40
+                    },
+                    "size": {
+                        "width": 10,
+                        "height": 10
+                    }
+                },
+                "video": "painting.mp4",
+                "completed": false
+            },
+            {   "name": "lamp",
+                "clickArea": {
+                    "position": {
+                        "x": 70,
+                        "y": 70
+                    },
+                    "size": {
+                        "width": 10,
+                        "height": 10
+                    }
+                },
+                "video": "lamp.mp4",
+                "completed": false
+            }
+        ]
+    }
+}

@@ -1,11 +1,6 @@
 <script lang="ts">
 	export let data;
-	import {
-		pixiJsMain,
-		playAllVideos,
-		playCurrentVideo,
-		setCurrentVideo
-	} from '$lib/components/pixijs/pixiMain';
+	import { pixiJsMain, playCurrentVideo, setCurrentVideo } from '$lib/components/pixijs/pixiMain';
 	import { onMount } from 'svelte';
 	import { videos } from '$lib/game/videoConfig';
 	import PixiSound from '$lib/components/PixiSound.svelte';
@@ -16,20 +11,23 @@
 		const newVideoObject = getVideoObjectByName('Hub');
 		setCurrentVideo(newVideoObject);
 
-		playAllVideos();
+		videos.forEach((video) => {
+			video.videoSprite.texture.source.resource.play();
+			video.videoSprite.texture.source.resource.pause();
+		});
 
 		setTimeout(() => {
-			// pauseAllVideos();
-			// stopAllVideos();
 			playCurrentVideo();
 
 			isHidden = !isHidden;
-		}, 2000);
+		}, 10);
 	};
 
 	onMount(async () => {
 		const pixiElement = document.getElementById('pixiElement');
 		if (pixiElement) pixiJsMain(pixiElement);
+
+		const videoPlayer = window.document.getElementById('video');
 	});
 
 	const getVideoObjectByName = (name: string) => {
