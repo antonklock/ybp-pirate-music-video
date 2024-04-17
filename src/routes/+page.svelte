@@ -20,45 +20,14 @@
 	let videoTexture: Texture;
 	let videoSprite: Sprite;
 
-	function updateTexture() {
-		console.log('Updating texture');
-
-		canvasContext?.drawImage(videoElements[currentVideoIndex], 0, 0, 800, 450);
-
-		if (!videoTexture) {
-			videoTexture = Texture.from(hiddenCanvas);
-			videoSprite = Sprite.from(videoTexture);
-		} else {
-			videoTexture = Texture.from(hiddenCanvas);
-			videoSprite = Sprite.from(videoTexture);
-		}
-	}
-
 	onMount(async () => {
-		const { TwistFilter } = await import('pixi-filters');
-
-		const twistFilter = new TwistFilter();
-		twistFilter.angle = 1;
-		twistFilter.offsetX = 400;
-		twistFilter.offsetY = 225;
-		twistFilter.radius = 400;
-
-		hiddenCanvas = document.createElement('canvas');
-		hiddenCanvas.width = 800;
-		hiddenCanvas.height = 450;
-		hiddenCanvas.classList.add('hidden-canvas');
-		canvasContext = hiddenCanvas.getContext('2d');
-		document.querySelector('#hidden-c')?.appendChild(hiddenCanvas);
-
 		mainVideoElement = document.querySelector('.video-container');
 		const pixiDiv = document.querySelector('#pixi') as HTMLDivElement;
 		pixiDiv.style.position = 'absolute';
 
 		const app = new Application();
-		await app.init({ width: 800, height: 450, backgroundAlpha: 0.25 });
+		await app.init({ width: 1280, height: 720, backgroundAlpha: 0.25 });
 		app.renderer.background.color = [0, 0, 0, 0.25];
-
-		app.stage.filters = [twistFilter];
 
 		pixiDiv?.appendChild(app.canvas);
 		if (pixiDiv) pixiDiv.style.zIndex = '100';
@@ -85,12 +54,12 @@
 					app.stage.addChild(videoSprite);
 
 					videoSprite.anchor.set(0.5);
-					videoSprite.width = 800 / 2;
-					videoSprite.height = 450 / 2;
-					videoSprite.x = 800 / 2;
-					videoSprite.y = 450 / 2;
+					videoSprite.width = 1280 / 2;
+					videoSprite.height = 720 / 2;
+					videoSprite.x = 1280 / 2;
+					videoSprite.y = 720 / 2;
 				} else {
-					canvasContext?.drawImage(videoElements[currentVideoIndex], 0, 0, 800, 450);
+					canvasContext?.drawImage(videoElements[currentVideoIndex], 0, 0, 1280, 720);
 					videoTexture = Texture.from(hiddenCanvas);
 					videoSprite.texture = videoTexture;
 				}
@@ -106,8 +75,8 @@
 			videoElement.style.position = 'absolute';
 			videoElement.preload = 'metadata';
 			videoElement.style.display = 'none';
-			videoElement.style.width = '800px';
-			videoElement.style.height = '450px';
+			videoElement.style.width = '1280px';
+			videoElement.style.height = '720px';
 			videoElement.style.borderRadius = '5px';
 
 			if (mainVideoElement) mainVideoElement.appendChild(videoElement);
@@ -121,7 +90,7 @@
 
 		console.log(videoPlayers);
 
-		// videoElements[0].style.display = 'block';
+		videoElements[0].style.display = 'block';
 	});
 
 	function switchVideo() {
@@ -135,8 +104,10 @@
 
 		const player = videoPlayers[currentVideoIndex];
 		const element = videoElements[currentVideoIndex];
+		const oldElement = videoElements[currentVideoIndex - (1 % videoElements.length)];
 
-		// element.style.display = 'block';
+		oldElement.style.display = 'none';
+		element.style.display = 'block';
 		player.play();
 	}
 </script>
@@ -148,7 +119,6 @@
 	<div class="video-container">
 		<div id="pixi"></div>
 		<div id="videos"></div>
-		<div id="hidden-c"></div>
 	</div>
 
 	<button
@@ -169,7 +139,6 @@
 			console.log('Next Video clicked');
 		}}>Next Video</button
 	>
-	<button style="z-index: 1000;" on:click={() => updateTexture()}>Draw video</button>
 </div>
 
 <style>
@@ -181,7 +150,7 @@
 
 	.video-container {
 		position: relative;
-		width: 800px;
-		height: 450px;
+		width: 1280px;
+		height: 720px;
 	}
 </style>
