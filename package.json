@@ -34,6 +34,7 @@
 		"@pixi/sound": "^6.0.0",
 		"@supabase/supabase-js": "^2.39.7",
 		"dashjs": "^4.7.4",
+		"pixi-filters": "^6.0.2",
 		"pixi.js": "^8.0.1"
 	}
 }
