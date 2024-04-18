@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { Application, Assets, Sprite, Texture } from 'pixi.js';
+	import { Application, Assets, Circle, Graphics, Sprite, Texture } from 'pixi.js';
 
 	let gameStarted = false;
 
@@ -28,6 +28,8 @@
 	let BTN_broom: Sprite;
 	let BTN_drinkers: Sprite;
 
+	let frameDropCircle: Graphics;
+
 	onMount(async () => {
 		// If the user presses the button "P"
 		document.addEventListener('keydown', (event) => {
@@ -45,7 +47,7 @@
 		});
 
 		sceneWidth = window.innerWidth * 0.8;
-		sceneHeight = window.innerHeight * 0.8;
+		sceneHeight = sceneWidth * 0.5625;
 
 		mainVideoElement = document.querySelector('.video-container');
 		const pixiDiv = document.querySelector('#pixi') as HTMLDivElement;
@@ -62,6 +64,14 @@
 
 		pixiDiv?.appendChild(app.canvas);
 		if (pixiDiv) pixiDiv.style.zIndex = '100';
+
+		frameDropCircle = new Graphics();
+		frameDropCircle.fill(0x00ff00);
+		frameDropCircle.circle(0, 0, 20);
+		frameDropCircle.fill();
+		frameDropCircle.x = 40;
+		frameDropCircle.y = 40;
+		app.stage.addChild(frameDropCircle);
 
 		// Add a black square to the screen
 		const blackSquare = new Sprite(Texture.WHITE);
@@ -139,6 +149,15 @@
 					switchToVideo(0);
 				});
 			}
+
+			if (videoPlayers.length > 0) {
+				if (!videoPlayers[currentVideoIndex].isReady) {
+					console.warn("Frame drop! Video isn't ready yet.");
+					frameDropCircle.fill(0xff0000);
+				} else {
+					frameDropCircle.fill(0x00ff00);
+				}
+			}
 		});
 
 		const dashjs = await import('dashjs');
@@ -149,11 +168,12 @@
 			const videoElement = document.createElement('video');
 			videoElement.controls = false;
 			videoElement.playsInline = true;
-			videoElement.style.position = 'relative';
-			videoElement.preload = 'metadata';
-			videoElement.style.display = 'none';
+			videoElement.style.position = 'absolute';
 			videoElement.style.width = `${sceneWidth}px`;
 			videoElement.style.height = `${sceneHeight}px`;
+
+			videoElement.preload = 'metadata';
+			videoElement.style.display = 'none';
 			videoElement.style.borderRadius = '5px';
 
 			if (mainVideoElement) mainVideoElement.appendChild(videoElement);
@@ -199,6 +219,9 @@
 		const player = videoPlayers[currentVideoIndex];
 		const element = videoElements[currentVideoIndex];
 		element.style.display = 'block';
+
+		console.log(player.isReady());
+
 		player.play();
 	}
 
@@ -218,6 +241,8 @@
 		gameStarted = true;
 
 		tempMusicElement.play();
+
+		console.log(videoPlayers[0].isReady());
 	}
 </script>
 
