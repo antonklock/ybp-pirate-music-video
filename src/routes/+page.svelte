@@ -147,6 +147,8 @@
 			const player = dashjs.MediaPlayer().create();
 
 			const videoElement = document.createElement('video');
+			videoElement.controls = false;
+			videoElement.playsInline = true;
 			videoElement.style.position = 'relative';
 			videoElement.preload = 'metadata';
 			videoElement.style.display = 'none';
