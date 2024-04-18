@@ -2,12 +2,17 @@
 	import { onMount } from 'svelte';
 	import { Application, Assets, Sprite, Texture } from 'pixi.js';
 
+	let gameStarted = false;
+
 	const videoUrls = [
 		'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/94fa56d67526bb108a120cbb3de20de9/manifest/video.mpd',
 		'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/643b20d80310374034ab98fd48771b1c/manifest/video.mpd',
 		'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/49a8983e44d3de06c7d53afa86c8337f/manifest/video.mpd',
 		'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/543f408de99baf30ad0401671820d6a5/manifest/video.mpd'
 	];
+
+	const tempMusic =
+		'https://firebasestorage.googleapis.com/v0/b/pirate-music-video.appspot.com/o/test-music%2FRowingWithOneHand_trimmed.mp3?alt=media&token=4176da98-db65-4463-8916-a166a021d6a6';
 
 	let currentVideoIndex = 0;
 	let videoPlayers: dashjs.MediaPlayerClass[] = [];
@@ -20,10 +25,16 @@
 	let videoTexture: Texture;
 	let videoSprite: Sprite;
 
+	let tempMusicElement: HTMLAudioElement;
+
 	onMount(async () => {
 		mainVideoElement = document.querySelector('.video-container');
 		const pixiDiv = document.querySelector('#pixi') as HTMLDivElement;
 		pixiDiv.style.position = 'absolute';
+
+		// Add Audio element with the temp music
+		tempMusicElement = document.createElement('audio');
+		tempMusicElement.src = tempMusic;
 
 		const app = new Application();
 		await app.init({ width: 1280, height: 720, backgroundAlpha: 0.25 });
@@ -31,6 +42,13 @@
 
 		pixiDiv?.appendChild(app.canvas);
 		if (pixiDiv) pixiDiv.style.zIndex = '100';
+
+		// Add a black square to the screen
+		const blackSquare = new Sprite(Texture.WHITE);
+		blackSquare.tint = 0x000000;
+		blackSquare.width = 1280;
+		blackSquare.height = 720;
+		app.stage.addChild(blackSquare);
 
 		// BROOM
 		const BTN_broom = new Sprite(Texture.WHITE);
@@ -81,6 +99,12 @@
 		});
 
 		app.ticker.add(() => {
+			if (gameStarted) {
+				if (blackSquare.alpha > 0) {
+					blackSquare.alpha -= 0.01;
+				}
+			}
+
 			if (videoSprite) {
 				if (!app.stage.children.includes(videoSprite)) {
 					app.stage.addChild(videoSprite);
@@ -163,18 +187,35 @@
 		element.style.display = 'block';
 		player.play();
 	}
+
+	function startGame() {
+		const gameElement = document.querySelector('.game-container') as HTMLDivElement;
+		const startButtonElement = document.querySelector('.start-button') as HTMLDivElement;
+		gameElement.style.display = 'block';
+		startButtonElement.style.display = 'none';
+
+		console.log('Starting game');
+
+		videoPlayers[0].play();
+		gameStarted = true;
+
+		tempMusicElement.play();
+	}
 </script>
 
 <div class="container">
 	<h1>Welcome to Pirate Music Video</h1>
 	<p>This is a testing ground for our new project</p>
-
-	<div class="video-container">
-		<div id="pixi"></div>
-		<div id="videos"></div>
+	<div class="game-container" style="display: none">
+		<div class="video-container">
+			<div id="pixi"></div>
+			<div id="videos"></div>
+		</div>
 	</div>
 
-	<button
+	<button class="start-button" on:click={startGame}>Start Game</button>
+
+	<!-- <button
 		style="z-index: 1000;"
 		on:click={() => {
 			const player = videoPlayers[currentVideoIndex];
@@ -219,7 +260,7 @@
 			switchToVideo(3);
 			console.log('Next Video clicked');
 		}}>Walk to drinkers</button
-	>
+	> -->
 </div>
 
 <style>
@@ -227,6 +268,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		color: white;
 	}
 
 	.video-container {
