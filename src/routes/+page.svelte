@@ -3,10 +3,10 @@
 	import { Application, Assets, Sprite, Texture } from 'pixi.js';
 
 	const videoUrls = [
-		'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/e7634c71f936fe50eb555a45f1263548/manifest/video.mpd',
-		'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/aec3884a2d861238267ef6df82680c90/manifest/video.mpd',
-		'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/79b80511e39039c9c99b127f6f515e0e/manifest/video.mpd',
-		'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/0bbec7b68c56905e6b10959ce15d91e3/manifest/video.mpd'
+		'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/94fa56d67526bb108a120cbb3de20de9/manifest/video.mpd',
+		'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/643b20d80310374034ab98fd48771b1c/manifest/video.mpd',
+		'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/49a8983e44d3de06c7d53afa86c8337f/manifest/video.mpd',
+		'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/543f408de99baf30ad0401671820d6a5/manifest/video.mpd'
 	];
 
 	let currentVideoIndex = 0;
@@ -27,28 +27,60 @@
 
 		const app = new Application();
 		await app.init({ width: 1280, height: 720, backgroundAlpha: 0.25 });
-		app.renderer.background.color = [0, 0, 0, 0.25];
+		app.renderer.background.color = [0, 0, 0, 0];
 
 		pixiDiv?.appendChild(app.canvas);
 		if (pixiDiv) pixiDiv.style.zIndex = '100';
 
-		const pirateTexture = await Assets.load<Texture>('/images/pirate.png');
-		const pirateSprite = new Sprite(pirateTexture);
+		// BROOM
+		const BTN_broom = new Sprite(Texture.WHITE);
+		BTN_broom.tint = 0xff0000;
+		BTN_broom.alpha = 0;
+		BTN_broom.width = 250;
+		BTN_broom.height = 250;
+		BTN_broom.x = 50;
+		BTN_broom.y = 380;
+		app.stage.addChild(BTN_broom);
 
-		pirateSprite.scale.set(0.5);
-		pirateSprite.anchor.set(0.5);
-		pirateSprite.y = app.screen.height / 2;
+		BTN_broom.interactive = true;
+		BTN_broom.on('pointerdown', () => {
+			// Only change if HUB video is playing
+			if (currentVideoIndex === 0) switchToVideo(2);
+		});
 
-		app.stage.addChild(pirateSprite);
+		// DRINKERS
+		const BTN_drinkers = new Sprite(Texture.WHITE);
+		BTN_drinkers.tint = 0x00ff00;
+		BTN_drinkers.alpha = 0;
+		BTN_drinkers.width = 270;
+		BTN_drinkers.height = 300;
+		BTN_drinkers.x = 1000;
+		BTN_drinkers.y = 290;
+		app.stage.addChild(BTN_drinkers);
+
+		BTN_drinkers.interactive = true;
+		BTN_drinkers.on('pointerdown', () => {
+			// Only change if HUB video is playing
+			if (currentVideoIndex === 0) switchToVideo(3);
+		});
+
+		// DOOR
+		const BTN_door = new Sprite(Texture.WHITE);
+		BTN_door.tint = 0x0000ff;
+		BTN_door.alpha = 0;
+		BTN_door.width = 130;
+		BTN_door.height = 240;
+		BTN_door.x = 500;
+		BTN_door.y = 200;
+		app.stage.addChild(BTN_door);
+
+		BTN_door.interactive = true;
+		BTN_door.on('pointerdown', () => {
+			// Only change if HUB video is playing
+			if (currentVideoIndex === 0) switchToVideo(1);
+		});
 
 		app.ticker.add(() => {
-			if (pirateSprite.x < app.screen.width) {
-				pirateSprite.x += 2;
-			} else {
-				pirateSprite.x = -pirateSprite.width;
-			}
-			pirateSprite.rotation += Math.sin(pirateSprite.x / 3) * 0.02;
-
 			if (videoSprite) {
 				if (!app.stage.children.includes(videoSprite)) {
 					app.stage.addChild(videoSprite);
@@ -63,6 +95,13 @@
 					videoTexture = Texture.from(hiddenCanvas);
 					videoSprite.texture = videoTexture;
 				}
+			}
+
+			if (currentVideoIndex !== 0) {
+				// When the current player is done playing switch back to video 0
+				videoPlayers[currentVideoIndex].on('playbackEnded', () => {
+					switchToVideo(0);
+				});
 			}
 		});
 
@@ -104,9 +143,23 @@
 
 		const player = videoPlayers[currentVideoIndex];
 		const element = videoElements[currentVideoIndex];
-		const oldElement = videoElements[currentVideoIndex - (1 % videoElements.length)];
+		element.style.display = 'block';
+		player.play();
+	}
 
-		oldElement.style.display = 'none';
+	function switchToVideo(videoIndex: number) {
+		currentVideoIndex = videoIndex;
+
+		for (let i = 0; i < videoPlayers.length; i++) {
+			if (i != currentVideoIndex) {
+				videoPlayers[i].seek(0);
+				videoPlayers[i].pause();
+				videoElements[i].style.display = 'none';
+			}
+		}
+
+		const player = videoPlayers[currentVideoIndex];
+		const element = videoElements[currentVideoIndex];
 		element.style.display = 'block';
 		player.play();
 	}
@@ -138,6 +191,34 @@
 			switchVideo();
 			console.log('Next Video clicked');
 		}}>Next Video</button
+	>
+	<button
+		style="z-index: 1000;"
+		on:click={() => {
+			switchToVideo(0);
+			console.log('Next Video clicked');
+		}}>Hub Video</button
+	>
+	<button
+		style="z-index: 1000;"
+		on:click={() => {
+			switchToVideo(1);
+			console.log('Next Video clicked');
+		}}>Walk to door</button
+	>
+	<button
+		style="z-index: 1000;"
+		on:click={() => {
+			switchToVideo(2);
+			console.log('Next Video clicked');
+		}}>Walk to broom</button
+	>
+	<button
+		style="z-index: 1000;"
+		on:click={() => {
+			switchToVideo(3);
+			console.log('Next Video clicked');
+		}}>Walk to drinkers</button
 	>
 </div>
 
