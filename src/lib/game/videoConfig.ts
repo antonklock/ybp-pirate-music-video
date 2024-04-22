@@ -1,48 +1,30 @@
-// const bucket = 'pirate-videos-audio-sync';
-// const bucket = 'pirate-videos-av1';
-const bucket = 'pirate-videos-vp9';
-
 export const videos: VideoObject[] = [
-    {
-        id: "0",
-        bucket: bucket,
-        sourceName: 'hub.mp4',
-        name: 'Hub',
-        nextVideos: [
-            "lamp.mp4",
-            "painting.mp4",
-            "wheel.mp4"
-        ],
-        loop: true
-    },
-    {
-        id: "1",
-        bucket: bucket,
-        sourceName: 'lamp.mp4',
-        name: 'Lamp',
-        nextVideos: [
-            "hub.mp4"
-        ],
-        loop: true
-    },
-    {
-        id: "2",
-        bucket: bucket,
-        sourceName: 'painting.mp4',
-        name: 'Painting',
-        nextVideos: [
-            "hub.mp4"
-        ],
-        loop: true
-    },
-    {
-        id: "3",
-        bucket: bucket,
-        sourceName: 'wheel.mp4',
-        name: 'Wheel',
-        nextVideos: [
-            "hub.mp4"
-        ],
-        loop: true
-    },
-]
+	{
+		id: '0',
+		url: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/94fa56d67526bb108a120cbb3de20de9/manifest/video.mpd',
+		name: 'hub',
+		nextVideos: ['broom', 'door', 'drinkers'],
+		loop: true
+	},
+	{
+		id: '1',
+		url: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/643b20d80310374034ab98fd48771b1c/manifest/video.mpd',
+		name: 'door',
+		nextVideos: ['hub'],
+		loop: false
+	},
+	{
+		id: '2',
+		url: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/49a8983e44d3de06c7d53afa86c8337f/manifest/video.mpd',
+		name: 'broom',
+		nextVideos: ['hub'],
+		loop: false
+	},
+	{
+		id: '3',
+		url: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/543f408de99baf30ad0401671820d6a5/manifest/video.mpd',
+		name: 'drinkers',
+		nextVideos: ['hub'],
+		loop: false
+	}
+];

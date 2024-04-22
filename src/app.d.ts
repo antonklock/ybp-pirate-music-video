@@ -1,3 +1,5 @@
+import { MediaPlayerClass } from 'dashjs';
+
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 declare global {
@@ -10,18 +12,19 @@ declare global {
 	}
 
 	type VideoObject = {
-		id: string,
-		bucket: string,
-		sourceName: string,
-		name: string,
-		nextVideos: string[]
-		loop: boolean
-		videoSprite?: PIXI.Sprite
-	}
+		id: string;
+		name: string;
+		url: string;
+		nextVideos: string[];
+		loop: boolean;
+		videoSprite?: PIXI.Sprite;
+		videoPlayer?: MediaPlayerClass[];
+	};
 
-	type GameState = {
-		currentVideoObject: VideoObject
+	interface GameState {
+		videoObjects: VideoObject[];
+		currentVideoIndex: number;
 	}
 }
 
-export { };
+export {};

@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { Application, Assets, Circle, Graphics, Sprite, Texture } from 'pixi.js';
+	import { startGame } from '$lib/game/utils/startGame';
+	import { createHitbox } from '$lib/game/utils/createHitbox';
 
 	let gameStarted = false;
 
@@ -80,61 +82,37 @@
 		blackSquare.height = sceneHeight;
 		app.stage.addChild(blackSquare);
 
-		// BROOM
-		BTN_broom = new Sprite(Texture.WHITE);
-		BTN_broom.tint = 0xff0000;
-		BTN_broom.alpha = 0;
-		BTN_broom.width = sceneWidth * 0.1953;
-		BTN_broom.height = sceneHeight * 0.3472;
-		BTN_broom.x = sceneWidth * 0.0391;
-		BTN_broom.y = sceneHeight * 0.5278;
-		app.stage.addChild(BTN_broom);
-
-		BTN_broom.interactive = true;
-		BTN_broom.on('pointerdown', () => {
-			// Only change if HUB video is playing
-			if (currentVideoIndex === 0) switchToVideo(2);
-		}).on('touchstart', () => {
-			if (currentVideoIndex === 0) switchToVideo(2);
+		const BTN_broom = createHitbox({
+			tint: 0xff0000,
+			alpha: 0.25,
+			width: sceneWidth * 0.1953,
+			height: sceneHeight * 0.3472,
+			x: sceneWidth * 0.0391,
+			y: sceneHeight * 0.5278,
+			switchToVideo: 2
 		});
 
-		// DRINKERS
-		BTN_drinkers = new Sprite(Texture.WHITE);
-		BTN_drinkers.tint = 0x00ff00;
-		BTN_drinkers.alpha = 0;
-		BTN_drinkers.width = sceneWidth * 0.2109;
-		BTN_drinkers.height = sceneHeight * 0.4167;
-		BTN_drinkers.x = sceneWidth * 0.7812;
-		BTN_drinkers.y = sceneHeight * 0.4028;
-		app.stage.addChild(BTN_drinkers);
-
-		BTN_drinkers.interactive = true;
-		BTN_drinkers.on('pointerdown', () => {
-			// Only change if HUB video is playing
-			if (currentVideoIndex === 0) switchToVideo(3);
-		}).on('touchstart', () => {
-			// Only change if HUB video is playing
-			if (currentVideoIndex === 0) switchToVideo(3);
+		const BTN_drinkers = createHitbox({
+			tint: 0x00ff00,
+			alpha: 0.25,
+			width: sceneWidth * 0.2109,
+			height: sceneHeight * 0.4167,
+			x: sceneWidth * 0.7812,
+			y: sceneHeight * 0.4028,
+			switchToVideo: 3
 		});
 
-		// DOOR
-		BTN_door = new Sprite(Texture.WHITE);
-		BTN_door.tint = 0x0000ff;
-		BTN_door.alpha = 0;
-		BTN_door.width = sceneWidth * 0.1016;
-		BTN_door.height = sceneHeight * 0.3333;
-		BTN_door.x = sceneWidth * 0.3906;
-		BTN_door.y = sceneHeight * 0.2778;
-		app.stage.addChild(BTN_door);
-
-		BTN_door.interactive = true;
-		BTN_door.on('pointerdown', () => {
-			// Only change if HUB video is playing
-			if (currentVideoIndex === 0) switchToVideo(1);
-		}).on('touchstart', () => {
-			// Only change if HUB video is playing
-			if (currentVideoIndex === 0) switchToVideo(1);
+		const BTN_door = createHitbox({
+			tint: 0x0000ff,
+			alpha: 0.25,
+			width: sceneWidth * 0.1016,
+			height: sceneHeight * 0.3333,
+			x: sceneWidth * 0.3906,
+			y: sceneHeight * 0.2778,
+			switchToVideo: 1
 		});
+
+		app.stage.addChild(BTN_drinkers, BTN_door, BTN_broom);
 
 		app.ticker.add(() => {
 			if (gameStarted) {
@@ -190,60 +168,25 @@
 		videoElements[0].style.display = 'block';
 	});
 
-	function switchVideo() {
-		currentVideoIndex = (currentVideoIndex + 1) % videoUrls.length;
+	// function switchToVideo(videoIndex: number) {
+	// 	currentVideoIndex = videoIndex;
 
-		for (let i = 0; i < videoPlayers.length; i++) {
-			videoPlayers[i].seek(0);
-			videoPlayers[i].pause();
-			videoElements[i].style.display = 'none';
-		}
+	// 	for (let i = 0; i < videoPlayers.length; i++) {
+	// 		if (i != currentVideoIndex) {
+	// 			videoPlayers[i].seek(0);
+	// 			videoPlayers[i].pause();
+	// 			videoElements[i].style.display = 'none';
+	// 		}
+	// 	}
 
-		const player = videoPlayers[currentVideoIndex];
-		const element = videoElements[currentVideoIndex];
-		element.style.display = 'block';
-		player.play();
-	}
+	// 	const player = videoPlayers[currentVideoIndex];
+	// 	const element = videoElements[currentVideoIndex];
+	// 	element.style.display = 'block';
 
-	function switchToVideo(videoIndex: number) {
-		currentVideoIndex = videoIndex;
+	// 	console.log(player.isReady());
 
-		for (let i = 0; i < videoPlayers.length; i++) {
-			if (i != currentVideoIndex) {
-				videoPlayers[i].seek(0);
-				videoPlayers[i].pause();
-				videoElements[i].style.display = 'none';
-			}
-		}
-
-		const player = videoPlayers[currentVideoIndex];
-		const element = videoElements[currentVideoIndex];
-		element.style.display = 'block';
-
-		console.log(player.isReady());
-
-		player.play();
-	}
-
-	function startGame() {
-		const gameElement = document.querySelector('.game-container') as HTMLDivElement;
-		gameElement.style.display = 'block';
-
-		const startButtonElement = document.querySelector('.start-button') as HTMLDivElement;
-		startButtonElement.style.display = 'none';
-
-		const titleTextDiv = document.querySelector('#page-title') as HTMLDivElement;
-		titleTextDiv.style.display = 'none';
-
-		console.log('Starting game');
-
-		videoPlayers[0].play();
-		gameStarted = true;
-
-		tempMusicElement.play();
-
-		console.log(videoPlayers[0].isReady());
-	}
+	// 	player.play();
+	// }
 </script>
 
 <div class="container">
@@ -259,7 +202,29 @@
 		</div>
 	</div>
 
-	<button class="start-button" on:click={startGame}>Start Game</button>
+	<button
+		class="start-button"
+		on:click={() => {
+			const gameElement = document.querySelector('.game-container');
+			const startButtonElement = document.querySelector('.start-button');
+			const titleTextDiv = document.querySelector('#page-title');
+
+			if (!gameElement || !startButtonElement || !titleTextDiv) return;
+			const config = {
+				elementsToDisplay: [gameElement],
+				elementsToHide: [startButtonElement, titleTextDiv],
+				videoPlayerToStart: videoPlayers[0],
+				musicElementToStart: tempMusicElement,
+				gameStarted: gameStarted
+			};
+
+			startGame(config);
+
+			gameStarted = true;
+
+			console.log(gameStarted);
+		}}>Start Game</button
+	>
 </div>
 
 <style>
