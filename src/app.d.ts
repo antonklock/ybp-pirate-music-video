@@ -17,8 +17,7 @@ declare global {
 		url: string;
 		nextVideos: string[];
 		loop: boolean;
-		videoSprite?: PIXI.Sprite;
-		videoPlayer?: MediaPlayerClass[];
+		videoPlayer?: MediaPlayerClass;
 	};
 
 	interface GameState {

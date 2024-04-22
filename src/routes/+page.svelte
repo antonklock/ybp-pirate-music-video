@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { Application, Assets, Circle, Graphics, Sprite, Texture } from 'pixi.js';
+	import { Application, Assets, Graphics, Sprite, Texture } from 'pixi.js';
 	import { startGame } from '$lib/game/utils/startGame';
 	import { createHitbox } from '$lib/game/utils/createHitbox';
 
@@ -29,8 +29,6 @@
 	let BTN_door: Sprite;
 	let BTN_broom: Sprite;
 	let BTN_drinkers: Sprite;
-
-	let frameDropCircle: Graphics;
 
 	onMount(async () => {
 		// If the user presses the button "P"
@@ -66,14 +64,6 @@
 
 		pixiDiv?.appendChild(app.canvas);
 		if (pixiDiv) pixiDiv.style.zIndex = '100';
-
-		frameDropCircle = new Graphics();
-		frameDropCircle.fill(0x00ff00);
-		frameDropCircle.circle(0, 0, 20);
-		frameDropCircle.fill();
-		frameDropCircle.x = 40;
-		frameDropCircle.y = 40;
-		app.stage.addChild(frameDropCircle);
 
 		// Add a black square to the screen
 		const blackSquare = new Sprite(Texture.WHITE);
@@ -126,15 +116,6 @@
 				videoPlayers[currentVideoIndex].on('playbackEnded', () => {
 					switchToVideo(0);
 				});
-			}
-
-			if (videoPlayers.length > 0) {
-				if (!videoPlayers[currentVideoIndex].isReady) {
-					console.warn("Frame drop! Video isn't ready yet.");
-					frameDropCircle.fill(0xff0000);
-				} else {
-					frameDropCircle.fill(0x00ff00);
-				}
 			}
 		});
 
