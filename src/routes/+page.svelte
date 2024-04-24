@@ -237,6 +237,7 @@
 
 	let mainSceneContainer: HTMLDivElement | null;
 	let gameReady = false;
+	let currentScene = 0;
 
 	gameGlobals.subscribe((value) => {
 		gameReady = value.gameReady;
@@ -300,25 +301,40 @@
 			}
 		}
 	};
+
+	let scene0: Scene;
+	let scene1: Scene;
+	let scene2: Scene;
+	let scene3: Scene;
 </script>
 
 <div class="mainContainer">
 	<div class="mainSceneContainer" bind:this={mainSceneContainer}>
 		{#if gameReady}
-			<Scene sceneId={0} />
-			<Scene sceneId={1} />
-			<Scene sceneId={2} />
-			<Scene sceneId={3} />
+			{#if currentScene === 0}
+				<Scene bind:this={scene0} sceneId={0} />
+			{:else if currentScene === 1}
+				<Scene bind:this={scene1} sceneId={1} />
+			{:else if currentScene === 2}
+				<Scene bind:this={scene2} sceneId={2} />
+			{:else if currentScene === 3}
+				<Scene bind:this={scene3} sceneId={3} />
+			{/if}
 		{:else}
 			<div>Loading...</div>
 		{/if}
 	</div>
 
 	<div class="buttons">
-		<button on:click={() => playGame(0)}>Play 0</button>
+		<!-- <button on:click={() => playGame(0)}>Play 0</button>
 		<button on:click={() => switchToScene(1)}>Play 1</button>
 		<button on:click={() => switchToScene(2)}>Play 2</button>
-		<button on:click={() => switchToScene(3)}>Play 3</button>
+		<button on:click={() => switchToScene(3)}>Play 3</button> -->
+
+		<button on:click={() => (currentScene = 0)}>Play 0</button>
+		<button on:click={() => (currentScene = 1)}>Play 1</button>
+		<button on:click={() => (currentScene = 2)}>Play 2</button>
+		<button on:click={() => (currentScene = 3)}>Play 3</button>
 	</div>
 </div>
 

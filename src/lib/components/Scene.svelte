@@ -38,7 +38,7 @@
 		videoElement.preload = 'metadata';
 		videoElement.style.borderRadius = '5px';
 		videoElement.classList.add('video');
-		videoElement.autoplay = false;
+		// videoElement.autoplay = false;
 		videoElement.id = `scene-${sceneId}`;
 		videoElement.style.display = hidden ? 'none' : 'block';
 
@@ -52,7 +52,7 @@
 	let style;
 </script>
 
-<video style="style" class="video" bind:this={videoElement}>
-	<source type="application/dash+xml" src={scene.url} />
+<video style="style" class="video" autoplay={true} bind:this={videoElement}>
+	<!-- <source type="application/dash+xml" src={scene.url} /> -->
 	<track kind="captions" />
 </video>
