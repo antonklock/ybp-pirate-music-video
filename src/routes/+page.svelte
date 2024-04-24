@@ -16,7 +16,7 @@
 </script>
 
 {#await import('$lib/components/Player.svelte') then { default: Player }}
-	<svelte:component this={Player} {source} />
+	<svelte:component this={Player} />
 {/await}
 
 <div id="mainContainer">
