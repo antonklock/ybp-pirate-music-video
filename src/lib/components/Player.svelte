@@ -31,37 +31,37 @@
 			if (player00) {
 				//@ts-ignore
 				player00.getElementsByClassName('media-player')[0].play();
-				player00.style.display = 'block';
+				player00.style.opacity = '1';
 			}
-			if (player01) player01.style.display = 'none';
-			if (player02) player02.style.display = 'none';
-			if (player03) player03.style.display = 'none';
+			if (player01) player01.style.opacity = '0.001';
+			if (player02) player02.style.opacity = '0.001';
+			if (player03) player03.style.opacity = '0.001';
 		} else if (index === 1) {
-			if (player00) player00.style.display = 'none';
+			if (player00) player00.style.opacity = '0.001';
 			if (player01) {
 				//@ts-ignore
 				player01.getElementsByClassName('media-player')[0].play();
-				player01.style.display = 'block';
+				player01.style.opacity = '1';
 			}
-			if (player02) player02.style.display = 'none';
-			if (player03) player03.style.display = 'none';
+			if (player02) player02.style.opacity = '0.001';
+			if (player03) player03.style.opacity = '0.001';
 		} else if (index === 2) {
-			if (player00) player00.style.display = 'none';
-			if (player01) player01.style.display = 'none';
+			if (player00) player00.style.opacity = '0.001';
+			if (player01) player01.style.opacity = '0.001';
 			if (player02) {
 				//@ts-ignore
 				player02.getElementsByClassName('media-player')[0].play();
-				player02.style.display = 'block';
+				player02.style.opacity = '1';
 			}
-			if (player03) player03.style.display = 'none';
+			if (player03) player03.style.opacity = '0.001';
 		} else if (index === 3) {
-			if (player00) player00.style.display = 'none';
-			if (player01) player01.style.display = 'none';
-			if (player02) player02.style.display = 'none';
+			if (player00) player00.style.opacity = '0.001';
+			if (player01) player01.style.opacity = '0.001';
+			if (player02) player02.style.opacity = '0.001';
 			if (player03) {
 				//@ts-ignore
 				player03.getElementsByClassName('media-player')[0].play();
-				player03.style.display = 'block';
+				player03.style.opacity = '1';
 			}
 		}
 	};
