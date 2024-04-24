@@ -1,41 +1,42 @@
-import { Sprite, Texture } from 'pixi.js';
-import { gameState } from '$lib/stores/gameStore';
+// import { Sprite, Texture } from 'pixi.js';
+// import { gameState } from '$lib/stores/gameStore';
+// import { switchToSceneById } from './switchToSceneById';
 
-let currentVideoIndex = 0;
-gameState.subscribe((value) => {
-	currentVideoIndex = value.currentVideoIndex;
-});
+// let currentSceneId: number;
+// gameState.subscribe((value) => {
+// 	currentSceneId = value.currentSceneId;
+// });
 
-interface HitboxConfig {
-	tint: number;
-	alpha: number;
-	width: number;
-	height: number;
-	x: number;
-	y: number;
-	switchToVideo: number;
-}
+// interface HitboxConfig {
+// 	tint: number;
+// 	alpha: number;
+// 	width: number;
+// 	height: number;
+// 	x: number;
+// 	y: number;
+// 	switchToScene: number;
+// }
 
-export function createHitbox(config: HitboxConfig): Sprite {
-	const hitbox = new Sprite(Texture.WHITE);
-	hitbox.tint = config.tint;
-	hitbox.alpha = config.alpha;
-	hitbox.width = config.width;
-	hitbox.height = config.height;
-	hitbox.x = config.x;
-	hitbox.y = config.y;
+// export function createHitbox(config: HitboxConfig): Sprite {
+// 	const hitbox = new Sprite(Texture.WHITE);
+// 	hitbox.tint = config.tint;
+// 	hitbox.alpha = config.alpha;
+// 	hitbox.width = config.width;
+// 	hitbox.height = config.height;
+// 	hitbox.x = config.x;
+// 	hitbox.y = config.y;
 
-	hitbox.interactive = true;
-	hitbox
-		.on('pointerdown', () => {
-			// Only change if HUB video is playing
-			if (currentVideoIndex === 0) switchToVideo(config.switchToVideo);
-		})
-		.on('touchstart', () => {
-			// Only change if HUB video is playing
-			if (currentVideoIndex === 0) switchToVideo(config.switchToVideo);
-		});
+// 	hitbox.interactive = true;
+// 	hitbox
+// 		.on('pointerdown', () => {
+// 			// Only change if HUB video is playing
+// 			if (currentSceneId === 0) switchToSceneById(config.switchToScene);
+// 		})
+// 		.on('touchstart', () => {
+// 			// Only change if HUB video is playing
+// 			if (currentSceneId === 0) switchToSceneById(config.switchToScene);
+// 		});
 
-	console.log('Hitbox created', hitbox);
-	return hitbox;
-}
+// 	console.log('Hitbox created', hitbox);
+// 	return hitbox;
+// }

@@ -1,8 +1,11 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import { onMount } from 'svelte';
-	import { Application, Assets, Graphics, Sprite, Texture } from 'pixi.js';
+	import { Application, Sprite, Texture } from 'pixi.js';
 	import { startGame } from '$lib/game/utils/startGame';
 	import { createHitbox } from '$lib/game/utils/createHitbox';
+	import { switchToSceneById } from '$lib/game/utils/switchToSceneById';
+	import { spawnNewScene } from '$lib/game/utils/spawnNewScene';
+	import { gameState, gameGlobals } from '$lib/stores/gameStore';
 
 	let gameStarted = false;
 
@@ -19,19 +22,18 @@
 	let currentVideoIndex = 0;
 	let videoPlayers: dashjs.MediaPlayerClass[] = [];
 	let videoElements: HTMLVideoElement[] = [];
-	let mainVideoElement: HTMLVideoElement | null = null;
+	let mainVideoElement: HTMLVideoElement | null;
 
 	let tempMusicElement: HTMLAudioElement;
 
 	let sceneWidth: number;
 	let sceneHeight: number;
 
-	let BTN_door: Sprite;
-	let BTN_broom: Sprite;
-	let BTN_drinkers: Sprite;
-
 	onMount(async () => {
-		// If the user presses the button "P"
+		// Import dashjs
+		const dashjs = await import('dashjs');
+
+		// Toggle show hitboxes
 		document.addEventListener('keydown', (event) => {
 			if (event.key === 'p') {
 				if (BTN_broom.alpha > 0) {
@@ -53,12 +55,21 @@
 		const pixiDiv = document.querySelector('#pixi') as HTMLDivElement;
 		pixiDiv.style.position = 'absolute';
 
+		gameGlobals.update((state) => {
+			state.dashjs = dashjs;
+			state.mainVideoElement = mainVideoElement;
+			state.sceneDimensions = {
+				sceneWidth,
+				sceneHeight
+			};
+			return state;
+			});
+
 		// Add Audio element with the temp music
 		tempMusicElement = document.createElement('audio');
 		tempMusicElement.src = tempMusic;
 
 		const app = new Application();
-		// await app.init({ width: 1280, height: 720, backgroundAlpha: 0.25 });
 		await app.init({ width: sceneWidth, height: sceneHeight, backgroundAlpha: 0 });
 		app.renderer.background.color = [0, 0, 0, 0];
 
@@ -72,34 +83,36 @@
 		blackSquare.height = sceneHeight;
 		app.stage.addChild(blackSquare);
 
+		// Adding hitboxes
+		// TODO: Automate this process based on the SceneObjects hitbox data
 		const BTN_broom = createHitbox({
 			tint: 0xff0000,
-			alpha: 0.25,
+			alpha: 0,
 			width: sceneWidth * 0.1953,
 			height: sceneHeight * 0.3472,
 			x: sceneWidth * 0.0391,
 			y: sceneHeight * 0.5278,
-			switchToVideo: 2
+			switchToScene: 2
 		});
 
 		const BTN_drinkers = createHitbox({
 			tint: 0x00ff00,
-			alpha: 0.25,
+			alpha: 0,
 			width: sceneWidth * 0.2109,
 			height: sceneHeight * 0.4167,
 			x: sceneWidth * 0.7812,
 			y: sceneHeight * 0.4028,
-			switchToVideo: 3
+			switchToScene: 3
 		});
 
 		const BTN_door = createHitbox({
 			tint: 0x0000ff,
-			alpha: 0.25,
+			alpha: 0,
 			width: sceneWidth * 0.1016,
 			height: sceneHeight * 0.3333,
 			x: sceneWidth * 0.3906,
 			y: sceneHeight * 0.2778,
-			switchToVideo: 1
+			switchToScene: 1
 		});
 
 		app.stage.addChild(BTN_drinkers, BTN_door, BTN_broom);
@@ -111,63 +124,54 @@
 				}
 			}
 
+			// TODO: Implement a more robust way to switch between to the next scene
 			if (currentVideoIndex !== 0) {
 				// When the current player is done playing switch back to video 0
 				videoPlayers[currentVideoIndex].on('playbackEnded', () => {
-					switchToVideo(0);
+					switchToSceneById(0);
 				});
 			}
 		});
 
-		const dashjs = await import('dashjs');
+		const newSceneConfig = {
+			dashjs,
+			sceneId: 0,
+			sceneDimensions: {
+				sceneWidth,
+				sceneHeight
+			},
+			mainVideoElement
+		};
 
-		for (const url of videoUrls) {
-			const player = dashjs.MediaPlayer().create();
+		// if(typeof(mainVideoElement) === typeof(HTMLVideoElement)) spawnNewScene(newSceneConfig);
 
-			const videoElement = document.createElement('video');
-			videoElement.controls = false;
-			videoElement.playsInline = true;
-			videoElement.style.position = 'absolute';
-			videoElement.style.width = `${sceneWidth}px`;
-			videoElement.style.height = `${sceneHeight}px`;
+		// for (const url of videoUrls) {
+		// 	const player = dashjs.MediaPlayer().create();
 
-			videoElement.preload = 'metadata';
-			videoElement.style.display = 'none';
-			videoElement.style.borderRadius = '5px';
+		// 	const videoElement = document.createElement('video');
+		// 	videoElement.controls = false;
+		// 	videoElement.playsInline = true;
+		// 	videoElement.style.position = 'absolute';
+		// 	videoElement.style.width = `${sceneWidth}px`;
+		// 	videoElement.style.height = `${sceneHeight}px`;
 
-			if (mainVideoElement) mainVideoElement.appendChild(videoElement);
+		// 	videoElement.preload = 'metadata';
+		// 	videoElement.style.display = 'none';
+		// 	videoElement.style.borderRadius = '5px';
 
-			player.initialize(videoElement, url, false);
-			player.setMute(true);
+		// 	if (mainVideoElement) mainVideoElement.appendChild(videoElement);
 
-			videoElements.push(videoElement);
-			videoPlayers.push(player);
-		}
+		// 	player.initialize(videoElement, url, false);
+		// 	player.setMute(true);
 
-		console.log(videoPlayers);
+		// 	videoElements.push(videoElement);
+		// 	videoPlayers.push(player);
+		// }
 
-		videoElements[0].style.display = 'block';
+		// console.log(videoPlayers);
+
+		// videoElements[0].style.display = 'block';
 	});
-
-	// function switchToVideo(videoIndex: number) {
-	// 	currentVideoIndex = videoIndex;
-
-	// 	for (let i = 0; i < videoPlayers.length; i++) {
-	// 		if (i != currentVideoIndex) {
-	// 			videoPlayers[i].seek(0);
-	// 			videoPlayers[i].pause();
-	// 			videoElements[i].style.display = 'none';
-	// 		}
-	// 	}
-
-	// 	const player = videoPlayers[currentVideoIndex];
-	// 	const element = videoElements[currentVideoIndex];
-	// 	element.style.display = 'block';
-
-	// 	console.log(player.isReady());
-
-	// 	player.play();
-	// }
 </script>
 
 <div class="container">
@@ -223,5 +227,102 @@
 		align-items: center;
 		position: relative;
 		height: 100vh;
+	}
+</style> -->
+
+<script lang="ts">
+	import Scene from '$lib/components/Scene.svelte';
+	import { onMount } from 'svelte';
+	import { gameGlobals } from '$lib/stores/gameStore';
+
+	let mainSceneContainer: HTMLDivElement | null;
+	let gameReady = false;
+
+	gameGlobals.subscribe((value) => {
+		gameReady = value.gameReady;
+	});
+
+	onMount(async () => {
+		const dashjs = await import('dashjs');
+		const stageWidth = window.innerWidth * 0.8;
+		const stageHeight = stageWidth * 0.5625;
+
+		if (!mainSceneContainer) throw new Error('mainSceneContainer is not defined');
+		if (!dashjs) throw new Error('dashjs is not defined');
+		if (!stageWidth || !stageHeight) throw new Error('sceneWidth or sceneHeight is not defined');
+
+		gameGlobals.update((state) => {
+			state.dashjs = dashjs;
+			state.sceneDimensions = {
+				stageWidth,
+				stageHeight
+			};
+			state.mainVideoElement = mainSceneContainer;
+			state.gameReady = true;
+			console.log('Game is ready!');
+			return state;
+		});
+	});
+
+	const playGame = (sceneId: number) => {
+		for (const scene of document.querySelectorAll('video')) {
+			console.log('Pausing video: ' + scene.id);
+			if (scene.id !== `scene-${sceneId}`) {
+				scene.pause();
+				scene.style.display = 'none';
+			} else {
+				scene.play();
+				console.log('Playing video: ' + `scene-${sceneId}`);
+				scene.style.display = 'block';
+			}
+		}
+		// console.log('Playing video: ' + `scene-${sceneId}`);
+		// document.getElementById(`scene-${sceneId}`)?.play();
+	};
+</script>
+
+<div class="mainContainer">
+	<div class="mainSceneContainer" bind:this={mainSceneContainer}>
+		{#if gameReady}
+			<Scene sceneId={0} />
+			<Scene sceneId={1} />
+			<Scene sceneId={2} />
+			<Scene sceneId={3} />
+		{:else}
+			<div>Loading...</div>
+		{/if}
+	</div>
+
+	<div class="buttons">
+		<button on:click={() => playGame(0)}>Play 0</button>
+		<button on:click={() => playGame(1)}>Play 1</button>
+		<button on:click={() => playGame(2)}>Play 2</button>
+		<button on:click={() => playGame(3)}>Play 3</button>
+	</div>
+</div>
+
+<style>
+	.mainContainer {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		color: white;
+	}
+
+	.mainSceneContainer {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: relative;
+		height: 100vh;
+	}
+	.buttons {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: absolute;
+		top: 0;
+		left: 0;
 	}
 </style>

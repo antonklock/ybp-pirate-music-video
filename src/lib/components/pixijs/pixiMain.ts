@@ -1,7 +1,7 @@
 import { Application, Assets, Sprite, Texture } from 'pixi.js';
 import { gameState } from '$lib/stores/gameStore';
 import { getVidUrlFromSupabase } from '$lib/game/utils/getVidUrlFromSupabase';
-import { videos } from '$lib/game/videoConfig';
+import { videos } from '$lib/game/sceneConfig';
 import { initailizeVideoSprites } from '$lib/game/utils/initailizeVideoSprites';
 
 let mainVideo: Sprite;
