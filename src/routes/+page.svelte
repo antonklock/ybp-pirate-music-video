@@ -243,10 +243,13 @@
 		gameReady = value.gameReady;
 	});
 
+	let stageWidth: number;
+	let stageHeight: number;
+
 	onMount(async () => {
 		const dashjs = await import('dashjs');
-		const stageWidth = window.innerWidth * 0.8;
-		const stageHeight = stageWidth * 0.5625;
+		stageWidth = window.innerWidth * 0.8;
+		stageHeight = stageWidth * 0.5625;
 
 		if (!mainSceneContainer) throw new Error('mainSceneContainer is not defined');
 		if (!dashjs) throw new Error('dashjs is not defined');
@@ -279,62 +282,105 @@
 		}
 	};
 
-	const switchToScene = (sceneId: number) => {
-		for (const scene of document.querySelectorAll('video')) {
-			if (scene.id !== `scene-${sceneId}`) {
-				scene.pause();
-				scene.style.display = 'none';
-				scene.remove();
-			} else {
-				scene.play();
-				scene.style.display = 'block';
+	// const switchToScene = (sceneId: number) => {
+	// 	for (const scene of document.querySelectorAll('video')) {
+	// 		if (scene.id !== `scene-${sceneId}`) {
+	// 			scene.pause();
+	// 			scene.style.display = 'none';
+	// 			scene.remove();
+	// 		} else {
+	// 			scene.play();
+	// 			scene.style.display = 'block';
 
-				if (mainSceneContainer) {
-					const newScene = new Scene({
-						target: mainSceneContainer,
-						props: {
-							sceneId: 0,
-							hidden: true
-						}
-					});
-				}
-			}
-		}
+	// 			if (mainSceneContainer) {
+	// 				const newScene = new Scene({
+	// 					target: mainSceneContainer,
+	// 					props: {
+	// 						sceneId: 0,
+	// 						hidden: true
+	// 					}
+	// 				});
+	// 			}
+	// 		}
+	// 	}
+	// };
+
+	let videoElement0: HTMLVideoElement;
+	let videoElement1;
+	let videoElement2;
+	let videoElement3;
+
+	let canvas: HTMLCanvasElement;
+	let ctx: CanvasRenderingContext2D;
+	let videoElements: HTMLVideoElement[] = [];
+	let currentVideoIndex = 0;
+
+	let videoUrls = [
+		'/videos/testVideos/HUB_5min.webm',
+		'/videos/testVideos/walkTo_doorMan.webm',
+		'/videos/testVideos/walkTo_broom.webm',
+		'/videos/testVideos/walkTo_drinkers.webm'
+	];
+
+	let videoUrl = videoUrls[currentVideoIndex];
+
+	const playVideo = () => {
+		videoElement0.play();
 	};
 
-	let scene0: Scene;
-	let scene1: Scene;
-	let scene2: Scene;
-	let scene3: Scene;
+	const nextVideo = () => {
+		currentVideoIndex++;
+		if (currentVideoIndex >= videoUrls.length) currentVideoIndex = 0;
+
+		videoElement0.src = videoUrls[currentVideoIndex];
+		videoElement0.play();
+	};
+
+	const playVideoById = (id: number) => {
+		currentVideoIndex = id;
+		videoElement0.src = videoUrls[id];
+		videoElement0.play();
+	};
 </script>
 
 <div class="mainContainer">
-	<div class="mainSceneContainer" bind:this={mainSceneContainer}>
+	<!-- <div class="mainSceneContainer" bind:this={mainSceneContainer}>
 		{#if gameReady}
-			{#if currentScene === 0}
-				<Scene bind:this={scene0} sceneId={0} />
-			{:else if currentScene === 1}
-				<Scene bind:this={scene1} sceneId={1} />
-			{:else if currentScene === 2}
-				<Scene bind:this={scene2} sceneId={2} />
-			{:else if currentScene === 3}
-				<Scene bind:this={scene3} sceneId={3} />
-			{/if}
+			<canvas id="canvas" width={stageWidth} height={stageHeight}> </canvas>
 		{:else}
 			<div>Loading...</div>
 		{/if}
 	</div>
 
 	<div class="buttons">
-		<!-- <button on:click={() => playGame(0)}>Play 0</button>
-		<button on:click={() => switchToScene(1)}>Play 1</button>
-		<button on:click={() => switchToScene(2)}>Play 2</button>
-		<button on:click={() => switchToScene(3)}>Play 3</button> -->
-
 		<button on:click={() => (currentScene = 0)}>Play 0</button>
 		<button on:click={() => (currentScene = 1)}>Play 1</button>
 		<button on:click={() => (currentScene = 2)}>Play 2</button>
 		<button on:click={() => (currentScene = 3)}>Play 3</button>
+	</div> -->
+
+	<div>
+		<button on:click={playVideo}>Play</button>
+		<button on:click={nextVideo}>Next</button>
+		<button on:click={() => playVideoById(0)}>Video 0</button>
+		<button on:click={() => playVideoById(1)}>Video 1</button>
+		<button on:click={() => playVideoById(2)}>Video 2</button>
+		<button on:click={() => playVideoById(3)}>Video 3</button>
+
+		<video
+			class="video"
+			width={stageWidth}
+			height={stageHeight}
+			style="display: block"
+			autoplay={true}
+			playsinline={true}
+			controls={false}
+			preload="metadata"
+			bind:this={videoElement0}
+			src={videoUrl}
+		>
+			<track kind="captions" />
+		</video>
 	</div>
 </div>
 
