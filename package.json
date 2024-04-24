@@ -35,6 +35,8 @@
 		"@supabase/supabase-js": "^2.39.7",
 		"dashjs": "^4.7.4",
 		"pixi-filters": "^6.0.2",
-		"pixi.js": "^8.0.1"
+		"pixi.js": "^8.0.1",
+		"plyr": "^3.7.8",
+		"vidstack": "^1.11.19"
 	}
 }
