@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 
 	export let sceneId: number;
+	export let hidden: boolean = false;
 
 	let mainSceneContainer: HTMLDivElement | null;
 	let sceneDimensions: { stageWidth: number; stageHeight: number };
@@ -39,10 +40,19 @@
 		videoElement.classList.add('video');
 		videoElement.autoplay = false;
 		videoElement.id = `scene-${sceneId}`;
+		videoElement.style.display = hidden ? 'none' : 'block';
+
+		style = {
+			width: `${sceneDimensions.stageWidth}px`,
+			height: `${sceneDimensions.stageHeight}px`,
+			borderRadius: '5px'
+		};
 	});
+
+	let style;
 </script>
 
-<video class="video" autoplay={false} bind:this={videoElement}>
+<video style="style" class="video" bind:this={videoElement}>
 	<source type="application/dash+xml" src={scene.url} />
 	<track kind="captions" />
 </video>

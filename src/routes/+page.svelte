@@ -232,7 +232,7 @@
 
 <script lang="ts">
 	import Scene from '$lib/components/Scene.svelte';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { gameGlobals } from '$lib/stores/gameStore';
 
 	let mainSceneContainer: HTMLDivElement | null;
@@ -276,8 +276,29 @@
 				scene.style.display = 'block';
 			}
 		}
-		// console.log('Playing video: ' + `scene-${sceneId}`);
-		// document.getElementById(`scene-${sceneId}`)?.play();
+	};
+
+	const switchToScene = (sceneId: number) => {
+		for (const scene of document.querySelectorAll('video')) {
+			if (scene.id !== `scene-${sceneId}`) {
+				scene.pause();
+				scene.style.display = 'none';
+				scene.remove();
+			} else {
+				scene.play();
+				scene.style.display = 'block';
+
+				if (mainSceneContainer) {
+					const newScene = new Scene({
+						target: mainSceneContainer,
+						props: {
+							sceneId: 0,
+							hidden: true
+						}
+					});
+				}
+			}
+		}
 	};
 </script>
 
@@ -295,9 +316,9 @@
 
 	<div class="buttons">
 		<button on:click={() => playGame(0)}>Play 0</button>
-		<button on:click={() => playGame(1)}>Play 1</button>
-		<button on:click={() => playGame(2)}>Play 2</button>
-		<button on:click={() => playGame(3)}>Play 3</button>
+		<button on:click={() => switchToScene(1)}>Play 1</button>
+		<button on:click={() => switchToScene(2)}>Play 2</button>
+		<button on:click={() => switchToScene(3)}>Play 3</button>
 	</div>
 </div>
 
