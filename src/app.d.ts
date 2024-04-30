@@ -38,7 +38,12 @@ declare global {
 		dashjs: dashjs | null;
 	}
 
-	type DashJs = typeof dashjs;
+	interface Hitbox {
+		x: number;
+		y: number;
+		width: number;
+		height: number;
+	}
 }
 
-export {};
+export { };

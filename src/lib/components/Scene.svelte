@@ -38,7 +38,6 @@
 		videoElement.preload = 'metadata';
 		videoElement.style.borderRadius = '5px';
 		videoElement.classList.add('video');
-		// videoElement.autoplay = false;
 		videoElement.id = `scene-${sceneId}`;
 		videoElement.style.display = hidden ? 'none' : 'block';
 

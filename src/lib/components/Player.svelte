@@ -1,9 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	// export let source =
-	// 	'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/94fa56d67526bb108a120cbb3de20de9/manifest/video.mpd';
-
 	const urls = [
 		'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/94fa56d67526bb108a120cbb3de20de9/manifest/video.mpd',
 		'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/643b20d80310374034ab98fd48771b1c/manifest/video.mpd',
@@ -11,22 +8,14 @@
 		'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/543f408de99baf30ad0401671820d6a5/manifest/video.mpd'
 	];
 
-	onMount(async () => {
-		// const instance = document.querySelector('media-player');
-		// if (!instance) throw new Error('media-player not found');
-		// let { sources } = instance.state;
-		// console.log(sources);
-		// for (let i = 0; i < urls.length; i++) {
-		// 	instance.src = urls[i];
-		// }
-		// console.log(sources);
-	});
+	onMount(async () => {});
 
 	const playVideo = (index: number) => {
 		const player00 = document.getElementById('player00');
 		const player01 = document.getElementById('player01');
 		const player02 = document.getElementById('player02');
 		const player03 = document.getElementById('player03');
+
 		if (index === 0) {
 			if (player00) {
 				//@ts-ignore
@@ -67,64 +56,58 @@
 	};
 </script>
 
-<div id={'player00'} style={'position: absolute'}>
-	<media-player
-		controls={false}
-		class="media-player"
-		loop
-		playsInline
-		title="Sprite Fight"
-		src={urls[0]}
-	>
-		<media-provider></media-provider>
-		<!-- <media-video-layout thumbnails="https://files.vidstack.io/sprite-fight/thumbnails.vtt"
-		></media-video-layout> -->
-	</media-player>
-</div>
+<div class="videoPlayers">
+	<div class="playerContainer" id={'player00'}>
+		<media-player
+			controls={false}
+			class="media-player"
+			loop
+			playsInline
+			title="Sprite Fight"
+			src={urls[0]}
+		>
+			<media-provider></media-provider>
+		</media-player>
+	</div>
 
-<div id={'player01'} style={'position: absolute'}>
-	<media-player
-		controls={false}
-		class="media-player"
-		loop
-		playsInline
-		title="Sprite Fight"
-		src={urls[1]}
-	>
-		<media-provider></media-provider>
-		<!-- <media-video-layout thumbnails="https://files.vidstack.io/sprite-fight/thumbnails.vtt"
-		></media-video-layout> -->
-	</media-player>
-</div>
+	<div class="playerContainer" id={'player01'}>
+		<media-player
+			controls={false}
+			class="media-player"
+			loop
+			playsInline
+			title="Sprite Fight"
+			src={urls[1]}
+		>
+			<media-provider></media-provider>
+		</media-player>
+	</div>
 
-<div id={'player02'} style={'position: absolute'}>
-	<media-player
-		controls={false}
-		class="media-player"
-		loop
-		playsInline
-		title="Sprite Fight"
-		src={urls[2]}
-	>
-		<media-provider></media-provider>
-		<!-- <media-video-layout thumbnails="https://files.vidstack.io/sprite-fight/thumbnails.vtt"
-		></media-video-layout> -->
-	</media-player>
-</div>
+	<div class="playerContainer" id={'player02'}>
+		<media-player
+			controls={false}
+			class="media-player"
+			loop
+			playsInline
+			title="Sprite Fight"
+			src={urls[2]}
+		>
+			<media-provider></media-provider>
+		</media-player>
+	</div>
 
-<div id={'player03'} style={'position: absolute'}>
-	<media-player
-		controls={false}
-		class="media-player"
-		loop
-		playsInline
-		title="Sprite Fight"
-		src={urls[3]}
-	>
-		<media-provider></media-provider>
-		<!-- <media-video-layout thumbnails="https://files.vidstack.io/sprite-fight/thumbnails.vtt"
-		></media-video-layout> -->
-	</media-player>
+	<div class="playerContainer" id={'player03'}>
+		<media-player
+			controls={false}
+			class="media-player"
+			loop
+			playsInline
+			title="Sprite Fight"
+			src={urls[3]}
+		>
+			<media-provider></media-provider>
+		</media-player>
+	</div>
 </div>
 
 <div class="buttons">
@@ -138,9 +121,21 @@
 	.buttons {
 		display: flex;
 		justify-content: center;
+		width: 99vw;
 		gap: 10px;
-		top: 500px;
+		bottom: 20px;
 		position: absolute;
 		z-index: 100;
+	}
+
+	.videoPlayers {
+		position: relative;
+		display: flex;
+		justify-content: center;
+	}
+
+	.playerContainer {
+		position: absolute;
+		width: 80%;
 	}
 </style>

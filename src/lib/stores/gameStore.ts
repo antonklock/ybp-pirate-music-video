@@ -18,6 +18,8 @@ export const gameGlobals = writable<GameGlobals>({
 	dashjs: null,
 });
 
+export const hitboxes = writable<Hitbox[]>([]);
+
 export const scenes = writable<SceneObject[]>(sceneObjects);
 
 export const availableScenes = writable<SceneObject[]>([]);
