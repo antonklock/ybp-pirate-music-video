@@ -1,4 +1,4 @@
-import type { dashjs, MediaPlayerClass } from 'dashjs';
+import type { dashjs } from 'dashjs';
 
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
@@ -11,14 +11,16 @@ declare global {
 		// interface Platform {}
 	}
 
-	type SceneObject = {
+	interface SceneObject {
 		id: number;
 		name: string;
 		url: string;
-		nextVideos: string[];
+		nextScenes: string[];
 		loop: boolean;
-		videoPlayer?: MediaPlayerClass;
-		videoElement?: HTMLVideoElement;
+		isActive: boolean;
+		videoPlayerComponent?: SvelteComponent;
+		play?: () => void;
+		pause?: () => void;
 	};
 
 	interface GameState {

@@ -7,9 +7,11 @@
 </script>
 
 <div>
-	{#await import('$lib/components/Player.svelte') then { default: Player }}
-		<svelte:component this={Player} />
+	{#await import('$lib/components/Game.svelte') then { default: Game }}
+		<svelte:component this={Game} />
 	{/await}
+
+	<p>This is some text.</p>
 </div>
 
 <style>
