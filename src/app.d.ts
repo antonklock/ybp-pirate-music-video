@@ -18,9 +18,7 @@ declare global {
 		nextScenes: string[];
 		loop: boolean;
 		isActive: boolean;
-		videoPlayerComponent?: SvelteComponent;
-		play?: () => void;
-		pause?: () => void;
+		videoPlayerComponent?: VideoPlayer;
 	};
 
 	interface GameState {

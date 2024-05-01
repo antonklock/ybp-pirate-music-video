@@ -4,20 +4,20 @@
 	type PlayerProps = {
 		id: string;
 		url: string;
-		hidden: boolean;
+		isActive: boolean;
 	};
 
 	export let props: PlayerProps = {
 		id: '',
 		url: '',
-		hidden: false
+		isActive: false
 	};
 
-	export const play = () => {
+	export let play = () => {
 		videoPlayer.play();
 	};
 
-	export const pause = () => {
+	export let pause = () => {
 		videoPlayer.pause();
 	};
 </script>
@@ -41,6 +41,6 @@
 		position: absolute;
 		width: 80%;
         opacity: calc(var(--opacityValue)); 
-        --opacityValue: { props.hidden ? 0.001 : 1};
+        --opacityValue: { props.isActive ? 1 : 0.001};
 	}
 </style>

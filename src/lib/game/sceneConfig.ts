@@ -6,9 +6,6 @@ export const sceneObjects: SceneObject[] = [
 		nextScenes: ['broom', 'door', 'drinkers'],
 		loop: true,
 		isActive: false,
-		videoPlayerComponent: undefined,
-		play: undefined,
-		pause: undefined,
 	},
 	{
 		id: 1,
@@ -17,9 +14,6 @@ export const sceneObjects: SceneObject[] = [
 		nextScenes: ['hub'],
 		loop: false,
 		isActive: false,
-		videoPlayerComponent: undefined,
-		play: undefined,
-		pause: undefined,
 	},
 	{
 		id: 2,
@@ -28,9 +22,6 @@ export const sceneObjects: SceneObject[] = [
 		nextScenes: ['hub'],
 		loop: false,
 		isActive: false,
-		videoPlayerComponent: undefined,
-		play: undefined,
-		pause: undefined,
 	},
 	{
 		id: 3,
@@ -39,8 +30,5 @@ export const sceneObjects: SceneObject[] = [
 		nextScenes: ['hub'],
 		loop: false,
 		isActive: false,
-		videoPlayerComponent: undefined,
-		play: undefined,
-		pause: undefined,
 	}
 ];
