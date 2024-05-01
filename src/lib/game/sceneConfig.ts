@@ -5,7 +5,7 @@ export const sceneObjects: SceneObject[] = [
 		name: 'hub',
 		nextScenes: ['broom', 'door', 'drinkers'],
 		loop: true,
-		isActive: false,
+		isActive: false
 	},
 	{
 		id: 1,
@@ -13,7 +13,7 @@ export const sceneObjects: SceneObject[] = [
 		name: 'door',
 		nextScenes: ['hub'],
 		loop: false,
-		isActive: false,
+		isActive: false
 	},
 	{
 		id: 2,
@@ -21,7 +21,7 @@ export const sceneObjects: SceneObject[] = [
 		name: 'broom',
 		nextScenes: ['hub'],
 		loop: false,
-		isActive: false,
+		isActive: false
 	},
 	{
 		id: 3,
@@ -29,6 +29,6 @@ export const sceneObjects: SceneObject[] = [
 		name: 'drinkers',
 		nextScenes: ['hub'],
 		loop: false,
-		isActive: false,
+		isActive: false
 	}
 ];

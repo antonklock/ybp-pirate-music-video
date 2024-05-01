@@ -1,28 +1,20 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	let videoPlayer: any;
 
-	type PlayerProps = {
-		id: string;
-		url: string;
-		isActive: boolean;
-	};
+	export let id = '';
+	export let url = '';
+	export let isActive = false;
 
-	export let props: PlayerProps = {
-		id: '',
-		url: '',
-		isActive: false
-	};
-
-	export let play = () => {
-		videoPlayer.play();
-	};
-
-	export let pause = () => {
-		videoPlayer.pause();
-	};
+	$: if (isActive) {
+		if (videoPlayer) videoPlayer.play();
+	} else {
+		if (videoPlayer) videoPlayer.pause();
+	}
 </script>
 
-<div class="playerContainer" id={props.id}>
+<div class="playerContainer {isActive ? 'active' : 'inactive'}" {id}>
 	<media-player
 		bind:this={videoPlayer}
 		controls={false}
@@ -30,7 +22,7 @@
 		loop
 		playsInline
 		title="Sprite Fight"
-		src={props.url}
+		src={url}
 	>
 		<media-provider></media-provider>
 	</media-player>
@@ -40,7 +32,13 @@
 	.playerContainer {
 		position: absolute;
 		width: 80%;
-        opacity: calc(var(--opacityValue)); 
-        --opacityValue: { props.isActive ? 1 : 0.001};
+	}
+
+	.active {
+		opacity: 1;
+	}
+
+	.inactive {
+		opacity: 0.001;
 	}
 </style>
