@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-
 	let videoPlayer: any;
 
 	export let id = '';
@@ -10,7 +8,9 @@
 	$: if (isActive) {
 		if (videoPlayer) videoPlayer.play();
 	} else {
-		if (videoPlayer) videoPlayer.pause();
+		setTimeout(() => {
+			if (videoPlayer) videoPlayer.pause();
+		}, 200);
 	}
 </script>
 

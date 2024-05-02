@@ -6,52 +6,11 @@
 
 	let videoScenes: SceneObject[] = [];
 
-	scenes.subscribe((scenes) => {
-		videoScenes = scenes;
-	});
-
 	onMount(() => {
-		// const videoContainer = document.querySelector('.videoPlayers') as HTMLElement;
-		// const buttonContainer = document.querySelector('.buttons');
-		// if (!videoContainer) return console.error('No video container found');
-		// if (!buttonContainer) return console.error('No button container found');
-		// for (let i = 0; i < videoScenes.length; i++) {
-		// 	const scene = videoScenes[i];
-		// 	const player = createVideoPlayer(scene, videoContainer);
-		// 	scenes.update((vidScenes) => {
-		// 		if (player) {
-		// 			vidScenes[i].videoPlayerComponent = player;
-		// 			videoScenes[i].play = player.play;
-		// 			videoScenes[i].pause = player.pause;
-		// 		}
-		// 		return vidScenes;
-		// 	});
-		// 	new VideoDebugButton({
-		// 		target: buttonContainer,
-		// 		props: {
-		// 			title: `Video ${i}`,
-		// 			play: videoScenes[i].play
-		// 		}
-		// 	});
-		// }
+		scenes.subscribe((scenes) => {
+			videoScenes = scenes;
+		});
 	});
-
-	// const createVideoPlayer = (scene: SceneObject, target: HTMLElement) => {
-	// 	const player = new VideoPlayer({
-	// 		target,
-	// 		props: {
-	// 			props: {
-	// 				id: `videoPlayer${scene.id}`,
-	// 				url: scene.url,
-	// 				isActive: scene.isActive
-	// 			},
-	// 			play: scene.play,
-	// 			pause: scene.pause
-	// 		}
-	// 	});
-
-	// 	return player;
-	// };
 
 	const playVideo = (index: number) => {
 		scenes.update((scenes) => {

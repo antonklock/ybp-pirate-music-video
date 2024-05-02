@@ -19,6 +19,7 @@ declare global {
 		loop: boolean;
 		isActive: boolean;
 		videoPlayerComponent?: VideoPlayer;
+		onSceneEnd?: () => void;
 	};
 
 	interface GameState {
