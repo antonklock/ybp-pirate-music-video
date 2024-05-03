@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { gameGlobals } from '$lib/stores/gameStore';
 
-	export let music = false;
-	export let paused = false;
+	let music = false;
+	let paused = false;
 
 	let globals: GameGlobals;
 

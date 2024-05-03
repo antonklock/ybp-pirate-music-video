@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	let videoPlayer: any;
 
 	export let id = '';
@@ -14,9 +14,34 @@
 		}, 200);
 	}
 
+	let time = 0;
+
+	let unsubscribe: any;
+
 	onMount(() => {
 		console.log('Component mounted: ' + id);
+
+		type VpState = {
+			currentTime: number;
+		};
+
+		unsubscribe = videoPlayer.subscribe(({ currentTime }: VpState) => {
+			time = currentTime;
+
+			return () => {
+				// Cleanup here if needed.
+			};
+		});
 	});
+
+	onDestroy(() => {
+		console.log('Component destroyed: ' + id);
+		if (unsubscribe) unsubscribe();
+	});
+
+	$: {
+		console.log('Time: ' + time);
+	}
 </script>
 
 <div class="playerContainer {isActive ? 'active' : 'inactive'}" {id}>
@@ -28,6 +53,11 @@
 		playsInline
 		title="Sprite Fight"
 		src={url}
+		on:timeupdate={() => {
+			if (videoPlayer.currentTime > 3) {
+				console.log('Video has played for 3 seconds');
+			}
+		}}
 	>
 		<media-provider></media-provider>
 	</media-player>

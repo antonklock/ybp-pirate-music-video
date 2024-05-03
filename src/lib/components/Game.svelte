@@ -1,16 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import VideoPlayer from './video/VideoPlayer.svelte';
 	import { scenes, gameGlobals } from '$lib/stores/gameStore';
+	import { loadScene } from '$lib/game/utils/scene_management/loadScene';
+	import VideoPlayer from './video/VideoPlayer.svelte';
 	import VideoDebugButton from './buttons/VideoDebugButton.svelte';
 	import BgMusic from '$lib/components/music/BgMusic.svelte';
-	import { loadSceneAndPlay } from '$lib/game/utils/scene_management/loadSceneAndPlay';
-	import { loadScene } from '$lib/game/utils/scene_management/loadScene';
 
 	let globals: GameGlobals;
-	let music = false;
-	let paused = false;
-
 	let loadedScenes: SceneObject[] = [];
 
 	scenes.subscribe((scenes) => {
@@ -22,36 +18,17 @@
 	});
 
 	onMount(() => {});
-
-	const loadFirstScene = () => {
-		scenes.subscribe((scenes) => {
-			loadedScenes = [...loadedScenes, scenes[0]];
-			console.log('Loaded scenes: ', loadedScenes);
-		});
-	};
-
-	const playVideo = (index: number) => {
-		scenes.update((scenes) => {
-			scenes.forEach((scene) => {
-				if (scene.id !== index) scene.isActive = false;
-			});
-			scenes[index].isActive = true;
-			return scenes;
-		});
-	};
-
-	const hideAndPauseVideo = () => {};
-
-	const showAndPlayVideo = () => {};
-
-	const removeElement = () => {};
 </script>
 
 <button
 	on:click={() => {
 		console.log('Starting game...');
+
 		loadScene(0);
 		loadScene(1);
+		loadScene(2);
+		loadScene(3);
+
 		$gameGlobals.gameStarted = true;
 	}}
 >
@@ -70,7 +47,7 @@
 	{/each}
 </div>
 
-<BgMusic {music} {paused} />
+<BgMusic />
 
 <style>
 	.buttons {
