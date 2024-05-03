@@ -1,5 +1,3 @@
-import type { dashjs } from 'dashjs';
-
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 declare global {
@@ -20,6 +18,7 @@ declare global {
 		isActive: boolean;
 		videoPlayerComponent?: VideoPlayer;
 		onSceneEnd?: () => void;
+		play?: () => void;
 	};
 
 	interface GameState {
@@ -31,12 +30,11 @@ declare global {
 
 	interface GameGlobals {
 		gameReady: boolean;
-		mainVideoElement: HTMLDivElement | null;
+		gameStarted: boolean;
 		sceneDimensions: {
 			stageWidth: number;
 			stageHeight: number;
 		};
-		dashjs: dashjs | null;
 	}
 
 	interface Hitbox {

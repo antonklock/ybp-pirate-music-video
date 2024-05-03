@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	let videoPlayer: any;
 
 	export let id = '';
@@ -12,6 +13,10 @@
 			if (videoPlayer) videoPlayer.pause();
 		}, 200);
 	}
+
+	onMount(() => {
+		console.log('Component mounted: ' + id);
+	});
 </script>
 
 <div class="playerContainer {isActive ? 'active' : 'inactive'}" {id}>

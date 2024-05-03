@@ -1,21 +1,39 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import VideoPlayer from './video/VideoPlayer.svelte';
-	import { scenes } from '$lib/stores/gameStore';
+	import { scenes, gameGlobals } from '$lib/stores/gameStore';
 	import VideoDebugButton from './buttons/VideoDebugButton.svelte';
+	import BgMusic from '$lib/components/music/BgMusic.svelte';
+	import { loadSceneAndPlay } from '$lib/game/utils/scene_management/loadSceneAndPlay';
+	import { loadScene } from '$lib/game/utils/scene_management/loadScene';
 
-	let videoScenes: SceneObject[] = [];
+	let globals: GameGlobals;
+	let music = false;
+	let paused = false;
 
-	onMount(() => {
-		scenes.subscribe((scenes) => {
-			videoScenes = scenes;
-		});
+	let loadedScenes: SceneObject[] = [];
+
+	scenes.subscribe((scenes) => {
+		loadedScenes = scenes;
 	});
+
+	gameGlobals.subscribe((gameGlobals) => {
+		globals = gameGlobals;
+	});
+
+	onMount(() => {});
+
+	const loadFirstScene = () => {
+		scenes.subscribe((scenes) => {
+			loadedScenes = [...loadedScenes, scenes[0]];
+			console.log('Loaded scenes: ', loadedScenes);
+		});
+	};
 
 	const playVideo = (index: number) => {
 		scenes.update((scenes) => {
 			scenes.forEach((scene) => {
-				scene.isActive = false;
+				if (scene.id !== index) scene.isActive = false;
 			});
 			scenes[index].isActive = true;
 			return scenes;
@@ -29,17 +47,30 @@
 	const removeElement = () => {};
 </script>
 
+<button
+	on:click={() => {
+		console.log('Starting game...');
+		loadScene(0);
+		loadScene(1);
+		$gameGlobals.gameStarted = true;
+	}}
+>
+	Start Game</button
+>
+
 <div class="videoPlayers">
-	{#each videoScenes as scene}
+	{#each loadedScenes as scene}
 		<VideoPlayer id={`videoPlayer${scene.id}`} url={scene.url} isActive={scene.isActive} />
 	{/each}
 </div>
 
 <div class="buttons">
-	{#each videoScenes as scene}
-		<VideoDebugButton title={`Video ${scene.id}`} play={() => playVideo(scene.id)} />
+	{#each loadedScenes as scene}
+		<VideoDebugButton title={`Video ${scene.id}`} play={scene.play} />
 	{/each}
 </div>
+
+<BgMusic {music} {paused} />
 
 <style>
 	.buttons {

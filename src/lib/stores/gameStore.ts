@@ -10,16 +10,15 @@ export const gameState = writable<GameState>({
 
 export const gameGlobals = writable<GameGlobals>({
 	gameReady: false,
-	mainVideoElement: null,
+	gameStarted: false,
 	sceneDimensions: {
 		stageWidth: 0,
 		stageHeight: 0,
 	},
-	dashjs: null,
 });
 
 export const hitboxes = writable<Hitbox[]>([]);
 
-export const scenes = writable<SceneObject[]>(sceneObjects);
+export const scenes = writable<SceneObject[]>([]);
 
-export const availableScenes = writable<SceneObject[]>([]);
+// export const availableScenes = writable<SceneObject[]>([]);
