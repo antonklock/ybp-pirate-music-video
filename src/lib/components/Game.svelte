@@ -37,8 +37,22 @@
 						unloadScene('H3');
 					}
 				});
-				loadScene('H2');
-				loadScene('H3');
+				loadScene('H2', {
+					triggerTime: 3,
+					runFunctionAtTime: () => {
+						unloadScene('H0');
+						unloadScene('H1');
+						unloadScene('H3');
+					}
+				});
+				loadScene('H3', {
+					triggerTime: 3,
+					runFunctionAtTime: () => {
+						unloadScene('H0');
+						unloadScene('H1');
+						unloadScene('H2');
+					}
+				});
 			}
 		});
 
@@ -92,5 +106,15 @@
 		position: relative;
 		display: flex;
 		justify-content: center;
+	}
+
+	.musicControl {
+		color: white;
+		display: flex;
+		justify-content: center;
+		gap: 10px;
+		position: absolute;
+		bottom: 40px;
+		z-index: 200;
 	}
 </style>
