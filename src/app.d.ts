@@ -10,14 +10,15 @@ declare global {
 	}
 
 	interface SceneObject {
-		id: number;
+		id: string;
 		name: string;
 		url: string;
 		nextScenes: string[];
 		loop: boolean;
 		isActive: boolean;
-		videoPlayerComponent?: VideoPlayer;
 		onSceneEnd?: () => void;
+		triggerTime?: number;
+		runFunctionAtTime?: () => void;
 		play?: () => void;
 	};
 

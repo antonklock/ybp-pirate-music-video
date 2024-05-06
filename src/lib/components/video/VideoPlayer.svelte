@@ -7,26 +7,38 @@
 	export let isActive = false;
 
 	$: if (isActive) {
-		if (videoPlayer) videoPlayer.play();
+		if (videoPlayer) {
+			if (!isPlaying) {
+				console.log('Playing video: ' + id);
+				videoPlayer.play();
+			}
+		}
 	} else {
 		setTimeout(() => {
-			if (videoPlayer) videoPlayer.pause();
+			if (videoPlayer) {
+				if (isPlaying) {
+					videoPlayer.pause();
+				}
+			}
 		}, 200);
 	}
 
-	let time = 0;
-
+	let playerTime = 0;
+	let triggered = false;
 	let unsubscribe: any;
+	let isPlaying = false;
 
 	onMount(() => {
 		console.log('Component mounted: ' + id);
 
 		type VpState = {
 			currentTime: number;
+			playing: boolean;
 		};
 
-		unsubscribe = videoPlayer.subscribe(({ currentTime }: VpState) => {
-			time = currentTime;
+		unsubscribe = videoPlayer.subscribe(({ currentTime, playing }: VpState) => {
+			playerTime = currentTime;
+			isPlaying = playing;
 
 			return () => {
 				// Cleanup here if needed.
@@ -34,13 +46,25 @@
 		});
 	});
 
+	export let triggerTime: number | undefined = undefined;
+	export let runFunctionAtTime: (() => void) | undefined = undefined;
+
 	onDestroy(() => {
 		console.log('Component destroyed: ' + id);
 		if (unsubscribe) unsubscribe();
 	});
 
-	$: {
-		console.log('Time: ' + time);
+	$: if (!triggered) {
+		if (playerTime > 0) {
+			if (triggerTime && runFunctionAtTime) {
+				if (playerTime > triggerTime) {
+					triggered = true;
+					runFunctionAtTime();
+				}
+			} else {
+				triggered = true;
+			}
+		}
 	}
 </script>
 
@@ -49,15 +73,9 @@
 		bind:this={videoPlayer}
 		controls={false}
 		class="media-player"
-		loop
+		loop={false}
 		playsInline
-		title="Sprite Fight"
 		src={url}
-		on:timeupdate={() => {
-			if (videoPlayer.currentTime > 3) {
-				console.log('Video has played for 3 seconds');
-			}
-		}}
 	>
 		<media-provider></media-provider>
 	</media-player>

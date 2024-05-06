@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { scenes, gameGlobals } from '$lib/stores/gameStore';
 	import { loadScene } from '$lib/game/utils/scene_management/loadScene';
 	import VideoPlayer from './video/VideoPlayer.svelte';
 	import VideoDebugButton from './buttons/VideoDebugButton.svelte';
 	import BgMusic from '$lib/components/music/BgMusic.svelte';
+	import { unloadScene } from '$lib/game/utils/scene_management/unloadScene';
 
 	let globals: GameGlobals;
 	let loadedScenes: SceneObject[] = [];
@@ -16,18 +16,28 @@
 	gameGlobals.subscribe((gameGlobals) => {
 		globals = gameGlobals;
 	});
-
-	onMount(() => {});
 </script>
 
 <button
 	on:click={() => {
 		console.log('Starting game...');
 
-		loadScene(0);
-		loadScene(1);
-		loadScene(2);
-		loadScene(3);
+		// Loading the first scene and then loading the rest after 3 seconds.
+		loadScene('H0', {
+			triggerTime: 3,
+			runFunctionAtTime: () => {
+				loadScene('H1', {
+					triggerTime: 3,
+					runFunctionAtTime: () => {
+						unloadScene('H0');
+						unloadScene('H2');
+						unloadScene('H3');
+					}
+				});
+				loadScene('H2');
+				loadScene('H3');
+			}
+		});
 
 		$gameGlobals.gameStarted = true;
 	}}
@@ -37,13 +47,20 @@
 
 <div class="videoPlayers">
 	{#each loadedScenes as scene}
-		<VideoPlayer id={`videoPlayer${scene.id}`} url={scene.url} isActive={scene.isActive} />
+		<VideoPlayer
+			id={`videoPlayer${scene.id}`}
+			url={scene.url}
+			isActive={scene.isActive}
+			triggerTime={scene.triggerTime}
+			runFunctionAtTime={scene.runFunctionAtTime}
+		/>
 	{/each}
 </div>
 
 <div class="buttons">
 	{#each loadedScenes as scene}
 		<VideoDebugButton title={`Video ${scene.id}`} play={scene.play} />
+		<VideoDebugButton title={`Unload ${scene.id}`} play={() => unloadScene(scene.id)} />
 	{/each}
 </div>
 

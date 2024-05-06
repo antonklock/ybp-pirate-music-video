@@ -1,21 +1,52 @@
 import { sceneObjects } from '$lib/game/sceneConfig';
 import { scenes } from '$lib/stores/gameStore';
 
-export const loadScene = (sceneIndex: number) => {
-    const scene = sceneObjects[sceneIndex];
+type SceneConfig = {
+    play?: () => void;
+    triggerTime?: number;
+    runFunctionAtTime?: () => void;
+}
 
-    scene.play = () => {
-        console.log("Playing scene: " + scene.id);
+/**
+ * Load a scene into the game
+ * @param sceneId Index of the scene to load
+ * @param config Configuration for the scene
+ */
+export const loadScene = (sceneId: string, config: SceneConfig = {}) => {
+    const scene = sceneObjects.find(scene => scene.id === sceneId);
 
-        scenes.update((sceneObjects) => sceneObjects.map(sceneObject => {
-            if (sceneObject.id === scene.id) {
-                sceneObject.isActive = true;
-            } else {
-                sceneObject.isActive = false;
-            }
+    if (!scene) return console.error("Cannot find scene with ID: " + sceneId);
 
-            return sceneObject;
-        }));
+    const { play, triggerTime, runFunctionAtTime } = config;
+
+    if (play && triggerTime && runFunctionAtTime) {
+        console.log("All config options are present");
+    }
+
+    if (triggerTime && runFunctionAtTime) {
+        scene.triggerTime = triggerTime;
+        scene.runFunctionAtTime = runFunctionAtTime;
+    } else if (triggerTime || runFunctionAtTime) {
+        console.error("Both triggerTime and runFunctionAtTime must be provided");
+    }
+
+    if (play) {
+        console.log("Play function provided", play);
+        scene.play = play;
+    } else {
+        scene.play = () => {
+            console.log("Playing scene: " + scene.id);
+
+            scenes.update((sceneObjects) => sceneObjects.map(sceneObject => {
+                if (sceneObject.id === scene.id) {
+                    sceneObject.isActive = true;
+                } else {
+                    sceneObject.isActive = false;
+                }
+
+                return sceneObject;
+            }));
+        }
     }
     scenes.update((sceneObjects) => [...sceneObjects, scene]);
 
