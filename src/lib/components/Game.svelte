@@ -76,8 +76,10 @@
 
 <div class="buttons">
 	{#each loadedScenes as scene}
-		<VideoDebugButton title={`Video ${scene.id}`} play={scene.play} />
-		<VideoDebugButton title={`Unload ${scene.id}`} play={() => unloadScene(scene.id)} />
+		{#if scene.id !== 'unloaded'}
+			<VideoDebugButton title={`Video ${scene.id}`} play={scene.play} />
+			<VideoDebugButton title={`Unload ${scene.id}`} play={() => unloadScene(scene.id)} />
+		{/if}
 	{/each}
 </div>
 
