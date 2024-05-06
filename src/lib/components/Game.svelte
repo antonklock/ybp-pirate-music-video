@@ -9,6 +9,9 @@
 	let globals: GameGlobals;
 	let loadedScenes: SceneObject[] = [];
 
+	let music = false;
+	let paused = false;
+
 	scenes.subscribe((scenes) => {
 		loadedScenes = scenes;
 	});
@@ -64,7 +67,15 @@
 	{/each}
 </div>
 
-<BgMusic />
+<div class="musicControl">
+	<label for="music">Music</label>
+	<input name="music" type="checkbox" bind:checked={music} />
+
+	<label for="paused">Paused</label>
+	<input name="paused" type="checkbox" bind:checked={paused} />
+
+	<BgMusic {music} {paused} />
+</div>
 
 <style>
 	.buttons {
