@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
+	import { gameGlobals } from '$lib/stores/gameStore';
 	let videoPlayer: any;
 
 	export let id = '';
@@ -41,7 +42,7 @@
 			isPlaying = playing;
 
 			return () => {
-				// Cleanup here if needed.
+				// Cleanup here
 			};
 		});
 	});
@@ -68,7 +69,11 @@
 	}
 </script>
 
-<div class="playerContainer {isActive ? 'active' : 'inactive'}" {id}>
+<div
+	style={`width: ${$gameGlobals.sceneDimensions.stageWidth}px`}
+	class="playerContainer {isActive ? 'active' : 'inactive'}"
+	{id}
+>
 	<media-player
 		bind:this={videoPlayer}
 		controls={false}
@@ -84,7 +89,7 @@
 <style lang="scss">
 	.playerContainer {
 		position: absolute;
-		width: 80%;
+		overflow: hidden;
 	}
 
 	.active {

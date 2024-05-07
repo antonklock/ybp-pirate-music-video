@@ -6,12 +6,10 @@
 	onMount(async () => {});
 </script>
 
-<div>
+<div class="gameContainer">
 	{#await import('$lib/components/Game.svelte') then { default: Game }}
 		<svelte:component this={Game} />
 	{/await}
-
-	<p>This is some text.</p>
 </div>
 
 <style>

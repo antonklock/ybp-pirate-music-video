@@ -5,6 +5,8 @@
 	import VideoDebugButton from './buttons/VideoDebugButton.svelte';
 	import BgMusic from '$lib/components/music/BgMusic.svelte';
 	import { unloadScene } from '$lib/game/utils/scene_management/unloadScene';
+	import PixiJs from './pixijs/PixiJs.svelte';
+	import { onMount } from 'svelte';
 
 	let globals: GameGlobals;
 	let loadedScenes: SceneObject[] = [];
@@ -19,6 +21,23 @@
 	gameGlobals.subscribe((gameGlobals) => {
 		globals = gameGlobals;
 	});
+
+	onMount(() => {
+		$gameGlobals.sceneDimensions = {
+			stageWidth: document.documentElement.clientWidth * 0.8,
+			stageHeight: document.documentElement.clientWidth * 0.8 * 0.5625
+		};
+	});
+
+	$: if (globals.sceneDimensions.stageWidth !== document.documentElement.clientWidth * 0.8) {
+		$gameGlobals.sceneDimensions = {
+			stageWidth: document.documentElement.clientWidth * 0.8,
+			stageHeight: document.documentElement.clientWidth * 0.8 * 0.5625
+		};
+
+		console.log('Updating scene dimensions...');
+		console.log('globals.sceneDimensions: ', globals.sceneDimensions);
+	}
 </script>
 
 <button
@@ -62,26 +81,29 @@
 	Start Game</button
 >
 
-<div class="videoPlayers">
-	{#each loadedScenes as scene}
-		<VideoPlayer
-			id={`videoPlayer${scene.id}`}
-			url={scene.url}
-			isActive={scene.isActive}
-			triggerTime={scene.triggerTime}
-			runFunctionAtTime={scene.runFunctionAtTime}
-		/>
-	{/each}
-</div>
+{#if $gameGlobals.gameStarted}
+	<div class="videoPlayers" style={`width: ${$gameGlobals.sceneDimensions.stageWidth}`}>
+		<PixiJs />
+		{#each loadedScenes as scene}
+			<VideoPlayer
+				id={`videoPlayer${scene.id}`}
+				url={scene.url}
+				isActive={scene.isActive}
+				triggerTime={scene.triggerTime}
+				runFunctionAtTime={scene.runFunctionAtTime}
+			/>
+		{/each}
+	</div>
 
-<div class="buttons">
-	{#each loadedScenes as scene}
-		{#if scene.id !== 'unloaded'}
-			<VideoDebugButton title={`Video ${scene.id}`} play={scene.play} />
-			<VideoDebugButton title={`Unload ${scene.id}`} play={() => unloadScene(scene.id)} />
-		{/if}
-	{/each}
-</div>
+	<div class="buttons">
+		{#each loadedScenes as scene}
+			{#if scene.id !== 'unloaded'}
+				<VideoDebugButton title={`Video ${scene.id}`} play={scene.play} />
+				<VideoDebugButton title={`Unload ${scene.id}`} play={() => unloadScene(scene.id)} />
+			{/if}
+		{/each}
+	</div>
+{/if}
 
 <div class="musicControl">
 	<label for="music">Music</label>
