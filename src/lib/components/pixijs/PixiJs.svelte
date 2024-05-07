@@ -46,10 +46,15 @@
 		const coinTexture = await PIXI.Assets.load('images/ui/coin.png');
 		const coin = new PIXI.Sprite(coinTexture);
 
-		parchment.scale.set(0.25);
+		console.log(
+			'app.screen.width / document.documentElement.clientWidth: ',
+			app.screen.width / document.documentElement.clientWidth
+		);
+
+		parchment.scale.set(app.screen.width / document.documentElement.clientWidth / 6);
 
 		parchment.x = app.screen.width - parchment.width * 0.86;
-		parchment.y = -35;
+		parchment.y = 0 - parchment.height * 0.1;
 
 		app.stage.addChild(parchment);
 
