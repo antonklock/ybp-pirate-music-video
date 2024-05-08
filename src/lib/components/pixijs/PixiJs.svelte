@@ -5,7 +5,9 @@
 	let globals: GameGlobals;
 
 	let videoTexture;
+	let videoTexture2;
 	let videoSprite;
+	let videoSprite2;
 
 	onMount(async () => {
 		console.log('PixiJs - Component mounted');
@@ -52,7 +54,7 @@
 		// const videoElement = document.getElementById('testPlayer') as HTMLVideoElement;
 		let videoElement = undefined;
 		// let videoElement2 = document.getElementById('videoPlayerH1');
-		// let videoElement2 = undefined;
+		let videoElement2 = undefined;
 
 		let interval;
 
@@ -84,6 +86,49 @@
 						app.stage.addChild(videoSprite);
 
 						console.log('videoSprite: ', videoSprite);
+					} else {
+						console.error('No video texture found for video 1');
+					}
+				} else {
+					console.error('No div found for video 1');
+				}
+			}, 1000);
+		}
+
+		let interval2;
+
+		if (!videoElement2) {
+			console.error('No video element found for video 2');
+
+			interval2 = setInterval(() => {
+				console.log('Trying to find video element 2');
+				const div2 = document.getElementById('videoPlayerH1');
+				if (div2) {
+					console.log('Found div: ', div2);
+					clearInterval(interval2);
+					videoElement2 = div2.children[0].children[0].children[0];
+
+					if (videoElement2) {
+						videoTexture2 = PIXI.Texture.from(videoElement2);
+					} else {
+						console.error('No video element found for video 2');
+					}
+
+					if (videoTexture2) {
+						videoSprite2 = new PIXI.Sprite(videoTexture2);
+						videoSprite2.anchor.set(1);
+						videoSprite2.width = app.screen.width / 3;
+						videoSprite2.height = app.screen.height / 3;
+						videoSprite2.x = app.screen.width;
+						videoSprite2.y = app.screen.height;
+
+						app.stage.addChild(videoSprite2);
+
+						setTimeout(() => {
+							videoSprite.texture = videoTexture2;
+						}, 2000);
+
+						console.log('videoSprite: ', videoSprite2);
 					} else {
 						console.error('No video texture found for video 1');
 					}
