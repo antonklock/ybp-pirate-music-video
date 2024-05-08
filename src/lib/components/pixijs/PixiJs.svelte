@@ -77,12 +77,54 @@
 		const coin = new PIXI.Sprite(coinTexture);
 		coin.width = app.screen.width / 10;
 		coin.height = app.screen.width / 10;
+		coin.anchor.set(0.5);
+		coin.x = coin.width;
+		coin.y = coin.height;
 		app.stage.addChild(coin);
+
+		coin.interactive = true;
+
+		let drunkness = 0;
+
+		const displacementTexture = await PIXI.Assets.load(
+			'images/textures/displacement_map_repeat.jpg'
+		);
+		const displacementSprite = new PIXI.Sprite(displacementTexture);
+		displacementSprite.texture.source.repeatMode = 'repeat';
+
+		const displacementFilter = new PIXI.DisplacementFilter({
+			sprite: displacementSprite,
+			scale: { x: 60, y: 120 }
+		});
+
+		displacementFilter.padding = 0;
+		displacementSprite.position = videoSprite.position;
+		app.stage.addChild(displacementSprite);
+
+		videoSprite.filters = [];
+
+		let drunk = false;
+
+		coin.on('pointerdown', () => {
+			drunk = !drunk;
+
+			if (drunk) {
+				videoSprite.filters = [displacementFilter];
+			} else {
+				videoSprite.filters = [];
+			}
+		});
 
 		app.ticker.add(() => {
 			if (videoSprite.width !== app.screen.width || videoSprite.height !== app.screen.height) {
 				videoSprite.width = app.screen.width;
 				videoSprite.height = app.screen.height;
+			}
+
+			displacementSprite.x++;
+			// Reset x to 0 when it's over width to keep values from going to very huge numbers.
+			if (displacementSprite.x > displacementSprite.width) {
+				displacementSprite.x = 0;
 			}
 		});
 	});
