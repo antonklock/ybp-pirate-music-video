@@ -86,7 +86,7 @@
 	<div class="videoPlayers" style={`width: ${$gameGlobals.sceneDimensions.stageWidth}`}>
 		{#each loadedScenes as scene}
 			<VideoPlayer
-				id={`videoPlayer${scene.id}`}
+				id={scene.id}
 				url={scene.url}
 				isActive={scene.isActive}
 				triggerTime={scene.triggerTime}
@@ -94,24 +94,6 @@
 			/>
 		{/each}
 	</div>
-
-	<!-- svelte-ignore a11y-media-has-caption -->
-	<!-- <video id="testPlayer" autoplay={true}>
-		<source
-			src="https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/e7634c71f936fe50eb555a45f1263548/manifest/video.m3u8"
-			type="application/x-mpegURL"
-		/>
-		<source src="/videos/hub.mp4" />
-	</video> -->
-
-	<!-- svelte-ignore a11y-media-has-caption -->
-	<!-- <video id="testPlayer2" autoplay={true}>
-		<source
-			src="https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/e7634c71f936fe50eb555a45f1263548/manifest/video.m3u8"
-			type="application/x-mpegURL"
-		/>
-		<source src="/videos/lamp.mp4" />
-	</video> -->
 
 	<div class="buttons">
 		{#each loadedScenes as scene}

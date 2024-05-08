@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import { gameGlobals } from '$lib/stores/gameStore';
+	import { scenes } from '$lib/stores/gameStore';
 	let videoPlayer: any;
 
 	export let id = '';
@@ -28,6 +29,7 @@
 	let triggered = false;
 	let unsubscribe: any;
 	let isPlaying = false;
+	let playerCanPlay = false;
 
 	onMount(() => {
 		console.log('Component mounted: ' + id);
@@ -35,17 +37,39 @@
 		type VpState = {
 			currentTime: number;
 			playing: boolean;
+			canPlay: boolean;
 		};
 
-		unsubscribe = videoPlayer.subscribe(({ currentTime, playing }: VpState) => {
+		unsubscribe = videoPlayer.subscribe(({ currentTime, playing, canPlay }: VpState) => {
 			playerTime = currentTime;
 			isPlaying = playing;
+			playerCanPlay = canPlay;
 
 			return () => {
 				// Cleanup here
 			};
 		});
 	});
+
+	$: if (playerCanPlay) {
+		scenes.update((scenes) => {
+			scenes.forEach((scene) => {
+				console.log('Scene.id: ', scene.id);
+				console.log('id: ', id);
+				if (scene.id === id) {
+					console.log('Setting canPlay to: ' + playerCanPlay + ' for scene: ' + id);
+					scene.canPlay = playerCanPlay;
+				}
+			});
+			return scenes;
+		});
+
+		console.log('Player can play: ' + id);
+		console.log('playerCanPlay: ' + playerCanPlay);
+		scenes.subscribe((scenes) => {
+			console.log('Scenes: ', scenes);
+		});
+	}
 
 	export let triggerTime: number | undefined = undefined;
 	export let runFunctionAtTime: (() => void) | undefined = undefined;
@@ -72,7 +96,7 @@
 <div
 	style={`width: ${$gameGlobals.sceneDimensions.stageWidth}px`}
 	class="playerContainer {isActive ? 'active' : 'inactive'}"
-	{id}
+	id={`videoPlayer${id}`}
 >
 	<media-player
 		bind:this={videoPlayer}

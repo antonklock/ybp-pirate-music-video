@@ -13,6 +13,8 @@ declare global {
 		id: string;
 		name: string;
 		url: string;
+		playerContainer?: HTMLDivElement;
+		canPlay: boolean;
 		nextScenes: string[];
 		loop: boolean;
 		isActive: boolean;
