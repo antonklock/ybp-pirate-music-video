@@ -3,6 +3,8 @@
 	import { gameGlobals } from '$lib/stores/gameStore';
 	import { scenes } from '$lib/stores/gameStore';
 
+	import * as PIXI from 'pixi.js';
+
 	let activeScenes: SceneObject[] = [];
 	scenes.subscribe((scenes) => {
 		activeScenes = scenes;
@@ -10,13 +12,7 @@
 
 	let globals: GameGlobals;
 
-	let videoTexture;
-	let videoTexture2;
-	let videoSprite;
-	let videoSprite2;
-
-	let PIXI;
-	let app;
+	let app: PIXI.Application<PIXI.Renderer>;
 
 	onMount(async () => {
 		console.log('PixiJs - Component mounted');
@@ -25,7 +21,7 @@
 			globals = gameGlobals;
 		});
 
-		PIXI = await import('pixi.js');
+		// PIXI = await import('pixi.js');
 		app = new PIXI.Application();
 		await app
 			.init({
@@ -202,22 +198,18 @@
 	const createNewTextureFromScene = (sceneId: string) => {
 		const videoElement = document.getElementById(`videoPlayer${sceneId}`)?.children[0].children[0]
 			.children[0] as HTMLVideoElement;
-
 		let texture;
 		if (PIXI) {
 			texture = PIXI.Texture.from(videoElement);
 		} else {
 			console.error('No PIXI found. Cannot create texture.');
 		}
-
 		if (!videoElement) {
 			console.error('No video element found for scene: ', sceneId);
 		}
-
 		if (!texture) {
 			console.error('No texture found for scene: ', sceneId);
 		}
-
 		return texture;
 	};
 

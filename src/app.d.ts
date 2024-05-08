@@ -15,6 +15,7 @@ declare global {
 		url: string;
 		playerContainer?: HTMLDivElement;
 		canPlay: boolean;
+		pixiTexture?: any;
 		nextScenes: string[];
 		loop: boolean;
 		isActive: boolean;
