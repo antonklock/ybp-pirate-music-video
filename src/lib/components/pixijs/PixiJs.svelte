@@ -3,7 +3,8 @@
 	import { gameGlobals } from '$lib/stores/gameStore';
 	import { scenes } from '$lib/stores/gameStore';
 
-	import * as PIXI from 'pixi.js';
+	// import * as PIXI from 'pixi.js';
+	import * as PIXI from 'pixi.js-legacy';
 
 	let videoTexture: PIXI.Texture;
 	let videoSprite: PIXI.Sprite;
@@ -15,7 +16,8 @@
 
 	let globals: GameGlobals;
 
-	let app: PIXI.Application<PIXI.Renderer>;
+	// let app: PIXI.Application<PIXI.Renderer>;
+	let app: PIXI.Application<PIXI.ICanvas>;
 
 	onMount(async () => {
 		console.log('PixiJs - Component mounted');
@@ -25,27 +27,35 @@
 		});
 
 		// PIXI = await import('pixi.js');
-		app = new PIXI.Application();
-		await app
-			.init({
-				background: 0xfcba03,
-				// background: 0x000000,
-				width: globals.sceneDimensions.stageWidth,
-				height: globals.sceneDimensions.stageHeight,
-				backgroundAlpha: 0
-				// backgroundAlpha: 0.1
-			})
-			.then(() => {
-				console.log('PixiJs initialized');
-				console.log('app.screen.width: ', app.screen.width);
-			})
-			.catch((error) => {
-				console.error('PixiJs failed to initialize', error);
-			});
+		app = new PIXI.Application({
+			background: 0xfcba03,
+			// background: 0x000000,
+			width: globals.sceneDimensions.stageWidth,
+			height: globals.sceneDimensions.stageHeight,
+			backgroundAlpha: 0
+			// backgroundAlpha: 0.1
+		});
+		// await app
+		// 	.init({
+		// 		background: 0xfcba03,
+		// 		// background: 0x000000,
+		// 		width: globals.sceneDimensions.stageWidth,
+		// 		height: globals.sceneDimensions.stageHeight,
+		// 		backgroundAlpha: 0
+		// 		// backgroundAlpha: 0.1
+		// 	})
+		// 	.then(() => {
+		// 		console.log('PixiJs initialized');
+		// 		console.log('app.screen.width: ', app.screen.width);
+		// 	})
+		// 	.catch((error) => {
+		// 		console.error('PixiJs failed to initialize', error);
+		// 	});
 
 		const pixiCanvas = document.querySelector('.pixiContainer');
 
-		pixiCanvas ? pixiCanvas.appendChild(app.canvas) : console.error('No canvas found for PixiJs');
+		// @ts-ignore
+		pixiCanvas ? pixiCanvas.appendChild(app.view) : console.error('No canvas found for PixiJs');
 
 		videoTexture = await PIXI.Assets.load('images/ui/coin.png');
 		videoSprite = new PIXI.Sprite(videoTexture);
@@ -84,36 +94,36 @@
 
 		coin.interactive = true;
 
-		let drunkness = 0;
+		// let drunkness = 0;
 
-		const displacementTexture = await PIXI.Assets.load(
-			'images/textures/displacement_map_repeat.jpg'
-		);
-		const displacementSprite = new PIXI.Sprite(displacementTexture);
-		displacementSprite.texture.source.repeatMode = 'repeat';
+		// const displacementTexture = await PIXI.Assets.load(
+		// 	'images/textures/displacement_map_repeat.jpg'
+		// );
+		// const displacementSprite = new PIXI.Sprite(displacementTexture);
+		// displacementSprite.texture.source.repeatMode = 'repeat';
 
-		const displacementFilter = new PIXI.DisplacementFilter({
-			sprite: displacementSprite,
-			scale: { x: 60, y: 120 }
-		});
+		// const displacementFilter = new PIXI.DisplacementFilter({
+		// 	sprite: displacementSprite,
+		// 	scale: { x: 60, y: 120 }
+		// });
 
-		displacementFilter.padding = 0;
-		displacementSprite.position = videoSprite.position;
-		app.stage.addChild(displacementSprite);
+		// displacementFilter.padding = 0;
+		// displacementSprite.position = videoSprite.position;
+		// app.stage.addChild(displacementSprite);
 
-		videoSprite.filters = [];
+		// videoSprite.filters = [];
 
-		let drunk = false;
+		// let drunk = false;
 
-		coin.on('pointerdown', () => {
-			drunk = !drunk;
+		// coin.on('pointerdown', () => {
+		// 	drunk = !drunk;
 
-			if (drunk) {
-				videoSprite.filters = [displacementFilter];
-			} else {
-				videoSprite.filters = [];
-			}
-		});
+		// 	if (drunk) {
+		// 		videoSprite.filters = [displacementFilter];
+		// 	} else {
+		// 		videoSprite.filters = [];
+		// 	}
+		// });
 
 		app.ticker.add(() => {
 			if (videoSprite.width !== app.screen.width || videoSprite.height !== app.screen.height) {
@@ -121,11 +131,11 @@
 				videoSprite.height = app.screen.height;
 			}
 
-			displacementSprite.x++;
-			// Reset x to 0 when it's over width to keep values from going to very huge numbers.
-			if (displacementSprite.x > displacementSprite.width) {
-				displacementSprite.x = 0;
-			}
+			// displacementSprite.x++;
+			// // Reset x to 0 when it's over width to keep values from going to very huge numbers.
+			// if (displacementSprite.x > displacementSprite.width) {
+			// 	displacementSprite.x = 0;
+			// }
 		});
 	});
 
@@ -146,30 +156,41 @@
 	$: for (const scene of activeScenes) {
 		console.log('Updating PIXI scenes...');
 
-		if (!scene.pixiTexture && scene.canPlay) {
-			const playerContainer = document.getElementById(`videoPlayer${scene.id}`);
-			const player = playerContainer?.children[0].children[0].children[0] as HTMLVideoElement;
+		if (app) {
+			if (!scene.pixiTexture && scene.canPlay) {
+				const playerContainer = document.getElementById(`videoPlayer${scene.id}`);
+				const player = playerContainer?.children[0].children[0].children[0] as HTMLVideoElement;
 
-			if (player) {
-				if (PIXI) {
-					const texture = createNewTextureFromScene(scene.id);
+				if (player) {
+					if (PIXI) {
+						const texture = createNewTextureFromScene(scene.id);
 
-					if (texture) videoSprite.texture = texture;
-
-					scenes.update((scenes) => {
-						scenes.forEach((scene) => {
-							if (scene.id === scene.id) {
-								scene.pixiTexture = texture;
+						if (texture) {
+							if (videoSprite) {
+								console.log('Updating video sprite...');
+								videoSprite.texture = texture;
+							} else {
+								console.warn('No video sprite found');
 							}
-						});
-						return scenes;
-					});
+						}
 
-					console.log('PIXI texture created for scene: ', scene.id);
+						scenes.update((scenes) => {
+							scenes.forEach((scene) => {
+								if (scene.id === scene.id) {
+									scene.pixiTexture = texture;
+								}
+							});
+							return scenes;
+						});
+
+						console.log('PIXI texture created for scene: ', scene.id);
+					}
 				}
+			} else {
+				console.log('Scene already has a PIXI texture: ', scene.id);
 			}
 		} else {
-			console.log('Scene already has a PIXI texture: ', scene.id);
+			console.warn('No PIXI app found');
 		}
 	}
 </script>
