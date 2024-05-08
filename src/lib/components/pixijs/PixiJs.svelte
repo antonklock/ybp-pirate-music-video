@@ -4,6 +4,9 @@
 
 	let globals: GameGlobals;
 
+	let videoTexture;
+	let videoSprite;
+
 	onMount(async () => {
 		console.log('PixiJs - Component mounted');
 
@@ -15,8 +18,8 @@
 		const app = new PIXI.Application();
 		await app
 			.init({
-				// background: 0xfcba03,
-				background: 0x000000,
+				background: 0xfcba03,
+				// background: 0x000000,
 				width: globals.sceneDimensions.stageWidth,
 				height: globals.sceneDimensions.stageHeight,
 				backgroundAlpha: 0
@@ -46,10 +49,90 @@
 		const coinTexture = await PIXI.Assets.load('images/ui/coin.png');
 		const coin = new PIXI.Sprite(coinTexture);
 
-		console.log(
-			'app.screen.width / document.documentElement.clientWidth: ',
-			app.screen.width / document.documentElement.clientWidth
-		);
+		// const videoElement = document.getElementById('testPlayer') as HTMLVideoElement;
+		let videoElement = undefined;
+		// let videoElement2 = document.getElementById('videoPlayerH1');
+		// let videoElement2 = undefined;
+
+		let interval;
+
+		if (!videoElement) {
+			console.error('No video element found for video 1');
+
+			interval = setInterval(() => {
+				console.log('Trying to find video element 1');
+				const div = document.getElementById('videoPlayerH0');
+				if (div) {
+					console.log('Found div: ', div);
+					clearInterval(interval);
+					videoElement = div.children[0].children[0].children[0];
+
+					if (videoElement) {
+						videoTexture = PIXI.Texture.from(videoElement);
+					} else {
+						console.error('No video element found for video 1');
+					}
+
+					if (videoTexture) {
+						videoSprite = new PIXI.Sprite(videoTexture);
+						videoSprite.anchor.set(0.5);
+						videoSprite.width = app.screen.width;
+						videoSprite.height = app.screen.height;
+						videoSprite.x = app.screen.width / 2;
+						videoSprite.y = app.screen.height / 2;
+
+						app.stage.addChild(videoSprite);
+
+						console.log('videoSprite: ', videoSprite);
+					} else {
+						console.error('No video texture found for video 1');
+					}
+				} else {
+					console.error('No div found for video 1');
+				}
+			}, 1000);
+		}
+
+		// let interval2;
+
+		// if (!videoElement2) {
+		// 	console.error('No video element found for video 2');
+		// 	interval2 = setInterval(() => {
+		// 		console.log('Trying to find video element 2');
+		// 		videoElement2 = document.getElementById('videoPlayer1');
+		// 	}, 1000);
+		// } else {
+		// 	clearInterval(interval2);
+		// 	console.log('videoElement2 found: ', videoElement2);
+		// }
+
+		// let videoTexture2;
+		// let videoSprite2;
+
+		// if (videoElement) {
+		// 	videoTexture = PIXI.Texture.from(videoElement);
+		// } else {
+		// 	console.error('No video element found for video 1');
+		// }
+		// if (videoElement2) {
+		// 	videoTexture2 = PIXI.Texture.from(videoElement2);
+		// } else {
+		// 	console.error('No video element found for video 2');
+		// }
+
+		// if (videoTexture2) {
+		// 	videoSprite2 = new PIXI.Sprite(videoTexture2);
+		// 	videoSprite2.width = app.screen.width / 2;
+		// 	videoSprite2.height = app.screen.height / 2;
+		// 	videoSprite2.x = app.screen.width / 2;
+		// 	videoSprite2.y = app.screen.height / 2;
+		// 	app.stage.addChild(videoSprite2);
+		// }
+
+		// console.log(
+		// 	'app.screen.width / document.documentElement.clientWidth: ',
+		// 	app.screen.width / document.documentElement.clientWidth
+		// );
 
 		parchment.scale.set(app.screen.width / document.documentElement.clientWidth / 6);
 
@@ -59,7 +142,6 @@
 		app.stage.addChild(parchment);
 
 		// app.ticker.add(() => {
-
 		// });
 	});
 </script>
@@ -68,7 +150,7 @@
 
 <style>
 	.pixiContainer {
-		position: absolute;
+		/* position: absolute; */
 		z-index: 999;
 	}
 </style>
