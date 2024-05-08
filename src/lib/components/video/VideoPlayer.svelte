@@ -54,20 +54,11 @@
 	$: if (playerCanPlay) {
 		scenes.update((scenes) => {
 			scenes.forEach((scene) => {
-				console.log('Scene.id: ', scene.id);
-				console.log('id: ', id);
 				if (scene.id === id) {
-					console.log('Setting canPlay to: ' + playerCanPlay + ' for scene: ' + id);
 					scene.canPlay = playerCanPlay;
 				}
 			});
 			return scenes;
-		});
-
-		console.log('Player can play: ' + id);
-		console.log('playerCanPlay: ' + playerCanPlay);
-		scenes.subscribe((scenes) => {
-			console.log('Scenes: ', scenes);
 		});
 	}
 
