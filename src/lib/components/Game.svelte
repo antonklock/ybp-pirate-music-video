@@ -79,17 +79,16 @@
 							console.log('Setting texture for scene: ', scene.id);
 							console.log('scene.pixiTexture: ', scene.pixiTexture);
 							globals.currentTexture = scene.pixiTexture;
+
+							if (scene.play) scene.play();
 						} else {
 							console.error('No texture found for scene: ', scene.id);
 						}
 					}}>Set texture {scene.id}</button
 				>
-				<!-- <VideoDebugButton title={`Unload ${scene.id}`} play={() => unloadScene(scene.id)} /> -->
 			{/if}
 		{/each}
 	</div>
-
-	<!-- <button on:click={() => loadScene('H1')}>Load scene 1</button> -->
 {/if}
 
 <div class="musicControl">
