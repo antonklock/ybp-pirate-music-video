@@ -15,6 +15,7 @@ export const gameGlobals = writable<GameGlobals>({
 		stageWidth: 0,
 		stageHeight: 0,
 	},
+	currentTexture: null,
 });
 
 export const hitboxes = writable<Hitbox[]>([]);

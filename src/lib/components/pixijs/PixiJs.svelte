@@ -124,6 +124,19 @@
 			if (displacementSprite.x > displacementSprite.width) {
 				displacementSprite.x = 0;
 			}
+
+			// Update the video texture if it has changed
+			if (videoSprite && globals.currentTexture) {
+				if (globals.currentTexture !== videoSprite.texture) {
+					console.log('Updating video texture...');
+
+					videoSprite.texture = globals.currentTexture;
+
+					console.log('globals.currentTexture: ', globals.currentTexture);
+					console.log('videoSprite.texture: ', videoSprite.texture);
+					console.log('activeScenes', activeScenes);
+				}
+			}
 		});
 	});
 
@@ -131,6 +144,8 @@
 		const videoElement = document.getElementById(`videoPlayer${sceneId}`)?.children[0].children[0]
 			.children[0] as HTMLVideoElement;
 		const texture = PIXI.Texture.from(videoElement);
+
+		texture.uid = parseInt(sceneId.substring(1, sceneId.length));
 
 		if (!videoElement) {
 			console.error('No video element found for scene: ', sceneId);
@@ -144,40 +159,48 @@
 	$: for (const scene of activeScenes) {
 		console.log('Updating PIXI scenes...');
 
-		if (!scene.pixiTexture && scene.canPlay) {
-			const playerContainer = document.getElementById(`videoPlayer${scene.id}`);
-			const player = playerContainer?.children[0].children[0].children[0] as HTMLVideoElement;
+		if (!scene.pixiTexture) {
+			if (scene.canPlay) {
+				const playerContainer = document.getElementById(`videoPlayer${scene.id}`);
+				const player = playerContainer?.children[0].children[0].children[0] as HTMLVideoElement;
 
-			if (player) {
-				if (PIXI) {
-					try {
-						if (videoSprite) {
-							const texture = createNewTextureFromScene(scene.id);
+				if (player) {
+					if (PIXI) {
+						try {
+							if (videoSprite) {
+								setTimeout(() => {
+									const texture = createNewTextureFromScene(scene.id);
 
-							if (texture) videoSprite.texture = texture;
+									// if (texture) videoSprite.texture = texture;
 
-							scenes.update((scenes) => {
-								scenes.forEach((scene) => {
-									if (scene.id === scene.id) {
-										scene.pixiTexture = texture;
-									}
-								});
-								return scenes;
-							});
+									// texture.uid = parseInt(scene.id.substring(1, scene.id.length));
 
-							console.log('PIXI texture created for scene: ', scene.id);
-							console.log('scene.pixiTexture: ', scene.pixiTexture);
-							console.log('Scene: ', scene);
-						} else {
-							console.warn('No video sprite found');
+									console.log('texture.uid: ', texture.uid);
+
+									scenes.update((loadedScenes) => {
+										loadedScenes.forEach((sceneToUpdate) => {
+											if (sceneToUpdate.id === scene.id) {
+												scene.pixiTexture = texture;
+											}
+										});
+										return loadedScenes;
+									});
+
+									console.log('canPlay: ', scene.canPlay);
+
+									console.log('PIXI texture created for scene: ', scene.id);
+									console.log('scene.pixiTexture: ', scene.pixiTexture);
+									console.log('Scene: ', scene);
+								}, 1000);
+							} else {
+								console.warn('No video sprite found');
+							}
+						} catch (error) {
+							console.error('Error creating PIXI texture: ', error);
 						}
-					} catch (error) {
-						console.error('Error creating PIXI texture: ', error);
 					}
 				}
 			}
-		} else {
-			console.log('Scene already has a PIXI texture: ', scene.id);
 		}
 	}
 </script>

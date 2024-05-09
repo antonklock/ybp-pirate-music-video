@@ -13,7 +13,7 @@ export const sceneObjects: SceneObject[] = [
 		url: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/643b20d80310374034ab98fd48771b1c/manifest/video.mpd',
 		name: 'door',
 		nextScenes: ['hub'],
-		loop: false,
+		loop: true,
 		isActive: false,
 		canPlay: false
 	},

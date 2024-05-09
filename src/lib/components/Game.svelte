@@ -4,7 +4,6 @@
 	import VideoPlayer from './video/VideoPlayer.svelte';
 	import VideoDebugButton from './buttons/VideoDebugButton.svelte';
 	import BgMusic from '$lib/components/music/BgMusic.svelte';
-	import { unloadScene } from '$lib/game/utils/scene_management/unloadScene';
 	import PixiJs from './pixijs/PixiJs.svelte';
 	import { onMount } from 'svelte';
 
@@ -45,35 +44,8 @@
 		console.log('Starting game...');
 
 		// Loading the first scene and then loading the rest after 3 seconds.
-		loadScene('H0', {
-			// triggerTime: 3,
-			// runFunctionAtTime: () => {
-			// 	loadScene('H1', {
-			// 		// triggerTime: 3,
-			// 		// runFunctionAtTime: () => {
-			// 		// 	unloadScene('H0');
-			// 		// 	unloadScene('H2');
-			// 		// 	unloadScene('H3');
-			// 		// }
-			// 	});
-			// 	loadScene('H2', {
-			// 		// triggerTime: 3,
-			// 		// runFunctionAtTime: () => {
-			// 		// 	unloadScene('H0');
-			// 		// 	unloadScene('H1');
-			// 		// 	unloadScene('H3');
-			// 		// }
-			// 	});
-			// 	loadScene('H3', {
-			// 		// triggerTime: 3,
-			// 		// runFunctionAtTime: () => {
-			// 		// 	unloadScene('H0');
-			// 		// 	unloadScene('H1');
-			// 		// 	unloadScene('H2');
-			// 		// }
-			// 	});
-			// }
-		});
+		loadScene('H0');
+		loadScene('H1');
 
 		$gameGlobals.gameStarted = true;
 	}}
@@ -99,12 +71,25 @@
 		{#each loadedScenes as scene}
 			{#if scene.id !== 'unloaded'}
 				<VideoDebugButton title={`Video ${scene.id}`} play={scene.play} />
+				<button
+					on:click={() => {
+						console.log('Trying to set texture for scene: ', scene.id);
+
+						if (scene.pixiTexture) {
+							console.log('Setting texture for scene: ', scene.id);
+							console.log('scene.pixiTexture: ', scene.pixiTexture);
+							globals.currentTexture = scene.pixiTexture;
+						} else {
+							console.error('No texture found for scene: ', scene.id);
+						}
+					}}>Set texture {scene.id}</button
+				>
 				<!-- <VideoDebugButton title={`Unload ${scene.id}`} play={() => unloadScene(scene.id)} /> -->
 			{/if}
 		{/each}
 	</div>
 
-	<button on:click={() => loadScene('H1')}>Load scene 1</button>
+	<!-- <button on:click={() => loadScene('H1')}>Load scene 1</button> -->
 {/if}
 
 <div class="musicControl">

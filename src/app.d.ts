@@ -1,3 +1,5 @@
+import * as PIXI from 'pixi.js';
+
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 declare global {
@@ -15,7 +17,7 @@ declare global {
 		url: string;
 		playerContainer?: HTMLDivElement;
 		canPlay: boolean;
-		pixiTexture?: any;
+		pixiTexture?: PIXI.Texture;
 		nextScenes: string[];
 		loop: boolean;
 		isActive: boolean;
@@ -39,6 +41,7 @@ declare global {
 			stageWidth: number;
 			stageHeight: number;
 		};
+		currentTexture: PIXI.Texture | null;
 	}
 
 	interface Hitbox {

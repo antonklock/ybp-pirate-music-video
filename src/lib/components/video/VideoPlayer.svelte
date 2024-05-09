@@ -105,10 +105,11 @@
 	.playerContainer {
 		position: absolute;
 		overflow: hidden;
+		pointer-events: none;
 	}
 
 	.active {
-		opacity: 1;
+		opacity: 0.001;
 	}
 
 	.inactive {

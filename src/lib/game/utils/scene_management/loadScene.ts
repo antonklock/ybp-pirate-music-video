@@ -19,10 +19,6 @@ export const loadScene = (sceneId: string, config: SceneConfig = {}) => {
 
     const { play, triggerTime, runFunctionAtTime } = config;
 
-    if (play && triggerTime && runFunctionAtTime) {
-        console.log("All config options are present");
-    }
-
     if (triggerTime && runFunctionAtTime) {
         scene.triggerTime = triggerTime;
         scene.runFunctionAtTime = runFunctionAtTime;
@@ -31,7 +27,6 @@ export const loadScene = (sceneId: string, config: SceneConfig = {}) => {
     }
 
     if (play) {
-        console.log("Play function provided", play);
         scene.play = play;
     } else {
         scene.play = () => {
