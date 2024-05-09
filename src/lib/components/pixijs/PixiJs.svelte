@@ -89,15 +89,25 @@
 		);
 		const displacementSprite = new PIXI.Sprite(displacementTexture);
 		displacementSprite.texture.source.repeatMode = 'repeat';
+		const displacementSprite2 = new PIXI.Sprite(displacementTexture);
+		displacementSprite2.texture.source.repeatMode = 'repeat';
 
 		const displacementFilter = new PIXI.DisplacementFilter({
 			sprite: displacementSprite,
 			scale: { x: 60, y: 120 }
 		});
 
+		const displacementFilter2 = new PIXI.DisplacementFilter({
+			sprite: displacementSprite2,
+			scale: { x: 60, y: 120 }
+		});
+
 		displacementFilter.padding = 0;
-		displacementSprite.position = videoSprite.position;
+		displacementSprite.position = { x: 0, y: 0 };
 		app.stage.addChild(displacementSprite);
+		displacementFilter2.padding = 0;
+		displacementSprite2.position = { x: 0, y: 0 };
+		app.stage.addChild(displacementSprite2);
 
 		videoSprite.filters = [];
 
@@ -107,7 +117,7 @@
 			drunk = !drunk;
 
 			if (drunk) {
-				videoSprite.filters = [displacementFilter];
+				videoSprite.filters = [displacementFilter, displacementFilter2];
 			} else {
 				videoSprite.filters = [];
 			}
@@ -119,10 +129,36 @@
 				videoSprite.height = app.screen.height;
 			}
 
-			displacementSprite.x++;
+			// Move the displacement map left and right randomly on a sine curve
+			displacementSprite.x =
+				Math.sin(app.ticker.lastTime / 2500) *
+				Math.sin(app.ticker.lastTime / 5000) *
+				Math.sin(app.ticker.lastTime / 4000) *
+				Math.sin(app.ticker.lastTime / 2600) *
+				1000;
+			displacementSprite.y =
+				Math.sin(app.ticker.lastTime / 1500) *
+				Math.sin(app.ticker.lastTime / 2000) *
+				Math.sin(app.ticker.lastTime / 4000) *
+				Math.sin(app.ticker.lastTime / 7000) *
+				1000;
 
 			if (displacementSprite.x > displacementSprite.width) {
 				displacementSprite.x = 0;
+			}
+			if (displacementSprite.y > displacementSprite.height) {
+				displacementSprite.y = 0;
+			}
+
+			// Move the displacement map left and right randomly on a sine curve
+			displacementSprite2.x++;
+			displacementSprite2.y++;
+
+			if (displacementSprite2.x > displacementSprite2.width) {
+				displacementSprite2.x = 0;
+			}
+			if (displacementSprite2.y > displacementSprite2.height) {
+				displacementSprite2.y = 0;
 			}
 
 			// Update the video texture if it has changed

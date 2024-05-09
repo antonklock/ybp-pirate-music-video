@@ -70,7 +70,7 @@
 	<div class="buttons">
 		{#each loadedScenes as scene}
 			{#if scene.id !== 'unloaded'}
-				<VideoDebugButton title={`Video ${scene.id}`} play={scene.play} />
+				<!-- <VideoDebugButton title={`Video ${scene.id}`} play={scene.play} /> -->
 				<button
 					on:click={() => {
 						console.log('Trying to set texture for scene: ', scene.id);
@@ -84,7 +84,7 @@
 						} else {
 							console.error('No texture found for scene: ', scene.id);
 						}
-					}}>Set texture {scene.id}</button
+					}}>Play {scene.id}</button
 				>
 			{/if}
 		{/each}
