@@ -84,8 +84,6 @@
 
 		coin.interactive = true;
 
-		let drunkness = 0;
-
 		const displacementTexture = await PIXI.Assets.load(
 			'images/textures/displacement_map_repeat.jpg'
 		);
@@ -122,7 +120,7 @@
 			}
 
 			displacementSprite.x++;
-			// Reset x to 0 when it's over width to keep values from going to very huge numbers.
+
 			if (displacementSprite.x > displacementSprite.width) {
 				displacementSprite.x = 0;
 			}
@@ -152,20 +150,30 @@
 
 			if (player) {
 				if (PIXI) {
-					const texture = createNewTextureFromScene(scene.id);
+					try {
+						if (videoSprite) {
+							const texture = createNewTextureFromScene(scene.id);
 
-					if (texture) videoSprite.texture = texture;
+							if (texture) videoSprite.texture = texture;
 
-					scenes.update((scenes) => {
-						scenes.forEach((scene) => {
-							if (scene.id === scene.id) {
-								scene.pixiTexture = texture;
-							}
-						});
-						return scenes;
-					});
+							scenes.update((scenes) => {
+								scenes.forEach((scene) => {
+									if (scene.id === scene.id) {
+										scene.pixiTexture = texture;
+									}
+								});
+								return scenes;
+							});
 
-					console.log('PIXI texture created for scene: ', scene.id);
+							console.log('PIXI texture created for scene: ', scene.id);
+							console.log('scene.pixiTexture: ', scene.pixiTexture);
+							console.log('Scene: ', scene);
+						} else {
+							console.warn('No video sprite found');
+						}
+					} catch (error) {
+						console.error('Error creating PIXI texture: ', error);
+					}
 				}
 			}
 		} else {

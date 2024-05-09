@@ -46,33 +46,33 @@
 
 		// Loading the first scene and then loading the rest after 3 seconds.
 		loadScene('H0', {
-			triggerTime: 3,
-			runFunctionAtTime: () => {
-				loadScene('H1', {
-					triggerTime: 3,
-					runFunctionAtTime: () => {
-						unloadScene('H0');
-						unloadScene('H2');
-						unloadScene('H3');
-					}
-				});
-				loadScene('H2', {
-					triggerTime: 3,
-					runFunctionAtTime: () => {
-						unloadScene('H0');
-						unloadScene('H1');
-						unloadScene('H3');
-					}
-				});
-				loadScene('H3', {
-					triggerTime: 3,
-					runFunctionAtTime: () => {
-						unloadScene('H0');
-						unloadScene('H1');
-						unloadScene('H2');
-					}
-				});
-			}
+			// triggerTime: 3,
+			// runFunctionAtTime: () => {
+			// 	loadScene('H1', {
+			// 		// triggerTime: 3,
+			// 		// runFunctionAtTime: () => {
+			// 		// 	unloadScene('H0');
+			// 		// 	unloadScene('H2');
+			// 		// 	unloadScene('H3');
+			// 		// }
+			// 	});
+			// 	loadScene('H2', {
+			// 		// triggerTime: 3,
+			// 		// runFunctionAtTime: () => {
+			// 		// 	unloadScene('H0');
+			// 		// 	unloadScene('H1');
+			// 		// 	unloadScene('H3');
+			// 		// }
+			// 	});
+			// 	loadScene('H3', {
+			// 		// triggerTime: 3,
+			// 		// runFunctionAtTime: () => {
+			// 		// 	unloadScene('H0');
+			// 		// 	unloadScene('H1');
+			// 		// 	unloadScene('H2');
+			// 		// }
+			// 	});
+			// }
 		});
 
 		$gameGlobals.gameStarted = true;
@@ -99,10 +99,12 @@
 		{#each loadedScenes as scene}
 			{#if scene.id !== 'unloaded'}
 				<VideoDebugButton title={`Video ${scene.id}`} play={scene.play} />
-				<VideoDebugButton title={`Unload ${scene.id}`} play={() => unloadScene(scene.id)} />
+				<!-- <VideoDebugButton title={`Unload ${scene.id}`} play={() => unloadScene(scene.id)} /> -->
 			{/if}
 		{/each}
 	</div>
+
+	<button on:click={() => loadScene('H1')}>Load scene 1</button>
 {/if}
 
 <div class="musicControl">
@@ -116,15 +118,6 @@
 </div>
 
 <style>
-	#testPlayer {
-		width: 80vw;
-		height: auto;
-	}
-	#testPlayer2 {
-		width: 80vw;
-		height: auto;
-	}
-
 	.buttons {
 		display: flex;
 		justify-content: center;
