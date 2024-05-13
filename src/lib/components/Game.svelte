@@ -2,10 +2,10 @@
 	import { scenes, gameGlobals } from '$lib/stores/gameStore';
 	import { loadScene } from '$lib/game/utils/scene_management/loadScene';
 	import VideoPlayer from './video/VideoPlayer.svelte';
-	import VideoDebugButton from './buttons/VideoDebugButton.svelte';
 	import BgMusic from '$lib/components/music/BgMusic.svelte';
 	import PixiJs from './pixijs/PixiJs.svelte';
 	import { onMount } from 'svelte';
+	import { unloadScene } from '$lib/game/utils/scene_management/unloadScene';
 
 	let globals: GameGlobals;
 	let loadedScenes: SceneObject[] = [];
@@ -22,12 +22,14 @@
 	});
 
 	onMount(() => {
+		// Setting stage dimensions
 		$gameGlobals.sceneDimensions = {
 			stageWidth: document.documentElement.clientWidth * 0.8,
 			stageHeight: document.documentElement.clientWidth * 0.8 * 0.5625
 		};
 	});
 
+	// Updating stage dimensions
 	$: if (globals.sceneDimensions.stageWidth !== document.documentElement.clientWidth * 0.8) {
 		$gameGlobals.sceneDimensions = {
 			stageWidth: document.documentElement.clientWidth * 0.8,
@@ -43,9 +45,7 @@
 	on:click={() => {
 		console.log('Starting game...');
 
-		// Loading the first scene and then loading the rest after 3 seconds.
 		loadScene('H0');
-		loadScene('H1');
 
 		$gameGlobals.gameStarted = true;
 	}}
@@ -57,35 +57,60 @@
 	<PixiJs />
 	<div class="videoPlayers" style={`width: ${$gameGlobals.sceneDimensions.stageWidth}`}>
 		{#each loadedScenes as scene}
-			<VideoPlayer
-				id={scene.id}
-				url={scene.url}
-				isActive={scene.isActive}
-				triggerTime={scene.triggerTime}
-				runFunctionAtTime={scene.runFunctionAtTime}
-			/>
+			{#if scene.isLoaded}
+				<VideoPlayer
+					id={scene.id}
+					url={scene.url}
+					isActive={scene.isActive}
+					triggerTime={scene.triggerTime}
+					runFunctionAtTime={scene.runFunctionAtTime}
+				/>
+			{/if}
 		{/each}
 	</div>
 
 	<div class="buttons">
 		{#each loadedScenes as scene}
-			{#if scene.id !== 'unloaded'}
-				<!-- <VideoDebugButton title={`Video ${scene.id}`} play={scene.play} /> -->
-				<button
-					on:click={() => {
-						console.log('Trying to set texture for scene: ', scene.id);
+			{#if scene.isLoaded}
+				<div class="btn-container">
+					<div class="loading-indicator">
+						<div
+							style={`color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; width: 20px; height: 20px; background-color: ${scene.canPlay ? 'green' : 'red'}; border-radius: 50%`}
+						>
+							V
+						</div>
+						<div
+							style={`color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; width: 20px; height: 20px; background-color: ${scene.pixiTexture ? 'green' : 'red'}; border-radius: 50%`}
+						>
+							T
+						</div>
+					</div>
+					<button
+						on:click={() => {
+							if (scene.pixiTexture) {
+								globals.currentTexture = scene.pixiTexture;
 
-						if (scene.pixiTexture) {
-							console.log('Setting texture for scene: ', scene.id);
-							console.log('scene.pixiTexture: ', scene.pixiTexture);
-							globals.currentTexture = scene.pixiTexture;
+								// Playing scene
+								if (scene.play) scene.play();
+								console.log('Scenes: ', loadedScenes);
 
-							if (scene.play) scene.play();
-						} else {
-							console.error('No texture found for scene: ', scene.id);
-						}
-					}}>Play {scene.id}</button
-				>
+								// Unloading scenes that are not the current scene
+								for (const sceneToUnload of loadedScenes) {
+									if (sceneToUnload.id !== scene.id) unloadScene(sceneToUnload.id);
+								}
+
+								// Preload next scenes
+								const nextScenes = scene.nextScenes;
+								for (const nextScene of nextScenes) {
+									loadScene(nextScene);
+								}
+							} else {
+								console.error('No texture found for scene: ', scene.id);
+							}
+						}}
+						disabled={!scene.canPlay || scene.pixiTexture === undefined}>Play {scene.id}</button
+					>
+				</div>
 			{/if}
 		{/each}
 	</div>
@@ -126,5 +151,20 @@
 		position: absolute;
 		bottom: 40px;
 		z-index: 200;
+	}
+
+	.btn-container {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 10px;
+	}
+
+	.loading-indicator {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 10px;
 	}
 </style>

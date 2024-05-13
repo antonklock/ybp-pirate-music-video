@@ -17,6 +17,8 @@ declare global {
 		url: string;
 		playerContainer?: HTMLDivElement;
 		canPlay: boolean;
+		isLoaded: boolean;
+		isCurrent: boolean;
 		pixiTexture?: PIXI.Texture;
 		nextScenes: string[];
 		loop: boolean;

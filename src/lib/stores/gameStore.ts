@@ -20,6 +20,6 @@ export const gameGlobals = writable<GameGlobals>({
 
 export const hitboxes = writable<Hitbox[]>([]);
 
-export const scenes = writable<SceneObject[]>([]);
+export const scenes = writable<SceneObject[]>(sceneObjects);
 
 // export const availableScenes = writable<SceneObject[]>([]);

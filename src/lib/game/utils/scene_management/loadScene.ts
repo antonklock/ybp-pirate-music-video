@@ -1,4 +1,4 @@
-import { sceneObjects } from '$lib/game/sceneConfig';
+// import { sceneObjects } from '$lib/game/sceneConfig';
 import { scenes } from '$lib/stores/gameStore';
 
 type SceneConfig = {
@@ -13,37 +13,41 @@ type SceneConfig = {
  * @param config Configuration for the scene
  */
 export const loadScene = (sceneId: string, config: SceneConfig = {}) => {
-    const scene = sceneObjects.find(scene => scene.id === sceneId);
-
-    if (!scene) return console.error("Cannot find scene with ID: " + sceneId);
-
     const { play, triggerTime, runFunctionAtTime } = config;
 
-    if (triggerTime && runFunctionAtTime) {
-        scene.triggerTime = triggerTime;
-        scene.runFunctionAtTime = runFunctionAtTime;
-    } else if (triggerTime || runFunctionAtTime) {
-        console.error("Both triggerTime and runFunctionAtTime must be provided");
-    }
+    scenes.update((scenesToUpdate) => {
+        return scenesToUpdate.map(scene => {
+            if (scene.id === sceneId) {
+                scene.isLoaded = true;
 
-    if (play) {
-        scene.play = play;
-    } else {
-        scene.play = () => {
-            console.log("Playing scene: " + scene.id);
-
-            scenes.update((sceneObjects) => sceneObjects.map(sceneObject => {
-                if (sceneObject.id === scene.id) {
-                    sceneObject.isActive = true;
-                } else {
-                    sceneObject.isActive = false;
+                if (triggerTime && runFunctionAtTime) {
+                    scene.triggerTime = triggerTime;
+                    scene.runFunctionAtTime = runFunctionAtTime;
+                } else if (triggerTime || runFunctionAtTime) {
+                    console.error("Both triggerTime and runFunctionAtTime must be provided");
                 }
 
-                return sceneObject;
-            }));
-        }
-    }
-    scenes.update((sceneObjects) => [...sceneObjects, scene]);
+                if (play) {
+                    scene.play = play;
+                } else {
+                    scene.play = () => {
+                        console.log("Playing scene: " + scene.id);
 
-    return scene;
+                        scenes.update((sceneObjects) => sceneObjects.map(sceneObject => {
+                            if (sceneObject.id === scene.id) {
+                                sceneObject.isActive = true;
+                                sceneObject.isCurrent = true;
+                            } else {
+                                sceneObject.isActive = false;
+                                sceneObject.isCurrent = false;
+                            }
+
+                            return sceneObject;
+                        }));
+                    }
+                }
+            }
+            return scene;
+        });
+    });
 }

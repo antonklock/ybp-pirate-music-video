@@ -9,23 +9,18 @@ export const unloadScene = (sceneId: string) => {
     console.log("Unloading scene: " + sceneId);
 
     scenes.update((sceneObjects) => {
-        const newScenes = sceneObjects.map(sceneObject => {
+        return sceneObjects.map(sceneObject => {
             if (sceneObject.id === sceneId) {
-                sceneObject.id = "unloaded";
+                sceneObject.isLoaded = false;
+                sceneObject.isCurrent = false;
                 sceneObject.isActive = false;
-                sceneObject.loop = false;
-                sceneObject.name = "";
-                sceneObject.nextScenes = [];
-                sceneObject.url = "";
                 sceneObject.play = () => { };
                 sceneObject.triggerTime = 0;
                 sceneObject.runFunctionAtTime = () => { };
+                sceneObject.pixiTexture = undefined;
             }
-
             return sceneObject;
         });
-
-        return newScenes;
     });
 
     scenes.subscribe((scenes) => console.log("scenes: ", scenes));

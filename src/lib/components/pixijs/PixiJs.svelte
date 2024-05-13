@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { gameGlobals } from '$lib/stores/gameStore';
 	import { scenes } from '$lib/stores/gameStore';
+	import { sceneObjects } from '$lib/game/sceneConfig';
 
 	import * as PIXI from 'pixi.js';
 
@@ -164,13 +165,7 @@
 			// Update the video texture if it has changed
 			if (videoSprite && globals.currentTexture) {
 				if (globals.currentTexture !== videoSprite.texture) {
-					console.log('Updating video texture...');
-
 					videoSprite.texture = globals.currentTexture;
-
-					console.log('globals.currentTexture: ', globals.currentTexture);
-					console.log('videoSprite.texture: ', videoSprite.texture);
-					console.log('activeScenes', activeScenes);
 				}
 			}
 		});
@@ -201,39 +196,23 @@
 				const player = playerContainer?.children[0].children[0].children[0] as HTMLVideoElement;
 
 				if (player) {
-					if (PIXI) {
-						try {
-							if (videoSprite) {
-								setTimeout(() => {
-									const texture = createNewTextureFromScene(scene.id);
+					try {
+						if (videoSprite) {
+							const texture = createNewTextureFromScene(scene.id);
 
-									// if (texture) videoSprite.texture = texture;
-
-									// texture.uid = parseInt(scene.id.substring(1, scene.id.length));
-
-									console.log('texture.uid: ', texture.uid);
-
-									scenes.update((loadedScenes) => {
-										loadedScenes.forEach((sceneToUpdate) => {
-											if (sceneToUpdate.id === scene.id) {
-												scene.pixiTexture = texture;
-											}
-										});
-										return loadedScenes;
-									});
-
-									console.log('canPlay: ', scene.canPlay);
-
-									console.log('PIXI texture created for scene: ', scene.id);
-									console.log('scene.pixiTexture: ', scene.pixiTexture);
-									console.log('Scene: ', scene);
-								}, 1000);
-							} else {
-								console.warn('No video sprite found');
-							}
-						} catch (error) {
-							console.error('Error creating PIXI texture: ', error);
+							scenes.update((loadedScenes) => {
+								loadedScenes.forEach((sceneToUpdate) => {
+									if (sceneToUpdate.id === scene.id) {
+										scene.pixiTexture = texture;
+									}
+								});
+								return loadedScenes;
+							});
+						} else {
+							console.warn('No video sprite found');
 						}
+					} catch (error) {
+						console.error('Error creating PIXI texture: ', error);
 					}
 				}
 			}
