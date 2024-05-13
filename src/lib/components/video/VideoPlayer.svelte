@@ -109,7 +109,7 @@
 	}
 
 	.active {
-		opacity: 0.001;
+		opacity: 1;
 	}
 
 	.inactive {
