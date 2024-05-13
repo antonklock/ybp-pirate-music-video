@@ -87,28 +87,43 @@
 					</div>
 					<button
 						on:click={() => {
-							if (scene.pixiTexture) {
-								globals.currentTexture = scene.pixiTexture;
+							// if (scene.pixiTexture) {
+							// 	globals.currentTexture = scene.pixiTexture;
 
-								// Playing scene
-								if (scene.play) scene.play();
-								console.log('Scenes: ', loadedScenes);
+							// 	// Playing scene
+							// 	if (scene.play) scene.play();
+							// 	console.log('Scenes: ', loadedScenes);
 
-								// Unloading scenes that are not the current scene
-								for (const sceneToUnload of loadedScenes) {
-									if (sceneToUnload.id !== scene.id) unloadScene(sceneToUnload.id);
-								}
+							// 	// Unloading scenes that are not the current scene
+							// 	for (const sceneToUnload of loadedScenes) {
+							// 		if (sceneToUnload.id !== scene.id) unloadScene(sceneToUnload.id);
+							// 	}
 
+							// 	// Preload next scenes
+							// 	const nextScenes = scene.nextScenes;
+							// 	for (const nextScene of nextScenes) {
+							// 		loadScene(nextScene);
+							// 	}
+							// } else {
+							// 	console.error('No texture found for scene: ', scene.id);
+							// }
+
+							if (scene.play) scene.play();
+
+							// Unload previous scenes
+							for (const sceneToUnload of loadedScenes) {
+								if (sceneToUnload.id !== scene.id) unloadScene(sceneToUnload.id);
+							}
+
+							setTimeout(() => {
 								// Preload next scenes
 								const nextScenes = scene.nextScenes;
 								for (const nextScene of nextScenes) {
 									loadScene(nextScene);
 								}
-							} else {
-								console.error('No texture found for scene: ', scene.id);
-							}
+							}, 2000);
 						}}
-						disabled={!scene.canPlay || scene.pixiTexture === undefined}>Play {scene.id}</button
+						disabled={!scene.canPlay}>Play {scene.id}</button
 					>
 				</div>
 			{/if}
@@ -139,7 +154,7 @@
 
 	.videoPlayers {
 		position: relative;
-		display: flex;
+		/* display: flex; */
 		justify-content: center;
 	}
 
