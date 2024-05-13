@@ -41,73 +41,37 @@
 	}
 </script>
 
-<button
-	on:click={() => {
-		console.log('Starting game...');
+<div class="stageContainer">
+	{#if $gameGlobals.gameStarted}
+		<PixiJs />
+		<div
+			class="videoPlayers"
+			style={`width: ${$gameGlobals.sceneDimensions.stageWidth}px; height: ${$gameGlobals.sceneDimensions.stageHeight}px`}
+		>
+			{#each loadedScenes as scene}
+				{#if scene.isLoaded}
+					<VideoPlayer
+						id={scene.id}
+						url={scene.url}
+						isActive={scene.isActive}
+						triggerTime={scene.triggerTime}
+						runFunctionAtTime={scene.runFunctionAtTime}
+					/>
+				{/if}
+			{/each}
+		</div>
 
-		loadScene('H0');
-
-		$gameGlobals.gameStarted = true;
-	}}
->
-	Start Game</button
->
-
-{#if $gameGlobals.gameStarted}
-	<PixiJs />
-	<div class="videoPlayers" style={`width: ${$gameGlobals.sceneDimensions.stageWidth}`}>
-		{#each loadedScenes as scene}
-			{#if scene.isLoaded}
-				<VideoPlayer
-					id={scene.id}
-					url={scene.url}
-					isActive={scene.isActive}
-					triggerTime={scene.triggerTime}
-					runFunctionAtTime={scene.runFunctionAtTime}
-				/>
-			{/if}
-		{/each}
-	</div>
-
-	<div class="buttons">
-		{#each loadedScenes as scene}
-			{#if scene.isLoaded}
-				<div class="btn-container">
-					<div class="loading-indicator">
-						<div
-							style={`color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; width: 20px; height: 20px; background-color: ${scene.canPlay ? 'green' : 'red'}; border-radius: 50%`}
-						>
-							V
-						</div>
-						<div
-							style={`color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; width: 20px; height: 20px; background-color: ${scene.pixiTexture ? 'green' : 'red'}; border-radius: 50%`}
-						>
-							T
-						</div>
+		<div class="buttons">
+			{#each loadedScenes as scene}
+				{#if scene.isLoaded}
+					<div
+						class={'loading-indicator'}
+						style={`color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; width: 20px; height: 20px; background-color: ${scene.canPlay ? 'green' : 'red'}; border-radius: 50%`}
+					>
+						V
 					</div>
 					<button
 						on:click={() => {
-							// if (scene.pixiTexture) {
-							// 	globals.currentTexture = scene.pixiTexture;
-
-							// 	// Playing scene
-							// 	if (scene.play) scene.play();
-							// 	console.log('Scenes: ', loadedScenes);
-
-							// 	// Unloading scenes that are not the current scene
-							// 	for (const sceneToUnload of loadedScenes) {
-							// 		if (sceneToUnload.id !== scene.id) unloadScene(sceneToUnload.id);
-							// 	}
-
-							// 	// Preload next scenes
-							// 	const nextScenes = scene.nextScenes;
-							// 	for (const nextScene of nextScenes) {
-							// 		loadScene(nextScene);
-							// 	}
-							// } else {
-							// 	console.error('No texture found for scene: ', scene.id);
-							// }
-
 							if (scene.play) scene.play();
 
 							// Unload previous scenes
@@ -125,13 +89,27 @@
 						}}
 						disabled={!scene.canPlay}>Play {scene.id}</button
 					>
-				</div>
-			{/if}
-		{/each}
-	</div>
-{/if}
+				{/if}
+			{/each}
+		</div>
+	{/if}
 
-<div class="musicControl">
+	{#if !$gameGlobals.gameStarted}
+		<button
+			on:click={() => {
+				console.log('Starting game...');
+
+				loadScene('H0');
+
+				$gameGlobals.gameStarted = true;
+			}}
+		>
+			Start Game</button
+		>
+	{/if}
+</div>
+
+<!-- <div class="musicControl">
 	<label for="music">Music</label>
 	<input name="music" type="checkbox" bind:checked={music} />
 
@@ -139,9 +117,17 @@
 	<input name="paused" type="checkbox" bind:checked={paused} />
 
 	<BgMusic {music} {paused} />
-</div>
+</div> -->
 
 <style>
+	.stageContainer {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100vh;
+		width: 100vw;
+	}
+
 	.buttons {
 		display: flex;
 		justify-content: center;
@@ -153,9 +139,8 @@
 	}
 
 	.videoPlayers {
-		position: relative;
-		/* display: flex; */
-		justify-content: center;
+		/* position: relative; */
+		/* justify-content: center; */
 	}
 
 	.musicControl {
@@ -168,18 +153,7 @@
 		z-index: 200;
 	}
 
-	.btn-container {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		gap: 10px;
-	}
-
 	.loading-indicator {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		gap: 10px;
+		margin-left: 20px;
 	}
 </style>
