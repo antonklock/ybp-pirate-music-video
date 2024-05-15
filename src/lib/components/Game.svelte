@@ -2,7 +2,7 @@
 	import { scenes, gameGlobals } from '$lib/stores/gameStore';
 	import { loadScene } from '$lib/game/utils/scene_management/loadScene';
 	import VideoPlayer from './video/VideoPlayer.svelte';
-	import BgMusic from '$lib/components/music/BgMusic.svelte';
+	// import BgMusic from '$lib/components/music/BgMusic.svelte';
 	import PixiJs from './pixijs/PixiJs.svelte';
 	import { onMount } from 'svelte';
 	import { unloadScene } from '$lib/game/utils/scene_management/unloadScene';
@@ -10,8 +10,8 @@
 	let globals: GameGlobals;
 	let loadedScenes: SceneObject[] = [];
 
-	let music = false;
-	let paused = false;
+	// let music = false;
+	// let paused = false;
 
 	scenes.subscribe((scenes) => {
 		loadedScenes = scenes;
@@ -138,12 +138,12 @@
 		z-index: 100;
 	}
 
-	.videoPlayers {
-		/* position: relative; */
-		/* justify-content: center; */
-	}
+	/* .videoPlayers {
+		position: relative;
+		justify-content: center;
+	} */
 
-	.musicControl {
+	/* .musicControl {
 		color: white;
 		display: flex;
 		justify-content: center;
@@ -151,7 +151,7 @@
 		position: absolute;
 		bottom: 40px;
 		z-index: 200;
-	}
+	} */
 
 	.loading-indicator {
 		margin-left: 20px;
