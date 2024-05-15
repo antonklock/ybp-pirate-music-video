@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { scenes, gameGlobals } from '$lib/stores/gameStore';
+	import { scenes, gameGlobals, hitboxes } from '$lib/stores/gameStore';
 	import { loadScene } from '$lib/game/utils/scene_management/loadScene';
 	import VideoPlayer from './video/VideoPlayer.svelte';
 	// import BgMusic from '$lib/components/music/BgMusic.svelte';
@@ -66,10 +66,24 @@
 				{#if scene.isLoaded}
 					<div
 						class={'loading-indicator'}
-						style={`color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; width: 20px; height: 20px; background-color: ${scene.canPlay ? 'green' : 'red'}; border-radius: 50%`}
+						style={'color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center;'}
 					>
-						V
+						<div
+							style={`color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; width: 20px; height: 20px; background-color: ${scene.canPlay ? 'green' : 'red'}; border-radius: 50%;`}
+						>
+							<p style={'scale: 70%;'}>V</p>
+						</div>
+						{#each scene.hitboxes as hitboxIndicator}
+							<div
+								style={`color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; width: 20px; height: 20px; background-color: ${hitboxIndicator.isActive ? 'green' : 'red'}; border-radius: 10%; margin-left: 5px;`}
+							>
+								<p style={'scale: 70%;'}>
+									{hitboxIndicator.name.substring(3, hitboxIndicator.name.length)}
+								</p>
+							</div>
+						{/each}
 					</div>
+
 					<button
 						on:click={() => {
 							if (scene.play) scene.play();
@@ -155,5 +169,9 @@
 
 	.loading-indicator {
 		margin-left: 20px;
+	}
+
+	.loading-indicator > div:first-child {
+		margin-right: 5px;
 	}
 </style>

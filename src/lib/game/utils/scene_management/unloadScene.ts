@@ -22,6 +22,4 @@ export const unloadScene = (sceneId: string) => {
             return sceneObject;
         });
     });
-
-    scenes.subscribe((scenes) => console.log("scenes: ", scenes));
 }

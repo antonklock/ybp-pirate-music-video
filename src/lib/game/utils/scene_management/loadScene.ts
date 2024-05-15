@@ -1,4 +1,4 @@
-// import { sceneObjects } from '$lib/game/sceneConfig';
+import { gameGlobals } from '$lib/stores/gameStore';
 import { scenes } from '$lib/stores/gameStore';
 
 type SceneConfig = {
@@ -27,21 +27,27 @@ export const loadScene = (sceneId: string, config: SceneConfig = {}) => {
                     console.error("Both triggerTime and runFunctionAtTime must be provided");
                 }
 
+                // What happens when the scene is played
                 if (play) {
+                    // Setting a custom play function from the config
                     scene.play = play;
                 } else {
+                    // Default play function
                     scene.play = () => {
-                        console.log("Playing scene: " + scene.id);
-
                         scenes.update((sceneObjects) => sceneObjects.map(sceneObject => {
                             if (sceneObject.id === scene.id) {
                                 sceneObject.isActive = true;
                                 sceneObject.isCurrent = true;
+
+                                // Update the current scene in the gameGlobals store
+                                gameGlobals.update((gameGlobals) => {
+                                    gameGlobals.currentScene = sceneObject;
+                                    return gameGlobals;
+                                });
                             } else {
                                 sceneObject.isActive = false;
                                 sceneObject.isCurrent = false;
                             }
-
                             return sceneObject;
                         }));
                     }

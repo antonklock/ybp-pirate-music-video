@@ -2,7 +2,8 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { gameGlobals } from '$lib/stores/gameStore';
 	import { scenes } from '$lib/stores/gameStore';
-	let videoPlayer: any;
+	import { MediaPlayerElement } from 'vidstack/elements';
+	let videoPlayer: MediaPlayerElement;
 
 	export let id = '';
 	export let url = '';
@@ -13,6 +14,14 @@
 			if (!isPlaying) {
 				console.log('Playing video: ' + id);
 				videoPlayer.play();
+				gameGlobals.update((gameGlobals) => {
+					if (videoPlayer) {
+						gameGlobals.currentScene.player = videoPlayer;
+					} else {
+						console.warn('No video player found. Cannot set currentScene in globals.');
+					}
+					return gameGlobals;
+				});
 			}
 		}
 	} else {
@@ -46,7 +55,9 @@
 			playerCanPlay = canPlay;
 
 			return () => {
-				// Cleanup here
+				playerTime = 0;
+				isPlaying = false;
+				playerCanPlay = false;
 			};
 		});
 	});
