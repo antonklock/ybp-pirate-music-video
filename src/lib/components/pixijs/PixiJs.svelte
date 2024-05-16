@@ -75,9 +75,18 @@
 		app.ticker.add(() => {});
 	});
 
+	const pixiHitboxes: { graphic: PIXI.Graphics; text: PIXI.Text }[] = [];
+
 	$: if (globals.currentScene) {
 		if (globals.currentScene.hitboxes) {
 			if (globals.currentScene.hitboxes !== activeHitboxes) {
+				// activeHitboxes = [];
+
+				pixiHitboxes.map((hitbox) => {
+					app.stage.removeChild(hitbox.graphic);
+					app.stage.removeChild(hitbox.text);
+				});
+
 				activeHitboxes = globals.currentScene.hitboxes;
 
 				if (app) {
@@ -114,12 +123,13 @@
 						hitbox.interactive = true;
 
 						hitbox.on('pointerdown', () => {
-							// console.log('Hitbox clicked: ', config.name);
 							config.onHit();
 						});
 
-						console.log('Hitbox added to stage: ', hitbox);
+						pixiHitboxes.push({ graphic: hitbox, text: hitboxName });
 					});
+
+					console.log('Hitboxes added to stage', activeHitboxes);
 				}
 			} else {
 				console.log('Hitboxes are the same');

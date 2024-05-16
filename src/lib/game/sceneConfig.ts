@@ -1,3 +1,6 @@
+import { getSceneById } from '$lib/game/utils/scene_management/getSceneById';
+import { setActiveScene } from './utils/scene_management/setActiveScene';
+
 export const sceneObjects: SceneObject[] = [
 	{
 		id: "H0",
@@ -18,7 +21,8 @@ export const sceneObjects: SceneObject[] = [
 			width: 0.2,
 			height: 0.2,
 			onHit: () => {
-				console.log('H1 hitbox hit! Wiie!');
+				const scene = getSceneById("H1");
+				if (scene) setActiveScene(scene);
 			},
 			isLoaded: false,
 			isActive: false,
@@ -35,7 +39,8 @@ export const sceneObjects: SceneObject[] = [
 			width: 0.2,
 			height: 0.2,
 			onHit: () => {
-				console.log('H2 hitbox hit! Hhheeyy!');
+				const scene = getSceneById("H2");
+				if (scene) setActiveScene(scene);
 			},
 			isLoaded: false,
 			isActive: false,
@@ -52,7 +57,8 @@ export const sceneObjects: SceneObject[] = [
 			width: 0.2,
 			height: 0.2,
 			onHit: () => {
-				console.log('H3 hitbox hit! Honom ska vi ha!');
+				const scene = getSceneById("H3");
+				if (scene) setActiveScene(scene);
 			},
 			isLoaded: false,
 			isActive: false,
@@ -81,7 +87,8 @@ export const sceneObjects: SceneObject[] = [
 			width: 0.2,
 			height: 0.2,
 			onHit: () => {
-				console.log('H0 hitbox hit');
+				const scene = getSceneById("H0");
+				if (scene) setActiveScene(scene);
 			},
 			isLoaded: false,
 			isActive: false,
@@ -110,7 +117,8 @@ export const sceneObjects: SceneObject[] = [
 			width: 0.2,
 			height: 0.2,
 			onHit: () => {
-				console.log('H0 hitbox hit');
+				const scene = getSceneById("H0");
+				if (scene) setActiveScene(scene);
 			},
 			isLoaded: false,
 			isActive: false,
@@ -139,7 +147,8 @@ export const sceneObjects: SceneObject[] = [
 			width: 0.2,
 			height: 0.2,
 			onHit: () => {
-				console.log('H0 hitbox hit');
+				const scene = getSceneById("H0");
+				if (scene) setActiveScene(scene);
 			},
 			isLoaded: false,
 			isActive: false,

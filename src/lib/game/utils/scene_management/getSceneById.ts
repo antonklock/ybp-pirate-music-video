@@ -1,6 +1,6 @@
 import { scenes } from '$lib/stores/gameStore';
 
-export const getSceneById = (sceneId: number): SceneObject | undefined => {
+export const getSceneById = (sceneId: string): SceneObject | undefined => {
     let sceneObject: SceneObject | undefined = undefined;
 
     scenes.subscribe((sceneObjects) => {
@@ -10,7 +10,7 @@ export const getSceneById = (sceneId: number): SceneObject | undefined => {
             sceneObject = scene;
         } else {
             sceneObject = undefined;
-            throw new Error(`Scene with id ${sceneId} not found`);
+            console.error(`Scene with id ${sceneId} not found`);
         }
     });
 

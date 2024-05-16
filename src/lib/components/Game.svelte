@@ -6,6 +6,7 @@
 	import PixiJs from './pixijs/PixiJs.svelte';
 	import { onMount } from 'svelte';
 	import { unloadScene } from '$lib/game/utils/scene_management/unloadScene';
+	import { setActiveScene } from '$lib/game/utils/scene_management/setActiveScene';
 
 	let globals: GameGlobals;
 	let loadedScenes: SceneObject[] = [];
@@ -86,20 +87,7 @@
 
 					<button
 						on:click={() => {
-							if (scene.play) scene.play();
-
-							// Unload previous scenes
-							for (const sceneToUnload of loadedScenes) {
-								if (sceneToUnload.id !== scene.id) unloadScene(sceneToUnload.id);
-							}
-
-							setTimeout(() => {
-								// Preload next scenes
-								const nextScenes = scene.nextScenes;
-								for (const nextScene of nextScenes) {
-									loadScene(nextScene);
-								}
-							}, 2000);
+							setActiveScene(scene);
 						}}
 						disabled={!scene.canPlay}>Play {scene.id}</button
 					>
