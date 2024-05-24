@@ -101,7 +101,7 @@
 			on:click={() => {
 				console.log('Starting game...');
 
-				loadScene('H0');
+				loadScene('G0');
 
 				$gameGlobals.gameStarted = true;
 			}}

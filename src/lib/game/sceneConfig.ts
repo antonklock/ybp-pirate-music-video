@@ -21,7 +21,7 @@ export const sceneObjects: SceneObject[] = [
 			width: 0.2,
 			height: 0.2,
 			onHit: () => {
-				const scene = getSceneById("H1");
+				const scene = getSceneById("H0");
 				if (scene) setActiveScene(scene);
 			},
 			isLoaded: false,
@@ -776,6 +776,398 @@ export const sceneObjects: SceneObject[] = [
 				height: 0.2,
 				onHit: () => {
 					const scene = getSceneById("F1");
+					if (scene) setActiveScene(scene);
+				},
+				isLoaded: false,
+				isActive: false,
+				activationInterfals: [{
+					start: 2,
+					end: 100
+				}]
+			}
+		]
+	},
+	{
+		id: "H4",
+		url: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/307bbb62ad743bdd735e8c8c3c585db9/manifest/video.mpd',
+		name: 'Stjäla',
+		nextScenes: ["H4-A", "H4-B"],
+		player: undefined,
+		loop: false,
+		isActive: false,
+		canPlay: false,
+		isLoaded: false,
+		isCurrent: false,
+		hitboxes: [
+			{
+				name: "HB-H4-A",
+				color: 0x70215e,
+				x: 0.2,
+				y: 0.2,
+				width: 0.1,
+				height: 0.2,
+				onHit: () => {
+					const scene = getSceneById("H4-A");
+					if (scene) setActiveScene(scene);
+				},
+				isLoaded: false,
+				isActive: false,
+				activationInterfals: [{
+					start: 2,
+					end: 100
+				}]
+			},
+			{
+				name: "HB-H4-B",
+				color: 0x5e34eb,
+				x: 0.4,
+				y: 0.2,
+				width: 0.1,
+				height: 0.2,
+				onHit: () => {
+					const scene = getSceneById("H4-B");
+					if (scene) setActiveScene(scene);
+				},
+				isLoaded: false,
+				isActive: false,
+				activationInterfals: [{
+					start: 2,
+					end: 100
+				}]
+			}
+		]
+	},
+	{
+		id: "H4-A",
+		url: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/e6013c545482ee6322457767a0ee39ae/manifest/video.mpd',
+		name: 'Ta mynt',
+		nextScenes: ["H0"],
+		player: undefined,
+		loop: false,
+		isActive: false,
+		canPlay: false,
+		isLoaded: false,
+		isCurrent: false,
+		hitboxes: [
+			{
+				name: "HB-H0",
+				color: 0x70215e,
+				x: 0.2,
+				y: 0.2,
+				width: 0.1,
+				height: 0.2,
+				onHit: () => {
+					const scene = getSceneById("H0");
+					if (scene) setActiveScene(scene);
+				},
+				isLoaded: false,
+				isActive: false,
+				activationInterfals: [{
+					start: 2,
+					end: 100
+				}]
+			}
+		]
+	},
+	{
+		id: "H4-B",
+		url: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/2da5985a1e344594507370843dce6977/manifest/video.mpd',
+		name: 'Dricka öl',
+		nextScenes: ["H0"],
+		player: undefined,
+		loop: false,
+		isActive: false,
+		canPlay: false,
+		isLoaded: false,
+		isCurrent: false,
+		hitboxes: [
+			{
+				name: "HB-H0",
+				color: 0x70215e,
+				x: 0.2,
+				y: 0.2,
+				width: 0.1,
+				height: 0.2,
+				onHit: () => {
+					const scene = getSceneById("H0");
+					if (scene) setActiveScene(scene);
+				},
+				isLoaded: false,
+				isActive: false,
+				activationInterfals: [{
+					start: 2,
+					end: 100
+				}]
+			}
+		]
+	},
+	{
+		id: "H5",
+		url: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/b825b39829e2e5bdd4d9f4394f09f87b/manifest/video.mpd',
+		name: 'Buskspel',
+		nextScenes: ["H5-A", "H5-B", "H5-C"],
+		player: undefined,
+		loop: false,
+		isActive: false,
+		canPlay: false,
+		isLoaded: false,
+		isCurrent: false,
+		hitboxes: [
+			{
+				name: "HB-H5-A",
+				color: 0x4c1b7d,
+				x: 0.2,
+				y: 0.2,
+				width: 0.1,
+				height: 0.2,
+				onHit: () => {
+					const scene = getSceneById("H5-A");
+					if (scene) setActiveScene(scene);
+				},
+				isLoaded: false,
+				isActive: false,
+				activationInterfals: [{
+					start: 2,
+					end: 100
+				}]
+			},
+			{
+				name: "HB-H5-B",
+				color: 0x5c7d1b,
+				x: 0.4,
+				y: 0.2,
+				width: 0.1,
+				height: 0.2,
+				onHit: () => {
+					const scene = getSceneById("H5-B");
+					if (scene) setActiveScene(scene);
+				},
+				isLoaded: false,
+				isActive: false,
+				activationInterfals: [{
+					start: 2,
+					end: 100
+				}]
+			},
+			{
+				name: "HB-H5-C",
+				color: 0x5c7d1b,
+				x: 0.6,
+				y: 0.2,
+				width: 0.1,
+				height: 0.2,
+				onHit: () => {
+					const scene = getSceneById("H5-C");
+					if (scene) setActiveScene(scene);
+				},
+				isLoaded: false,
+				isActive: false,
+				activationInterfals: [{
+					start: 2,
+					end: 100
+				}]
+			}
+		]
+	},
+	{
+		id: "H5-A",
+		url: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/adde7459836d6af2a084852391c8be13/manifest/video.mpd',
+		name: 'Ta lutan',
+		nextScenes: ["H0"],
+		player: undefined,
+		loop: false,
+		isActive: false,
+		canPlay: false,
+		isLoaded: false,
+		isCurrent: false,
+		hitboxes: [
+			{
+				name: "HB-H0",
+				color: 0x4c1b7d,
+				x: 0.2,
+				y: 0.2,
+				width: 0.1,
+				height: 0.2,
+				onHit: () => {
+					const scene = getSceneById("H0");
+					if (scene) setActiveScene(scene);
+				},
+				isLoaded: false,
+				isActive: false,
+				activationInterfals: [{
+					start: 2,
+					end: 100
+				}]
+			}
+		]
+	},
+	{
+		id: "H5-B",
+		url: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/699da2dd3426b36a3a92bca1d7385e6c/manifest/video.mpd',
+		name: 'Ta fiolen',
+		nextScenes: ["H0"],
+		player: undefined,
+		loop: false,
+		isActive: false,
+		canPlay: false,
+		isLoaded: false,
+		isCurrent: false,
+		hitboxes: [
+			{
+				name: "HB-H0",
+				color: 0x4c1b7d,
+				x: 0.2,
+				y: 0.2,
+				width: 0.1,
+				height: 0.2,
+				onHit: () => {
+					const scene = getSceneById("H0");
+					if (scene) setActiveScene(scene);
+				},
+				isLoaded: false,
+				isActive: false,
+				activationInterfals: [{
+					start: 2,
+					end: 100
+				}]
+			}
+		]
+	},
+	{
+		id: "H5-C",
+		url: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/001fe21e6520b4e5115b75481e8455e4/manifest/video.mpd',
+		name: 'Ta bandkassan',
+		nextScenes: ["G0"],
+		player: undefined,
+		loop: false,
+		isActive: false,
+		canPlay: false,
+		isLoaded: false,
+		isCurrent: false,
+		hitboxes: [
+			{
+				name: "HB-G0",
+				color: 0x4c1b7d,
+				x: 0.2,
+				y: 0.2,
+				width: 0.1,
+				height: 0.2,
+				onHit: () => {
+					const scene = getSceneById("G0");
+					if (scene) setActiveScene(scene);
+				},
+				isLoaded: false,
+				isActive: false,
+				activationInterfals: [{
+					start: 2,
+					end: 100
+				}]
+			}
+		]
+	},
+	{
+		id: "H6",
+		url: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/f86ab9a57fcb6735683a3b12a03cd485/manifest/video.mpd',
+		name: 'Gå mot dörren',
+		nextScenes: ["H6-A", "H6-B"],
+		player: undefined,
+		loop: false,
+		isActive: false,
+		canPlay: false,
+		isLoaded: false,
+		isCurrent: false,
+		hitboxes: [
+			{
+				name: "HB-H6-A",
+				color: 0x4c1b7d,
+				x: 0.2,
+				y: 0.2,
+				width: 0.1,
+				height: 0.2,
+				onHit: () => {
+					const scene = getSceneById("H6-A");
+					if (scene) setActiveScene(scene);
+				},
+				isLoaded: false,
+				isActive: false,
+				activationInterfals: [{
+					start: 2,
+					end: 100
+				}]
+			},
+			{
+				name: "HB-H6-B",
+				color: 0x7d1b53,
+				x: 0.4,
+				y: 0.2,
+				width: 0.1,
+				height: 0.2,
+				onHit: () => {
+					const scene = getSceneById("H6-B");
+					if (scene) setActiveScene(scene);
+				},
+				isLoaded: false,
+				isActive: false,
+				activationInterfals: [{
+					start: 2,
+					end: 100
+				}]
+			}
+		]
+	},
+	{
+		id: "H6-A",
+		url: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/2747c5fe01e96e9b16c7379fc0368924/manifest/video.mpd',
+		name: 'Stoppas i dörren. “Betala tre mynt!”',
+		nextScenes: ["H0"],
+		player: undefined,
+		loop: false,
+		isActive: false,
+		canPlay: false,
+		isLoaded: false,
+		isCurrent: false,
+		hitboxes: [
+			{
+				name: "HB-H0",
+				color: 0x4c1b7d,
+				x: 0.2,
+				y: 0.2,
+				width: 0.1,
+				height: 0.2,
+				onHit: () => {
+					const scene = getSceneById("H0");
+					if (scene) setActiveScene(scene);
+				},
+				isLoaded: false,
+				isActive: false,
+				activationInterfals: [{
+					start: 2,
+					end: 100
+				}]
+			}
+		]
+	},
+	{
+		id: "H6-B",
+		url: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/bf23e9172a67df47903cf1677737a496/manifest/video.mpd',
+		name: 'Får passera',
+		nextScenes: ["V1"],
+		player: undefined,
+		loop: false,
+		isActive: false,
+		canPlay: false,
+		isLoaded: false,
+		isCurrent: false,
+		hitboxes: [
+			{
+				name: "HB-V1",
+				color: 0x4c1b7d,
+				x: 0.2,
+				y: 0.2,
+				width: 0.1,
+				height: 0.2,
+				onHit: () => {
+					const scene = getSceneById("V1");
 					if (scene) setActiveScene(scene);
 				},
 				isLoaded: false,
