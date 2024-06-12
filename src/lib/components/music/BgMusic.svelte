@@ -1,8 +1,18 @@
 <script lang="ts">
 	import { gameGlobals } from '$lib/stores/gameStore';
+	import { Howl, Howler } from 'howler';
 
-	export let music = true;
-	export let paused = false;
+	let musicHowl = new Howl({
+		src: ['/sounds/raise_your_glass.wav'],
+		loop: true
+	});
+
+	let time = 0;
+
+	setInterval(() => {
+		time = musicHowl.seek();
+		time = Math.round(time * 100) / 100;
+	}, 16);
 
 	let globals: GameGlobals;
 
@@ -11,23 +21,23 @@
 	});
 </script>
 
-{#if music}
-	{#if globals.gameStarted}
-		<audio id="audio" src="/sounds/raise_your_glass.wav" autoplay loop></audio>
+{#if globals.gameStarted}
+	<div>
 		<button
 			on:click={() => {
-				const audio = document.getElementById('audio');
-				if (!audio) return;
-				if (audio instanceof HTMLAudioElement) {
-					if (paused) {
-						paused = false;
-						audio.play();
-					} else {
-						paused = true;
-						audio.pause();
-					}
+				if (musicHowl.playing()) {
+					musicHowl.pause();
+				} else {
+					musicHowl.play();
 				}
 			}}>Toggle music</button
 		>
-	{/if}
+		<p>Time: {time}</p>
+	</div>
 {/if}
+
+<style>
+	div {
+		color: white;
+	}
+</style>

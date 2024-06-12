@@ -1,18 +1,16 @@
 <script lang="ts">
-	import { scenes, gameGlobals, hitboxes } from '$lib/stores/gameStore';
+	import { scenes, gameGlobals } from '$lib/stores/gameStore';
 	import { loadScene } from '$lib/game/utils/scene_management/loadScene';
 	import VideoPlayer from './video/VideoPlayer.svelte';
-	// import BgMusic from '$lib/components/music/BgMusic.svelte';
+	import BgMusic from '$lib/components/music/BgMusic.svelte';
 	import PixiJs from './pixijs/PixiJs.svelte';
 	import { onMount } from 'svelte';
-	import { unloadScene } from '$lib/game/utils/scene_management/unloadScene';
 	import { setActiveScene } from '$lib/game/utils/scene_management/setActiveScene';
 
 	let globals: GameGlobals;
 	let loadedScenes: SceneObject[] = [];
 
-	// let music = false;
-	// let paused = false;
+	let music = true;
 
 	scenes.subscribe((scenes) => {
 		loadedScenes = scenes;
@@ -111,15 +109,11 @@
 	{/if}
 </div>
 
-<!-- <div class="musicControl">
-	<label for="music">Music</label>
-	<input name="music" type="checkbox" bind:checked={music} />
-
-	<label for="paused">Paused</label>
-	<input name="paused" type="checkbox" bind:checked={paused} />
-
-	<BgMusic {music} {paused} />
-</div> -->
+{#if music}
+	<div class="musicControl">
+		<BgMusic />
+	</div>
+{/if}
 
 <style>
 	.stageContainer {
@@ -139,21 +133,6 @@
 		position: absolute;
 		z-index: 100;
 	}
-
-	/* .videoPlayers {
-		position: relative;
-		justify-content: center;
-	} */
-
-	/* .musicControl {
-		color: white;
-		display: flex;
-		justify-content: center;
-		gap: 10px;
-		position: absolute;
-		bottom: 40px;
-		z-index: 200;
-	} */
 
 	.loading-indicator {
 		margin-left: 20px;
