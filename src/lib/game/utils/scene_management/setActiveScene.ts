@@ -2,7 +2,7 @@ import { scenes } from '$lib/stores/gameStore';
 import { loadScene } from './loadScene';
 import { unloadScene } from './unloadScene';
 
-export const setActiveScene = (scene: SceneObject) => {
+export const setActiveScene = (scene: SceneObject, preloadDelay: number = 10) => {
 
     let loadedScenes: SceneObject[] = [];
 
@@ -26,5 +26,5 @@ export const setActiveScene = (scene: SceneObject) => {
         for (const nextScene of nextScenes) {
             loadScene(nextScene);
         }
-    }, 2000);
+    }, preloadDelay);
 };

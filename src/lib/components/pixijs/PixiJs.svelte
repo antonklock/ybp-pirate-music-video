@@ -4,6 +4,7 @@
 	import { scenes } from '$lib/stores/gameStore';
 
 	import * as PIXI from 'pixi.js';
+	import { createPixiTimer } from '$lib/game/utils/debug/createPixiTimer';
 
 	let activeHitboxes: Hitbox[] = [];
 
@@ -22,6 +23,8 @@
 
 	onMount(async () => {
 		console.log('PixiJs - Component mounted');
+
+		activeHitboxes = [];
 
 		app = new PIXI.Application();
 		await app
@@ -47,32 +50,23 @@
 			? pixiCanvas.appendChild(app.canvas)
 			: console.error('No container found for PixiJs');
 
-		// const vignette = await PIXI.Assets.load('images/ui/vignette.png');
-		// const vignetteSprite = new PIXI.Sprite(vignette);
-		// vignetteSprite.width = app.screen.width;
-		// vignetteSprite.height = app.screen.height;
-		// app.stage.addChild(vignetteSprite);
+		const { timerContainer, timerText, timerBox } = createPixiTimer(app);
 
-		const parchmentTexture = await PIXI.Assets.load('images/ui/parchment.png');
-		const parchment = new PIXI.Sprite(parchmentTexture);
+		app.stage.addChild(timerContainer);
+		let elapsedTime = 0;
+		let startTime = Date.now();
 
-		parchment.scale.set(app.screen.width / document.documentElement.clientWidth / 6);
+		app.stage.addChild(timerBox);
+		app.stage.addChild(timerText);
 
-		parchment.x = app.screen.width - parchment.width * 0.86;
-		parchment.y = 0 - parchment.height * 0.1;
-
-		app.stage.addChild(parchment);
-
-		const coinTexture = await PIXI.Assets.load('images/ui/coin.png');
-		const coin = new PIXI.Sprite(coinTexture);
-		coin.width = app.screen.width / 10;
-		coin.height = app.screen.width / 10;
-		coin.anchor.set(0.5);
-		coin.x = coin.width;
-		coin.y = coin.height;
-		app.stage.addChild(coin);
-
-		app.ticker.add(() => {});
+		// Update timer in the ticker
+		app.ticker.add(() => {
+			elapsedTime = (Date.now() - startTime) / 1000;
+			const minutes = Math.floor(elapsedTime / 60);
+			const seconds = Math.floor(elapsedTime % 60);
+			const hundredths = Math.floor((elapsedTime % 1) * 100);
+			timerText.text = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${hundredths.toString().padStart(2, '0')}`;
+		});
 	});
 
 	const pixiHitboxes: { graphic: PIXI.Graphics; text: PIXI.Text }[] = [];
@@ -80,8 +74,6 @@
 	$: if (globals.currentScene) {
 		if (globals.currentScene.hitboxes) {
 			if (globals.currentScene.hitboxes !== activeHitboxes) {
-				// activeHitboxes = [];
-
 				pixiHitboxes.map((hitbox) => {
 					app.stage.removeChild(hitbox.graphic);
 					app.stage.removeChild(hitbox.text);
@@ -117,14 +109,18 @@
 
 						app.stage.addChild(hitboxName);
 
-						hitboxName.x = hitbox.x;
-						hitboxName.y = hitbox.y;
+						hitboxName.anchor.set(0.5);
+
+						hitboxName.x = hitbox.x + hitbox.width / 2;
+						hitboxName.y = hitbox.y + hitbox.height / 2;
 
 						hitbox.interactive = true;
 
 						hitbox.on('pointerdown', () => {
 							config.onHit();
 						});
+
+						console.log('Hitbox added to stage', config.name);
 
 						pixiHitboxes.push({ graphic: hitbox, text: hitboxName });
 					});

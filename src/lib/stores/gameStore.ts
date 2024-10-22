@@ -1,12 +1,13 @@
 import { writable } from 'svelte/store';
 import { sceneObjects } from '$lib/game/sceneConfig';
 
-export const gameState = writable<GameState>({
-	gameStarted: false,
-	currentSceneId: 0,
-	activeScene: sceneObjects[0],
-	nextScenes: [],
-});
+
+// export const gameState = writable<GameState>({
+// 	gameStarted: false,
+// 	currentSceneId: 0,
+// 	activeScene: sceneObjects[0],
+// 	nextScenes: [],
+// });
 
 export const gameGlobals = writable<GameGlobals>({
 	gameReady: false,
@@ -15,7 +16,7 @@ export const gameGlobals = writable<GameGlobals>({
 		stageWidth: 0,
 		stageHeight: 0,
 	},
-	currentPlayer: null
+	currentScene: sceneObjects[0],
 });
 
 export const hitboxes = writable<Hitbox[]>([]);
