@@ -57,7 +57,7 @@ export const sceneObjects: SceneObject[] = [
 			isLoaded: false,
 			isActive: false,
 			activationInterfals: [{
-				start: 0.5,
+				start: 5,
 				end: 100
 			}]
 		},
@@ -75,7 +75,7 @@ export const sceneObjects: SceneObject[] = [
 			isLoaded: false,
 			isActive: false,
 			activationInterfals: [{
-				start: 2,
+				start: 1,
 				end: 100
 			}]
 		},
@@ -93,8 +93,8 @@ export const sceneObjects: SceneObject[] = [
 			isLoaded: false,
 			isActive: false,
 			activationInterfals: [{
-				start: 5,
-				end: 15
+				start: 8,
+				end: 20
 			}]
 		},
 		{
@@ -111,8 +111,8 @@ export const sceneObjects: SceneObject[] = [
 			isLoaded: false,
 			isActive: false,
 			activationInterfals: [{
-				start: 5,
-				end: 15
+				start: 4,
+				end: 30
 			}]
 		},
 		{
@@ -129,8 +129,8 @@ export const sceneObjects: SceneObject[] = [
 			isLoaded: false,
 			isActive: false,
 			activationInterfals: [{
-				start: 5,
-				end: 15
+				start: 12,
+				end: 40
 			}]
 		},
 		{
@@ -147,8 +147,8 @@ export const sceneObjects: SceneObject[] = [
 			isLoaded: false,
 			isActive: false,
 			activationInterfals: [{
-				start: 5,
-				end: 15
+				start: 6,
+				end: 30
 			}]
 		},
 		]

@@ -29,12 +29,10 @@
 		app = new PIXI.Application();
 		await app
 			.init({
-				// background: 0xfcba03,
 				background: 0x000000,
 				width: globals.sceneDimensions.stageWidth,
 				height: globals.sceneDimensions.stageHeight,
 				backgroundAlpha: 0
-				// backgroundAlpha: 0.1
 			})
 			.then(() => {
 				console.log('PixiJs initialized');
@@ -50,11 +48,21 @@
 			? pixiCanvas.appendChild(app.canvas)
 			: console.error('No container found for PixiJs');
 
+		//// TIMER ////
 		const { timerContainer, timerText, timerBox } = createPixiTimer(app);
-
 		app.stage.addChild(timerContainer);
 		let elapsedTime = 0;
 		let startTime = Date.now();
+
+		// Reset timer when a new scene is loaded
+		gameGlobals.subscribe(($gameGlobals) => {
+			if ($gameGlobals.currentScene) {
+				elapsedTime = 0;
+				startTime = Date.now();
+			}
+		});
+
+		timerContainer.interactive = false;
 
 		app.stage.addChild(timerBox);
 		app.stage.addChild(timerText);
@@ -66,6 +74,21 @@
 			const seconds = Math.floor(elapsedTime % 60);
 			const hundredths = Math.floor((elapsedTime % 1) * 100);
 			timerText.text = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${hundredths.toString().padStart(2, '0')}`;
+
+			// Get all hitboxes
+			const allHitboxes = $scenes.flatMap((scene) => scene.hitboxes || []);
+
+			// Update hitbox visibility based on their activation intervals
+			allHitboxes.forEach((hitbox) => {
+				const pixiHitbox = pixiHitboxes.find((ph) => ph.text.text === hitbox.name);
+				if (pixiHitbox) {
+					const isActive = hitbox.activationInterfals.some(
+						(interval) => elapsedTime >= interval.start && elapsedTime <= interval.end
+					);
+					pixiHitbox.graphic.visible = isActive;
+					pixiHitbox.text.visible = isActive;
+				}
+			});
 		});
 	});
 
@@ -75,6 +98,7 @@
 		if (globals.currentScene.hitboxes) {
 			if (globals.currentScene.hitboxes !== activeHitboxes) {
 				pixiHitboxes.map((hitbox) => {
+					console.log('Removing hitbox from stage', hitbox.text.text);
 					app.stage.removeChild(hitbox.graphic);
 					app.stage.removeChild(hitbox.text);
 				});
@@ -114,9 +138,13 @@
 						hitboxName.x = hitbox.x + hitbox.width / 2;
 						hitboxName.y = hitbox.y + hitbox.height / 2;
 
+						hitbox.zIndex = 999;
+						hitboxName.zIndex = 1000;
+
 						hitbox.interactive = true;
 
 						hitbox.on('pointerdown', () => {
+							console.log('Hitbox hit', config.name);
 							config.onHit();
 						});
 

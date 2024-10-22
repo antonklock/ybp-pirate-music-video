@@ -23,6 +23,9 @@ export const loadScene = (sceneId: string, config: SceneConfig = {}) => {
                 if (triggerTime && runFunctionAtTime) {
                     scene.triggerTime = triggerTime;
                     scene.runFunctionAtTime = runFunctionAtTime;
+
+                    console.log("triggerTime: ", triggerTime);
+                    console.log("runFunctionAtTime: ", runFunctionAtTime);
                 } else if (triggerTime || runFunctionAtTime) {
                     console.error("Both triggerTime and runFunctionAtTime must be provided");
                 }
