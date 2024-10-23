@@ -1,5 +1,6 @@
 import { gameGlobals } from '$lib/stores/gameStore';
 import { scenes } from '$lib/stores/gameStore';
+import { get } from 'svelte/store';
 
 type SceneConfig = {
     play?: () => void;
@@ -12,7 +13,7 @@ type SceneConfig = {
  * @param sceneId Index of the scene to load
  * @param config Configuration for the scene
  */
-export const loadScene = (sceneId: string, config: SceneConfig = {}) => {
+export const loadScene = (sceneId: string, config: SceneConfig = {}): SceneObject | undefined => {
     const { play, triggerTime, runFunctionAtTime } = config;
 
     scenes.update((scenesToUpdate) => {
@@ -59,4 +60,6 @@ export const loadScene = (sceneId: string, config: SceneConfig = {}) => {
             return scene;
         });
     });
+
+    return get(scenes).find(scene => scene.id === sceneId);
 }

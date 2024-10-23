@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { gameGlobals } from '$lib/stores/gameStore';
+	import { gameGlobals, gameSession } from '$lib/stores/gameStore';
 	import { scenes } from '$lib/stores/gameStore';
 
 	import * as PIXI from 'pixi.js';
 	import { createPixiTimer } from '$lib/game/utils/debug/createPixiTimer';
+	import { createDebugMenu } from '$lib/game/utils/debug/debugWindow';
 
 	let activeHitboxes: Hitbox[] = [];
 
@@ -22,8 +23,6 @@
 	let app: PIXI.Application<PIXI.Renderer>;
 
 	onMount(async () => {
-		console.log('PixiJs - Component mounted');
-
 		activeHitboxes = [];
 
 		app = new PIXI.Application();
@@ -35,8 +34,7 @@
 				backgroundAlpha: 0
 			})
 			.then(() => {
-				console.log('PixiJs initialized');
-				console.log('app.screen.width: ', app.screen.width);
+				// console.log('PixiJs initialized');
 			})
 			.catch((error) => {
 				console.error('PixiJs failed to initialize', error);
@@ -51,16 +49,13 @@
 		//// TIMER ////
 		const { timerContainer, timerText, timerBox } = createPixiTimer(app);
 		app.stage.addChild(timerContainer);
-		let elapsedTime = 0;
-		let startTime = Date.now();
 
 		// Reset timer when a new scene is loaded
-		gameGlobals.subscribe(($gameGlobals) => {
-			if ($gameGlobals.currentScene) {
-				elapsedTime = 0;
-				startTime = Date.now();
-			}
-		});
+		// gameGlobals.subscribe(($gameGlobals) => {
+		// 	if ($gameGlobals.currentScene) {
+		// 		$gameSession.startedAt = Date.now();
+		// 	}
+		// });
 
 		timerContainer.interactive = false;
 
@@ -69,10 +64,12 @@
 
 		// Update timer in the ticker
 		app.ticker.add(() => {
-			elapsedTime = (Date.now() - startTime) / 1000;
-			const minutes = Math.floor(elapsedTime / 60);
-			const seconds = Math.floor(elapsedTime % 60);
-			const hundredths = Math.floor((elapsedTime % 1) * 100);
+			if ($gameSession.startedAt)
+				$gameSession.elapsedTime = (Date.now() - $gameSession.startedAt.getTime()) / 1000;
+
+			const minutes = Math.floor($gameSession.elapsedTime / 60);
+			const seconds = Math.floor($gameSession.elapsedTime % 60);
+			const hundredths = Math.floor(($gameSession.elapsedTime % 1) * 100);
 			timerText.text = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${hundredths.toString().padStart(2, '0')}`;
 
 			// Get all hitboxes
@@ -83,13 +80,17 @@
 				const pixiHitbox = pixiHitboxes.find((ph) => ph.text.text === hitbox.name);
 				if (pixiHitbox) {
 					const isActive = hitbox.activationInterfals.some(
-						(interval) => elapsedTime >= interval.start && elapsedTime <= interval.end
+						(interval) =>
+							$gameSession.elapsedTime >= interval.start && $gameSession.elapsedTime <= interval.end
 					);
 					pixiHitbox.graphic.visible = isActive;
 					pixiHitbox.text.visible = isActive;
 				}
 			});
 		});
+
+		const debugMenu = createDebugMenu(app);
+		if (debugMenu) app.stage.addChild(debugMenu);
 	});
 
 	const pixiHitboxes: { graphic: PIXI.Graphics; text: PIXI.Text }[] = [];
@@ -151,6 +152,8 @@
 						console.log('Hitbox added to stage', config.name);
 
 						pixiHitboxes.push({ graphic: hitbox, text: hitboxName });
+
+						// createDebugMenu(app);
 					});
 
 					console.log('Hitboxes added to stage', activeHitboxes);

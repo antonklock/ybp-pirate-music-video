@@ -1,12 +1,11 @@
 <script lang="ts">
-	import { scenes, gameGlobals, hitboxes } from '$lib/stores/gameStore';
+	import { scenes, gameGlobals, gameSession } from '$lib/stores/gameStore';
 	import { loadScene } from '$lib/game/utils/scene_management/loadScene';
 	import VideoPlayer from './video/VideoPlayer.svelte';
-	// import BgMusic from '$lib/components/music/BgMusic.svelte';
 	import PixiJs from './pixijs/PixiJs.svelte';
 	import { onMount } from 'svelte';
-	import { unloadScene } from '$lib/game/utils/scene_management/unloadScene';
 	import { setActiveScene } from '$lib/game/utils/scene_management/setActiveScene';
+	import { v4 as uuidv4 } from 'uuid';
 
 	let globals: GameGlobals;
 	let loadedScenes: SceneObject[] = [];
@@ -43,7 +42,7 @@
 </script>
 
 <div class="stageContainer">
-	{#if $gameGlobals.gameStarted}
+	{#if $gameGlobals.isGameStarted}
 		<PixiJs />
 		<div
 			class="videoPlayers"
@@ -96,14 +95,29 @@
 		</div>
 	{/if}
 
-	{#if !$gameGlobals.gameStarted}
+	{#if !$gameGlobals.isGameStarted}
 		<button
 			on:click={() => {
 				console.log('Starting game...');
 
-				loadScene('G0');
+				const scene = loadScene('G0');
 
-				$gameGlobals.gameStarted = true;
+				if (!scene) return console.warn('Scene G0 not found');
+
+				$gameGlobals.isGameStarted = true;
+				$gameGlobals.gameStartedAt = new Date();
+
+				$gameSession.id = uuidv4();
+				$gameSession.startedAt = new Date();
+
+				$gameSession.sceneOrder.push({
+					gameId: $gameSession.id,
+					sceneId: 'G0',
+					startedAt: new Date(),
+					elapsedTime: 0,
+					endedAt: null,
+					scene: scene
+				});
 			}}
 		>
 			Start Game</button

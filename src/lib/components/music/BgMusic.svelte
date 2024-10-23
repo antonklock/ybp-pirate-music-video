@@ -12,7 +12,7 @@
 </script>
 
 {#if music}
-	{#if globals.gameStarted}
+	{#if globals.isGameStarted}
 		<audio id="audio" src="/sounds/raise_your_glass.wav" autoplay loop></audio>
 		<button
 			on:click={() => {
