@@ -1,30 +1,20 @@
 <script lang="ts">
-	import { scenes, gameGlobals, gameSession } from '$lib/stores/gameStore';
+	import { scenes, gameGlobals } from '$lib/stores/gameStore';
+	import { gameSession, startGameSession } from '$lib/stores/gameSessionStore';
 	import { loadScene } from '$lib/game/utils/scene_management/loadScene';
-	import VideoPlayer from './video/VideoPlayer.svelte';
-	import PixiJs from './pixijs/PixiJs.svelte';
 	import { onMount } from 'svelte';
 	import { setActiveScene } from '$lib/game/utils/scene_management/setActiveScene';
-	import { v4 as uuidv4 } from 'uuid';
+	import VideoPlayer from './video/VideoPlayer.svelte';
+	import PixiJs from './pixijs/PixiJs.svelte';
+	import { endLatestSceneInSession, endGameSession } from '$lib/stores/gameSessionStore';
 
-	let globals: GameGlobals;
-	let loadedScenes: SceneObject[] = [];
-
-	let oldGameSession: GameSession;
+	let lastGameSession: GameSession;
 
 	// let music = false;
 	// let paused = false;
 
-	scenes.subscribe((scenes) => {
-		loadedScenes = scenes;
-	});
-
-	gameGlobals.subscribe((gameGlobals) => {
-		globals = gameGlobals;
-	});
-
 	onMount(() => {
-		if (localStorage.gameSession) oldGameSession = JSON.parse(localStorage.gameSession);
+		if (localStorage.gameSession) lastGameSession = JSON.parse(localStorage.gameSession);
 
 		// Setting stage dimensions
 		$gameGlobals.sceneDimensions = {
@@ -33,12 +23,8 @@
 		};
 
 		const handleBeforeUnload = () => {
-			$gameSession = {
-				...$gameSession,
-				endedAt: new Date()
-			};
-
-			$gameSession.sceneOrder[$gameSession.sceneOrder.length - 1].endedAt = new Date();
+			endLatestSceneInSession();
+			endGameSession();
 
 			localStorage.setItem('gameSession', JSON.stringify($gameSession));
 		};
@@ -51,14 +37,14 @@
 	});
 
 	// Updating stage dimensions
-	$: if (globals.sceneDimensions.stageWidth !== document.documentElement.clientWidth * 0.8) {
+	$: if ($gameGlobals.sceneDimensions.stageWidth !== document.documentElement.clientWidth * 0.8) {
 		$gameGlobals.sceneDimensions = {
 			stageWidth: document.documentElement.clientWidth * 0.8,
 			stageHeight: document.documentElement.clientWidth * 0.8 * 0.5625
 		};
 
-		console.log('Updating scene dimensions...');
-		console.log('globals.sceneDimensions: ', globals.sceneDimensions);
+		// console.log('Updating scene dimensions...');
+		// console.log('globals.sceneDimensions: ', $gameGlobals.sceneDimensions);
 	}
 
 	function getRandomColor() {
@@ -69,9 +55,9 @@
 	}
 
 	function getPercentage(scene: { elapsedTime: number }) {
-		if (!oldGameSession) return 0;
+		if (!lastGameSession) return 0;
 
-		const totalTime = oldGameSession.sceneOrder.reduce((acc, scene) => acc + scene.elapsedTime, 0);
+		const totalTime = lastGameSession.sceneOrder.reduce((acc, scene) => acc + scene.elapsedTime, 0);
 		return (scene.elapsedTime / totalTime) * 100;
 	}
 </script>
@@ -83,7 +69,7 @@
 			class="videoPlayers"
 			style={`width: ${$gameGlobals.sceneDimensions.stageWidth}px; height: ${$gameGlobals.sceneDimensions.stageHeight}px`}
 		>
-			{#each loadedScenes as scene}
+			{#each $scenes as scene}
 				{#if scene.isLoaded}
 					<VideoPlayer
 						id={scene.id}
@@ -97,7 +83,7 @@
 		</div>
 
 		<div class="buttons">
-			{#each loadedScenes as scene}
+			{#each $scenes as scene}
 				{#if scene.isLoaded}
 					<div
 						class={'loading-indicator'}
@@ -142,16 +128,7 @@
 				$gameGlobals.isGameStarted = true;
 				$gameGlobals.gameStartedAt = new Date();
 
-				$gameSession.id = uuidv4();
-				$gameSession.startedAt = new Date();
-
-				$gameSession.sceneOrder.push({
-					gameId: $gameSession.id,
-					sceneId: 'G0',
-					startedAt: new Date(),
-					elapsedTime: 0,
-					endedAt: null
-				});
+				startGameSession();
 			}}
 		>
 			Start Game</button
@@ -169,7 +146,7 @@
 	<BgMusic {music} {paused} />
 </div> -->
 
-{#if oldGameSession}
+{#if lastGameSession}
 	<div class="localStorage">
 		<button
 			on:click={() => {
@@ -186,12 +163,12 @@
 			Clear Local Storage
 		</button>
 		<div class="sceneOrderContainer">
-			{#each oldGameSession.sceneOrder as scene, index}
+			{#each lastGameSession.sceneOrder as scene, index}
 				<div
 					class="sceneOrderItem"
-					style={`width: ${getPercentage(scene)}%; height: 30px; background-color: ${getRandomColor()}`}
+					style={`width: ${getPercentage(scene)}%; height: 28px; background-color: ${getRandomColor()}`}
 				>
-					{scene.sceneId} - {scene.elapsedTime}
+					{scene.sceneId} - {(scene.elapsedTime / 1000).toFixed(2)}s
 				</div>
 			{/each}
 		</div>
@@ -204,22 +181,30 @@
 		justify-content: center;
 		align-items: center;
 		background-color: red;
-		height: 30px;
+		height: 25px;
 		z-index: 300;
+		border-radius: 5px;
+		font-family: sans-serif;
+		border: 1px solid slategray;
 	}
 
 	.sceneOrderContainer {
-		background-color: lime;
+		border-radius: 5px;
+		padding: 6px;
+		background-color: darkslategray;
 		display: flex;
 		flex-direction: row;
 		justify-content: left;
-		gap: 1px;
+		align-items: center;
+		gap: 2px;
 		position: absolute;
 		bottom: 40px;
 		left: 0px;
 		z-index: 200;
-		width: 100vw;
+		width: 95vw;
 		height: 30px;
+		font-size: 11px;
+		border: 1px solid slategray;
 	}
 
 	.stageContainer {

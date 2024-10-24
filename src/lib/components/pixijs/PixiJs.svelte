@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { gameGlobals, gameSession } from '$lib/stores/gameStore';
+	import { gameGlobals } from '$lib/stores/gameStore';
+	import { gameSession } from '$lib/stores/gameSessionStore';
 	import { scenes } from '$lib/stores/gameStore';
 
 	import * as PIXI from 'pixi.js';

@@ -1,4 +1,5 @@
-import { scenes, gameSession } from '$lib/stores/gameStore';
+import { scenes } from '$lib/stores/gameStore';
+import { addSceneToSession, gameSession } from '$lib/stores/gameSessionStore';
 import { loadScene } from './loadScene';
 import { unloadScene } from './unloadScene';
 import { get } from 'svelte/store';
@@ -23,20 +24,16 @@ export const setActiveScene = (sceneToActivate: SceneObject, preloadDelay: numbe
         return scenes;
     });
 
-    gameSession.update((session) => {
-        const newSceneSession = {
-            gameId: session.id,
-            sceneId: sceneToActivate.id,
-            startedAt: new Date(),
-            elapsedTime: 0,
-            endedAt: null
-        }
+    addSceneToSession(sceneToActivate.id);
 
-        session.sceneOrder.push(newSceneSession);
-        // console.log("Updated session", session);
+    //         endedAt: null
+    //     }
 
-        return session;
-    });
+    //     session.sceneOrder.push(newSceneSession);
+    //     // console.log("Updated session", session);
+
+    //     return session;
+    // });
 
     console.log("gameSession:", get(gameSession));
     localStorage.setItem('gameSession', JSON.stringify(get(gameSession)));

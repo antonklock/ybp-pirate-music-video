@@ -21,6 +21,7 @@ declare global {
 
 	interface SceneSession {
 		gameId: string;
+		sceneSessionId: string;
 		sceneId: string;
 		startedAt: Date | null;
 		endedAt: Date | null;

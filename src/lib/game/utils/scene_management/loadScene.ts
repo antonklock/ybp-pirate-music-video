@@ -48,9 +48,6 @@ export const loadScene = (sceneId: string, config: SceneConfig = {}): SceneObjec
                                     gameGlobals.currentScene = sceneObject;
                                     return gameGlobals;
                                 });
-                            } else {
-                                // sceneObject.isActive = false;
-                                // sceneObject.isCurrent = false;
                             }
                             return sceneObject;
                         }));

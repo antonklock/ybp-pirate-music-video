@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { gameSession } from '$lib/stores/gameStore';
+import { gameSession } from '$lib/stores/gameSessionStore';
 
 export function createDebugMenu(app: PIXI.Application): PIXI.Container | null {
     // Check if app is properly initialized
