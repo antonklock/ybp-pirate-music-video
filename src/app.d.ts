@@ -22,7 +22,6 @@ declare global {
 	interface SceneSession {
 		gameId: string;
 		sceneId: string;
-		scene: SceneObject;
 		startedAt: Date | null;
 		endedAt: Date | null;
 		elapsedTime: number;
@@ -40,8 +39,6 @@ declare global {
 		loop: boolean;
 		isActive: boolean;
 		hitboxes: Hitbox[];
-		startedAt?: Date;
-		endedAt?: Date;
 		sceneEndTime?: number;
 		triggerTime?: number;
 		play?: () => void;

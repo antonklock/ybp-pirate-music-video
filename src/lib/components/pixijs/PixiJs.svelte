@@ -99,7 +99,7 @@
 		if (globals.currentScene.hitboxes) {
 			if (globals.currentScene.hitboxes !== activeHitboxes) {
 				pixiHitboxes.map((hitbox) => {
-					console.log('Removing hitbox from stage', hitbox.text.text);
+					// console.log('Removing hitbox from stage', hitbox.text.text);
 					app.stage.removeChild(hitbox.graphic);
 					app.stage.removeChild(hitbox.text);
 				});
@@ -145,18 +145,18 @@
 						hitbox.interactive = true;
 
 						hitbox.on('pointerdown', () => {
-							console.log('Hitbox hit', config.name);
+							// console.log('Hitbox hit', config.name);
 							config.onHit();
 						});
 
-						console.log('Hitbox added to stage', config.name);
+						// console.log('Hitbox added to stage', config.name);
 
 						pixiHitboxes.push({ graphic: hitbox, text: hitboxName });
 
 						// createDebugMenu(app);
 					});
 
-					console.log('Hitboxes added to stage', activeHitboxes);
+					// console.log('Hitboxes added to stage', activeHitboxes);
 				}
 			} else {
 				console.log('Hitboxes are the same');

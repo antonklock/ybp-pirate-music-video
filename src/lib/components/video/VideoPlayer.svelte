@@ -12,7 +12,7 @@
 	$: if (isActive) {
 		if (videoPlayer) {
 			if (!isPlaying) {
-				console.log('Playing video: ' + id);
+				// console.log('Playing video: ' + id);
 				videoPlayer.play();
 				gameGlobals.update((gameGlobals) => {
 					if (videoPlayer) {
@@ -41,7 +41,7 @@
 	let playerCanPlay = false;
 
 	onMount(() => {
-		console.log('Component mounted: ' + id);
+		// console.log('Component mounted: ' + id);
 
 		type VpState = {
 			currentTime: number;
@@ -77,7 +77,7 @@
 	export let runFunctionAtTime: (() => void) | undefined = undefined;
 
 	onDestroy(() => {
-		console.log('Component destroyed: ' + id);
+		// console.log('Component destroyed: ' + id);
 		if (unsubscribe) unsubscribe();
 	});
 

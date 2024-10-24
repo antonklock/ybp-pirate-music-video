@@ -75,7 +75,7 @@ export function createDebugMenu(app: PIXI.Application): PIXI.Container | null {
     gameSession.subscribe(session => {
         const latestScene = session.sceneOrder[session.sceneOrder.length - 1];
         if (latestScene) {
-            latestSceneText.text = `Latest Scene: ${latestScene.scene.name}`;
+            latestSceneText.text = `Latest Scene: ${latestScene.sceneId}`;
         } else {
             latestSceneText.text = 'Latest Scene: N/A';
         }
