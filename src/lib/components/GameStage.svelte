@@ -2,9 +2,27 @@
 	import { scenes } from '$lib/stores/gameStore';
 	import { setActiveScene } from '$lib/game/utils/scene_management/setActiveScene';
 	import PixiJs from './pixijs/PixiJs.svelte';
+	import VideoPlayer from './video/VideoPlayer.svelte';
+	import { gameGlobals } from '$lib/stores/gameStore';
 </script>
 
 <PixiJs />
+<div
+	class="videoPlayers"
+	style={`width: ${$gameGlobals.sceneDimensions.stageWidth}px; height: ${$gameGlobals.sceneDimensions.stageHeight}px`}
+>
+	{#each loadedScenes as scene}
+		{#if scene.isLoaded}
+			<VideoPlayer
+				id={scene.id}
+				url={scene.url}
+				isActive={scene.isActive}
+				triggerTime={scene.triggerTime}
+				runFunctionAtTime={scene.runFunctionAtTime}
+			/>
+		{/if}
+	{/each}
+</div>
 <div class="buttons">
 	{#each $scenes as scene}
 		{#if scene.isLoaded}
