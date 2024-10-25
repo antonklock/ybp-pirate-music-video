@@ -16,6 +16,8 @@ type SceneConfig = {
 export const loadScene = (sceneId: string, config: SceneConfig = {}): SceneObject | undefined => {
     const { play, triggerTime, runFunctionAtTime } = config;
 
+    console.log("Loading scene: ", sceneId);
+
     scenes.update((scenesToUpdate) => {
         return scenesToUpdate.map(scene => {
             if (scene.id === sceneId) {
