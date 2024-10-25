@@ -5,8 +5,6 @@ import { unloadScene } from './unloadScene';
 import { get } from 'svelte/store';
 
 export const setActiveScene = (sceneToActivate: SceneObject, preloadDelay: number = 10) => {
-
-
     scenes.update((scenes) => {
         scenes.forEach((scene) => {
             if (scene.id === sceneToActivate.id) {

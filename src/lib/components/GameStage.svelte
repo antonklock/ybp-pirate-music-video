@@ -14,7 +14,7 @@
 	class="videoPlayers"
 	style={`width: ${$gameGlobals.sceneDimensions.stageWidth}px; height: ${$gameGlobals.sceneDimensions.stageHeight}px`}
 >
-	{#each loadedScenes as scene}
+	{#each $scenes as scene}
 		{#if scene.isLoaded}
 			<VideoPlayer
 				id={scene.id}
