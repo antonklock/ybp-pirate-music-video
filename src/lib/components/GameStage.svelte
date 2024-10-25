@@ -4,6 +4,9 @@
 	import PixiJs from './pixijs/PixiJs.svelte';
 	import VideoPlayer from './video/VideoPlayer.svelte';
 	import { gameGlobals } from '$lib/stores/gameStore';
+	let loadedScenes: SceneObject[] = [];
+
+	$: loadedScenes = $scenes.filter((scene) => scene.isLoaded);
 </script>
 
 <PixiJs />
@@ -16,7 +19,6 @@
 			<VideoPlayer
 				id={scene.id}
 				url={scene.url}
-				isActive={scene.isActive}
 				triggerTime={scene.triggerTime}
 				runFunctionAtTime={scene.runFunctionAtTime}
 			/>

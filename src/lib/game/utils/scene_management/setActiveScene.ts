@@ -3,52 +3,35 @@ import { addSceneToSession, gameSession } from '$lib/stores/gameSessionStore';
 import { loadScene } from './loadScene';
 import { unloadScene } from './unloadScene';
 import { get } from 'svelte/store';
+
 export const setActiveScene = (sceneToActivate: SceneObject, preloadDelay: number = 10) => {
 
-    let loadedScenes: SceneObject[] = [];
 
     scenes.update((scenes) => {
-
-        scenes.map((scene) => {
+        scenes.forEach((scene) => {
             if (scene.id === sceneToActivate.id) {
+                console.log('Setting scene to active: ' + sceneToActivate.id);
                 scene.isActive = true;
-
-                return scene;
             }
         });
-
-        loadedScenes = scenes.filter((scene) => scene.isLoaded);
-
-        console.log("loadedScenes:", loadedScenes);
 
         return scenes;
     });
 
     addSceneToSession(sceneToActivate.id);
-
-    //         endedAt: null
-    //     }
-
-    //     session.sceneOrder.push(newSceneSession);
-    //     // console.log("Updated session", session);
-
-    //     return session;
-    // });
-
-    console.log("gameSession:", get(gameSession));
     localStorage.setItem('gameSession', JSON.stringify(get(gameSession)));
 
-    if (!loadedScenes) return console.error("No scenes loaded");
     if (!sceneToActivate.play) return console.error(`Scene ${sceneToActivate.id} has no play function`);
-
     sceneToActivate.play();
+
+    const loadedScenes: SceneObject[] = get(scenes).filter((scene) => scene.isLoaded);
+    // if (!loadedScenes) console.error("No scenes loaded");
+
+
 
     // Unload previous scenes
     for (const sceneToUnload of loadedScenes) {
         if (sceneToUnload.id !== sceneToActivate.id) {
-            // console.log(`Unloaded scene ${sceneToUnload.id}`, sceneToUnload.endedAt);
-            // console.log(`Started at: ${sceneToUnload.startedAt}`);
-
             if (sceneToUnload.isActive) {
                 console.log(`Unloading active scene ${sceneToUnload.id}`);
                 gameSession.update((session) => {
@@ -78,10 +61,11 @@ export const setActiveScene = (sceneToActivate: SceneObject, preloadDelay: numbe
         }
     }
 
+
+
     setTimeout(() => {
-        // Preload next scenes
-        const nextScenes = sceneToActivate.nextScenes;
-        for (const nextScene of nextScenes) {
+        console.log('Loading next scenes: ', sceneToActivate.nextScenes);
+        for (const nextScene of sceneToActivate.nextScenes) {
             loadScene(nextScene);
         }
     }, preloadDelay);

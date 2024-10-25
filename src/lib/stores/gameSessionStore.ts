@@ -1,6 +1,5 @@
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
-import { get } from 'svelte/store';
 
 export const gameSession = writable<GameSession>({
     id: uuidv4(),
