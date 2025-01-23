@@ -20,6 +20,7 @@ export const setActiveScene = (sceneToActivate: SceneObject, preloadDelay: numbe
     localStorage.setItem('gameSession', JSON.stringify(get(gameSession)));
 
     if (!sceneToActivate.play) return console.error(`Scene ${sceneToActivate.id} has no play function`);
+    if (!sceneToActivate.canPlay) return console.error(`Scene ${sceneToActivate.id} is not ready to play`);
     sceneToActivate.play();
 
     const loadedScenes: SceneObject[] = get(scenes).filter((scene) => scene.isLoaded);

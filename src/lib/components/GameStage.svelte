@@ -8,6 +8,8 @@
 
 	$: loadedScenes = $scenes.filter((scene) => scene.isLoaded);
 	$: videoProvider = $gameGlobals.videoProvider;
+
+	let showDebugButtons = true;
 </script>
 
 <PixiJs />
@@ -26,9 +28,11 @@
 		{/if}
 	{/each}
 </div>
-<div class="absolute flex gap-2 bottom-20 justify-center items-center w-screen">
+<div
+	class={`absolute flex gap-2 bottom-20 justify-center items-center w-screen ${showDebugButtons ? 'block' : 'hidden'}`}
+>
 	{#each $scenes as scene}
-		{#if scene.isLoaded}
+		{#if scene.isLoaded && !scene.isActive}
 			<div
 				class={'ml-20'}
 				style={'color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center;'}
