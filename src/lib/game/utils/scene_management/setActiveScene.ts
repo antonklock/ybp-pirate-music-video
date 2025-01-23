@@ -25,8 +25,6 @@ export const setActiveScene = (sceneToActivate: SceneObject, preloadDelay: numbe
     const loadedScenes: SceneObject[] = get(scenes).filter((scene) => scene.isLoaded);
     // if (!loadedScenes) console.error("No scenes loaded");
 
-
-
     // Unload previous scenes
     for (const sceneToUnload of loadedScenes) {
         if (sceneToUnload.id !== sceneToActivate.id) {
@@ -52,14 +50,12 @@ export const setActiveScene = (sceneToActivate: SceneObject, preloadDelay: numbe
                     };
                 });
             } else {
-                console.log(`Unloading scene ${sceneToUnload.id}. Although it's not active`);
+                console.log(`Unloading non-active scene ${sceneToUnload.id}`);
             }
 
             unloadScene(sceneToUnload.id);
         }
     }
-
-
 
     setTimeout(() => {
         console.log('Loading next scenes: ', sceneToActivate.nextScenes);

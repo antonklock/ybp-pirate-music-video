@@ -5,6 +5,7 @@
 </script>
 
 <button
+	class="bg-white text-black p-2 rounded-md"
 	on:click={() => {
 		console.log('Starting game...');
 

@@ -26,11 +26,11 @@
 		{/if}
 	{/each}
 </div>
-<div class="buttons">
+<div class="absolute flex gap-2 bottom-20 justify-center items-center w-screen">
 	{#each $scenes as scene}
 		{#if scene.isLoaded}
 			<div
-				class={'loading-indicator'}
+				class={'ml-20'}
 				style={'color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center;'}
 			>
 				<div
@@ -50,6 +50,7 @@
 			</div>
 
 			<button
+				class="bg-white text-black p-2 rounded-md"
 				on:click={() => {
 					setActiveScene(scene);
 				}}
@@ -58,23 +59,3 @@
 		{/if}
 	{/each}
 </div>
-
-<style>
-	.buttons {
-		display: flex;
-		justify-content: center;
-		width: 99vw;
-		gap: 10px;
-		bottom: 20px;
-		position: absolute;
-		z-index: 100;
-	}
-
-	.loading-indicator {
-		margin-left: 20px;
-	}
-
-	.loading-indicator > div:first-child {
-		margin-right: 5px;
-	}
-</style>

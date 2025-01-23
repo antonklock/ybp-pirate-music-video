@@ -157,7 +157,7 @@
 						// createDebugMenu(app);
 					});
 
-					// console.log('Hitboxes added to stage', activeHitboxes);
+					console.log('Hitboxes added to stage', activeHitboxes);
 				}
 			} else {
 				console.log('Hitboxes are the same');

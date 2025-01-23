@@ -25,7 +25,12 @@ export const sceneObjects: SceneObject[] = [
 			height: 0.075,
 			onHit: () => {
 				const scene = getSceneById("H0");
-				if (scene) setActiveScene(scene);
+				if (scene) {
+					console.log('Hitbox hit', scene.id);
+					setActiveScene(scene);
+				} else {
+					console.log('Scene not found');
+				}
 			},
 			isLoaded: false,
 			isActive: false,

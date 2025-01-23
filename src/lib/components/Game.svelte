@@ -51,7 +51,7 @@
 	}
 </script>
 
-<div class="stageContainer">
+<div class="stageContainer flex justify-center items-center h-screen w-screen">
 	{#if $gameGlobals.isGameStarted}
 		<GameStage />
 	{:else}
@@ -62,13 +62,3 @@
 {#if lastGameSession && showLastGameSessionDebug}
 	<LastGameSessionDebug />
 {/if}
-
-<style>
-	.stageContainer {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		height: 100vh;
-		width: 100vw;
-	}
-</style>
