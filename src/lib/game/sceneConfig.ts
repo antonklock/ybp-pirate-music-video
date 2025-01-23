@@ -6,7 +6,7 @@ export const sceneObjects: SceneObject[] = [
 		id: "G0",
 		urls: {
 			cloudflare: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/f63d15e200eb568dfef34b3b6696a761/manifest/video.m3u8',
-			mux: 'https://stream.mux.com/iqcu02NmYd02TN1QefAGBG1nyhjwpHyXiOvxDvS02iQU1w.m3u8'
+			mux: 'https://stream.mux.com/6TLRQJ1e2xp02lshfjpBg42DYMdCoLf3MongqkQRUmLo.m3u8'
 		},
 		name: 'Intro sovrum',
 		nextScenes: ['H0'],
@@ -44,7 +44,7 @@ export const sceneObjects: SceneObject[] = [
 		id: "H0",
 		urls: {
 			cloudflare: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/abf023c6468cc5cedaaf896dd6cade2f/manifest/video.m3u8',
-			mux: 'https://stream.mux.com/YbnMCyTnPRlnzBlAlvxODSOSJ02pGu00lDqUX8yOWt4M4.m3u8'
+			mux: 'https://stream.mux.com/AZZOFn02NIEGLvAygrAlwBelpLk9mQWvzVm02pROtyFr4.m3u8'
 		},
 		name: 'Hub',
 		nextScenes: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'],
@@ -168,7 +168,7 @@ export const sceneObjects: SceneObject[] = [
 		id: "H1",
 		urls: {
 			cloudflare: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/51cb3c8b7aec89d2df5aa95981c2a7c0/manifest/video.m3u8',
-			mux: 'https://stream.mux.com/UiJBAwFEiQrQn8Krpjx02GQ00vVfi2imvpuywD3MHzNLQ.m3u8'
+			mux: 'https://stream.mux.com/9dPejgoesR1zQ1mXs9scd5gHJ34g8Jp00NwnVFFHxmzI.m3u8'
 		},
 		name: 'Hederligt arbete',
 		nextScenes: ["H1-A", "H1-B", "H1-C"],
@@ -239,7 +239,7 @@ export const sceneObjects: SceneObject[] = [
 		id: "H1-A",
 		urls: {
 			cloudflare: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/36597fa6c0bf1a5820b712e1e832cf8f/manifest/video.m3u8',
-			mux: 'https://stream.mux.com/H01rY02DeqoV7KAbWQSmhp43cI38HIXawP7loqNf4S7d4.m3u8'
+			mux: 'https://stream.mux.com/cLZvm9Cue6iqHFP3tkImW01jNIyTH02XPMrsRarh1zwII.m3u8'
 		},
 		name: 'Skura golvet',
 		nextScenes: ["H0"],
@@ -272,7 +272,7 @@ export const sceneObjects: SceneObject[] = [
 		id: "H1-B",
 		urls: {
 			cloudflare: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/30cbfd2e855a15fc730e5b47553dc726/manifest/video.m3u8',
-			mux: 'https://stream.mux.com/3ghm4k1029CKKGScoHtwXV005JaG3BCYfXgTMkIBf65Wg.m3u8'
+			mux: 'https://stream.mux.com/65wvSj2URoDc28hJTMGgxHkyahCFjL018EOk3y4qmZ4I.m3u8'
 		},
 		name: 'Shotta',
 		nextScenes: ["H0"],
@@ -305,7 +305,7 @@ export const sceneObjects: SceneObject[] = [
 		id: "H1-C",
 		urls: {
 			cloudflare: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/862fd9f600910ac44835de3033d851b4/manifest/video.m3u8',
-			mux: 'https://stream.mux.com/CLguHyCwSEzj1JAwzM9lVftkoWmcueaLZgKwYAY6dI8.m3u8'
+			mux: 'https://stream.mux.com/avMTA9Mi8qyIWpniz00hu3U4TZNi8td02V02nXAxnZiAeI.m3u8'
 		},
 		name: 'Tvätta bandet',
 		nextScenes: ["H0"],
@@ -850,10 +850,10 @@ export const sceneObjects: SceneObject[] = [
 		id: "H4",
 		urls: {
 			cloudflare: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/307bbb62ad743bdd735e8c8c3c585db9/manifest/video.m3u8',
-			mux: 'https://stream.mux.com/Y16EUvXMk7wzN17Z3BxLWpcKLuC36r4cmK3pkM74Hzo.m3u8'
+			mux: 'https://stream.mux.com/U3LFixVH9VTTCbC9fscswacz970032bYisYAhVCyl01C8.m3u8'
 		},
 		name: 'Stjäla',
-		nextScenes: ["H4-A", "H4-B"],
+		nextScenes: ["H4-A", "H4-B", "H4-C"],
 		player: undefined,
 		loop: false,
 		isActive: false,
@@ -896,6 +896,24 @@ export const sceneObjects: SceneObject[] = [
 					start: 2,
 					end: 100
 				}]
+			},
+			{
+				name: "HB-H4-C",
+				color: 0x5effeb,
+				x: 0.6,
+				y: 0.2,
+				width: 0.1,
+				height: 0.2,
+				onHit: () => {
+					const scene = getSceneById("H4-C");
+					if (scene) setActiveScene(scene);
+				},
+				isLoaded: false,
+				isActive: false,
+				activationInterfals: [{
+					start: 2,
+					end: 100
+				}]
 			}
 		]
 	},
@@ -903,9 +921,9 @@ export const sceneObjects: SceneObject[] = [
 		id: "H4-A",
 		urls: {
 			cloudflare: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/e6013c545482ee6322457767a0ee39ae/manifest/video.m3u8',
-			mux: 'https://stream.mux.com/zyN00Jk7QJKa7jkJwjS02v00Y92NpMLz5ylDd8sxXoNtik.m3u8'
+			mux: 'https://stream.mux.com/OgjZWdscuZk7SihdY02HvssVLBjvJlaa3BegMkgvzBmQ.m3u8'
 		},
-		name: 'Ta mynt',
+		name: 'Vält pirat - Ta pengar',
 		nextScenes: ["H0"],
 		player: undefined,
 		loop: false,
@@ -938,7 +956,42 @@ export const sceneObjects: SceneObject[] = [
 		id: "H4-B",
 		urls: {
 			cloudflare: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/2da5985a1e344594507370843dce6977/manifest/video.m3u8',
-			mux: 'https://stream.mux.com/Ix3aTMYzQzAANC7oJXcTzhz8ktsN9OMAQi0200owOLN6s.m3u8'
+			mux: 'https://stream.mux.com/ZjJV01cmAgT2bvju7CI6KbJwM4C01QDuobygkP1SGo8BE.m3u8'
+		},
+		name: 'Ta pengar - Misslyckas',
+		nextScenes: ["H0"],
+		player: undefined,
+		loop: false,
+		isActive: false,
+		canPlay: false,
+		isLoaded: false,
+		isCurrent: false,
+		hitboxes: [
+			{
+				name: "HB-H0",
+				color: 0x70215e,
+				x: 0.2,
+				y: 0.2,
+				width: 0.1,
+				height: 0.2,
+				onHit: () => {
+					const scene = getSceneById("H0");
+					if (scene) setActiveScene(scene);
+				},
+				isLoaded: false,
+				isActive: false,
+				activationInterfals: [{
+					start: 2,
+					end: 100
+				}]
+			}
+		]
+	},
+	{
+		id: "H4-C",
+		urls: {
+			cloudflare: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/2da5985a1e344594507370843dce6977/manifest/video.m3u8',
+			mux: 'https://stream.mux.com/U9pL6IQ6FanG003eOmDZpGm02DK1g02aDDGKBaJDz5T6QE.m3u8'
 		},
 		name: 'Dricka öl',
 		nextScenes: ["H0"],
@@ -973,7 +1026,7 @@ export const sceneObjects: SceneObject[] = [
 		id: "H5",
 		urls: {
 			cloudflare: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/b825b39829e2e5bdd4d9f4394f09f87b/manifest/video.m3u8',
-			mux: 'https://stream.mux.com/L4sN73aaQ001y6RBWURcT9Pe5BGNjeajWX8PhbCXQRF4.m3u8'
+			mux: 'https://stream.mux.com/ASntOql3ZK01GlHAtOercyEpRPZ6BmctmYBWdVqiSxBQ.m3u8'
 		},
 		name: 'Buskspel',
 		nextScenes: ["H5-A", "H5-B", "H5-C"],
@@ -1044,7 +1097,7 @@ export const sceneObjects: SceneObject[] = [
 		id: "H5-A",
 		urls: {
 			cloudflare: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/adde7459836d6af2a084852391c8be13/manifest/video.m3u8',
-			mux: 'https://stream.mux.com/QXY1iFHhLHuS4f6JGZeA8rLiT4AXW3n02IHWNMGpXyoo.m3u8'
+			mux: 'https://stream.mux.com/HCpSHliCBiRlWNqdHaXByNaGi34zvWewAEmZs1Uhm4c.m3u8'
 		},
 		name: 'Ta lutan',
 		nextScenes: ["H0"],
@@ -1079,7 +1132,7 @@ export const sceneObjects: SceneObject[] = [
 		id: "H5-B",
 		urls: {
 			cloudflare: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/699da2dd3426b36a3a92bca1d7385e6c/manifest/video.m3u8',
-			mux: 'https://stream.mux.com/V3WRXx01qKg3X1XI3RtLAwarD5qXbPkRgECAHX54hP02I.m3u8'
+			mux: 'https://stream.mux.com/ZrK2Xh1G8ru8vGhpOgFISjcdAlHxKA7PPD00IfaA4Gzc.m3u8'
 		},
 		name: 'Ta fiolen',
 		nextScenes: ["H0"],
@@ -1114,7 +1167,7 @@ export const sceneObjects: SceneObject[] = [
 		id: "H5-C",
 		urls: {
 			cloudflare: 'https://customer-8b2ok7c97mpbuf67.cloudflarestream.com/001fe21e6520b4e5115b75481e8455e4/manifest/video.m3u8',
-			mux: 'https://stream.mux.com/AGATYboOOj5pO01tbywahvX5tIpahtcLRuU02gFxq4g6E.m3u8'
+			mux: 'https://stream.mux.com/R7J6U02xLicvHhHylxPTGjLJduJO6eQG8tEKBunEt8ow.m3u8'
 		},
 		name: 'Ta bandkassan',
 		nextScenes: ["G0"],
