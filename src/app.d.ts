@@ -31,7 +31,10 @@ declare global {
 	interface SceneObject {
 		id: string;
 		name: string;
-		url: string;
+		urls: {
+			cloudflare: string;
+			mux: string;
+		};
 		player: MediaPlayerElement | undefined;
 		canPlay: boolean;
 		isLoaded: boolean;
@@ -56,6 +59,7 @@ declare global {
 			stageHeight: number;
 		};
 		currentScene: SceneObject;
+		videoProvider: 'cloudflare' | 'mux';
 	}
 
 	interface Hitbox {

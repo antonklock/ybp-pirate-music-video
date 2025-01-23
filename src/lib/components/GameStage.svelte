@@ -7,6 +7,7 @@
 	let loadedScenes: SceneObject[] = [];
 
 	$: loadedScenes = $scenes.filter((scene) => scene.isLoaded);
+	$: videoProvider = $gameGlobals.videoProvider;
 </script>
 
 <PixiJs />
@@ -18,7 +19,7 @@
 		{#if scene.isLoaded}
 			<VideoPlayer
 				id={scene.id}
-				url={scene.url}
+				url={scene.urls[videoProvider]}
 				triggerTime={scene.triggerTime}
 				runFunctionAtTime={scene.runFunctionAtTime}
 			/>

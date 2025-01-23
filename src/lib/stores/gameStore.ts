@@ -18,6 +18,7 @@ export const gameGlobals = writable<GameGlobals>({
 		stageHeight: 0,
 	},
 	currentScene: sceneObjects[0],
+	videoProvider: 'mux',
 });
 
 export const hitboxes = writable<Hitbox[]>([]);
