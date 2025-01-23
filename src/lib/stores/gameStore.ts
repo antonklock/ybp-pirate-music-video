@@ -10,17 +10,20 @@ import { sceneObjects } from '$lib/game/sceneConfig';
 // });
 
 export const gameGlobals = writable<GameGlobals>({
-	gameReady: false,
-	gameStarted: false,
+	isGameReady: false,
+	isGameStarted: false,
+	gameStartedAt: null,
 	sceneDimensions: {
 		stageWidth: 0,
 		stageHeight: 0,
 	},
 	currentScene: sceneObjects[0],
+	videoProvider: 'mux',
 });
 
 export const hitboxes = writable<Hitbox[]>([]);
 
 export const scenes = writable<SceneObject[]>(sceneObjects);
+
 
 // export const availableScenes = writable<SceneObject[]>([]);

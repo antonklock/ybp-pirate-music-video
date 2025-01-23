@@ -11,10 +11,30 @@ declare global {
 		// interface Platform {}
 	}
 
+	interface GameSession {
+		id: string;
+		startedAt: Date | null;
+		endedAt: Date | null;
+		elapsedTime: number;
+		sceneOrder: SceneSession[];
+	}
+
+	interface SceneSession {
+		gameId: string;
+		sceneSessionId: string;
+		sceneId: string;
+		startedAt: Date | null;
+		endedAt: Date | null;
+		elapsedTime: number;
+	}
+
 	interface SceneObject {
 		id: string;
 		name: string;
-		url: string;
+		urls: {
+			cloudflare: string;
+			mux: string;
+		};
 		player: MediaPlayerElement | undefined;
 		canPlay: boolean;
 		isLoaded: boolean;
@@ -24,28 +44,22 @@ declare global {
 		isActive: boolean;
 		hitboxes: Hitbox[];
 		sceneEndTime?: number;
-		onSceneEnd?: () => void;
-
 		triggerTime?: number;
-		runFunctionAtTime?: () => void;
 		play?: () => void;
+		onSceneEnd?: () => void;
+		runFunctionAtTime?: () => void;
 	};
 
-	// interface GameState {
-	// 	gameStarted: boolean;
-	// 	currentSceneId: number;
-	// 	activeScene: SceneObject;
-	// 	nextScenes: SceneObject[];
-	// }
-
 	interface GameGlobals {
-		gameReady: boolean;
-		gameStarted: boolean;
+		isGameReady: boolean;
+		isGameStarted: boolean;
+		gameStartedAt: Date | null;
 		sceneDimensions: {
 			stageWidth: number;
 			stageHeight: number;
 		};
 		currentScene: SceneObject;
+		videoProvider: 'cloudflare' | 'mux';
 	}
 
 	interface Hitbox {
@@ -55,10 +69,10 @@ declare global {
 		y: number;
 		width: number;
 		height: number;
-		onHit: () => void;
 		isLoaded: boolean;
 		isActive: boolean;
 		activationInterfals: ActiveInterval[];
+		onHit: () => void;
 	}
 
 	interface ActiveInterval {

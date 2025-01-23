@@ -3,16 +3,17 @@
 	import { gameGlobals } from '$lib/stores/gameStore';
 	import { scenes } from '$lib/stores/gameStore';
 	import { MediaPlayerElement } from 'vidstack/elements';
+
 	let videoPlayer: MediaPlayerElement;
 
 	export let id = '';
 	export let url = '';
-	export let isActive = false;
+
+	$: isActive = $scenes.find((scene) => scene.id === id)?.isActive || false;
 
 	$: if (isActive) {
 		if (videoPlayer) {
 			if (!isPlaying) {
-				console.log('Playing video: ' + id);
 				videoPlayer.play();
 				gameGlobals.update((gameGlobals) => {
 					if (videoPlayer) {
@@ -41,8 +42,6 @@
 	let playerCanPlay = false;
 
 	onMount(() => {
-		console.log('Component mounted: ' + id);
-
 		type VpState = {
 			currentTime: number;
 			playing: boolean;
@@ -77,8 +76,8 @@
 	export let runFunctionAtTime: (() => void) | undefined = undefined;
 
 	onDestroy(() => {
-		console.log('Component destroyed: ' + id);
 		if (unsubscribe) unsubscribe();
+		videoPlayer?.pause();
 	});
 
 	$: if (!triggered) {
