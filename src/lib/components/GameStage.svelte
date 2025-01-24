@@ -9,22 +9,20 @@
 	$: loadedScenes = $scenes.filter((scene) => scene.isLoaded);
 	$: videoProvider = $gameGlobals.videoProvider;
 
-	let previousLoadedScenesLength = 0;
-
-	// $: {
-	// 	if (loadedScenes.length !== previousLoadedScenesLength) {
-	// 		console.log('Loaded scenes: ', loadedScenes);
-	// 		previousLoadedScenesLength = loadedScenes.length;
-	// 	}
-	// }
-
 	let showDebugButtons = true;
+	let showVideoPlayers = true;
 </script>
 
+<button
+	class="absolute top-20 left-20 bg-white text-black p-2 rounded-md"
+	on:click={() => {
+		showVideoPlayers = !showVideoPlayers;
+	}}>Hide video players</button
+>
 <div class="flex flex-col items-center justify-center">
 	<PixiJs />
 	<div
-		class="videoPlayers grid grid-cols-2 gap-4"
+		class={`videoPlayers grid grid-cols-2 gap-4 ${showVideoPlayers ? 'block' : 'hidden'}`}
 		style="width: 100%; max-width: 800px; height: 450px;"
 	>
 		{#each $scenes as scene}
