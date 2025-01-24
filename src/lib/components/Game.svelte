@@ -15,8 +15,8 @@
 
 		// Setting stage dimensions
 		$gameGlobals.sceneDimensions = {
-			stageWidth: document.documentElement.clientWidth * 0.8,
-			stageHeight: document.documentElement.clientWidth * 0.8 * 0.5625
+			stageWidth: document.documentElement.clientWidth * 1,
+			stageHeight: document.documentElement.clientWidth * 1 * 0.5625
 		};
 
 		const handleBeforeUnload = () => {
@@ -45,8 +45,8 @@
 	// Updating stage dimensions
 	$: if ($gameGlobals.sceneDimensions.stageWidth !== document.documentElement.clientWidth * 0.8) {
 		$gameGlobals.sceneDimensions = {
-			stageWidth: document.documentElement.clientWidth * 0.8,
-			stageHeight: document.documentElement.clientWidth * 0.8 * 0.5625
+			stageWidth: document.documentElement.clientWidth * 1,
+			stageHeight: document.documentElement.clientWidth * 1 * 0.5625
 		};
 	}
 </script>

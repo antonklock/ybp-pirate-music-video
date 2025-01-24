@@ -5,7 +5,6 @@
 	import { scenes } from '$lib/stores/gameStore';
 
 	import * as PIXI from 'pixi.js';
-	import { createPixiTimer } from '$lib/game/utils/debug/createPixiTimer';
 	import { createDebugMenu } from '$lib/game/utils/debug/debugWindow';
 
 	let activeHitboxes: Hitbox[] = [];
@@ -29,10 +28,13 @@
 		app = new PIXI.Application();
 		await app
 			.init({
-				background: 0x000000,
+				background: 0xff0000,
 				width: globals.sceneDimensions.stageWidth,
 				height: globals.sceneDimensions.stageHeight,
-				backgroundAlpha: 0
+				backgroundAlpha: 0,
+				// antialias: true,
+				autoDensity: true,
+				resolution: 0.5
 			})
 			.then(() => {
 				// console.log('PixiJs initialized');
@@ -92,168 +94,6 @@
 	});
 
 	const pixiHitboxes: { graphic: PIXI.Graphics; text: PIXI.Text }[] = [];
-
-	// let loadedScenes = $gameGlobals.loadedScenes;
-
-	////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////
-
-	// let previousScenes: SceneObject[] = [];
-
-	// gameGlobals.subscribe(($gameGlobals) => {
-	// 	$gameGlobals.loadedScenes.forEach((scene, index) => {
-	// 		const previousPlayer = previousScenes[index]?.player;
-	// 		const currentPlayer = scene.player;
-
-	// 		// Detect changes to the `player` property
-	// 		if (previousPlayer !== currentPlayer) {
-	// 			console.log(`Player updated in scene ${index}:`, currentPlayer);
-	// 			updateSceneSprites();
-	// 		} else if (!currentPlayer) {
-	// 			console.log(`No player found for scene ${index}`);
-	// 		}
-
-	// 		// // Use safe logging to avoid circular structure errors
-	// 		// console.log('Previous Player:', previousPlayer); // Or use safeStringify if needed
-	// 		// console.log('Current Player:', currentPlayer); // Or use safeStringify if needed
-	// 	});
-
-	// 	// Update previousScenes with a safe deep copy
-	// 	// previousScenes = JSON.parse(JSON.stringify($gameGlobals.loadedScenes, safeStringify));
-	// });
-
-	////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////
-
-	// $: $gameGlobals.loadedScenes.forEach((scene) => {
-	// 	// if (scene.player) {
-	// 	// 	console.log('Player updated for scene:', scene.id);
-	// 	// 	// updateSceneSprites();
-	// 	// } else {
-	// 	// 	console.log('No player found for scene:', scene.id);
-	// 	// }
-	// 	// console.log('Loaded scenes:', $gameGlobals.loadedScenes);
-	// 	// $gameGlobals.loadedScenes.forEach((scene) => {
-	// 	// 	if (scene.player) {
-	// 	// 		// This block will run whenever a scene's player property is updated
-	// 	// 		console.log('Player updated for scene:', scene.id);
-	// 	// 		updateSceneSprites();
-	// 	// 	} else {
-	// 	// 		console.log('No player found for scene:', scene.id);
-	// 	// 	}
-	// 	// });
-	// });
-
-	// function updateSceneSprites() {
-	// 	// Remove sprites that don't have a corresponding video player
-	// 	// const existingSprites = app.stage.children.filter((child) => child.label?.startsWith('scene-'));
-	// 	// existingSprites.forEach((sprite) => {
-	// 	// 	const sceneId = sprite.label.split('-')[1];
-	// 	// 	const scene = $gameGlobals.loadedScenes.find((s) => s.id === sceneId);
-	// 	// 	if (!scene || !scene.player) {
-	// 	// 		// app.stage.removeChild(sprite);
-	// 	// 		console.log('Removed sprite for scene:', sceneId);
-	// 	// 	}
-	// 	// });
-
-	// 	// Ensure all loaded scenes with a video player have a sprite
-	// 	$gameGlobals.loadedScenes.forEach((scene) => {
-	// 		console.log('Scene: ', scene);
-	// 		console.log('Scene player: ', scene.player);
-	// 		if (scene.player) {
-	// 			// const existingSprite = existingSprites.find(
-	// 			// 	(sprite) => sprite.label === `scene-${scene.id}`
-	// 			// );
-	// 			// if (!existingSprite) {
-	// 			if (true) {
-	// 				console.log('Creating scene sprite for:', scene.id);
-
-	// 				const { sceneDimensions } = globals;
-
-	// 				const videoElement = scene.player.querySelector('video');
-	// 				if (videoElement) {
-	// 					videoElement.addEventListener('loadeddata', () => {
-	// 						if (videoElement.videoWidth > 0 && videoElement.videoHeight > 0) {
-	// 							const videoTexture = PIXI.Texture.from(videoElement);
-	// 							console.log(
-	// 								'Video texture created with dimensions:',
-	// 								videoElement.videoWidth,
-	// 								videoElement.videoHeight
-	// 							);
-
-	// 							const sceneSprite = new PIXI.Sprite(videoTexture);
-	// 							sceneSprite.width = sceneDimensions.stageWidth / 4;
-	// 							sceneSprite.height = sceneDimensions.stageHeight / 4;
-	// 							sceneSprite.x = 0;
-	// 							sceneSprite.y = 0;
-	// 							sceneSprite.alpha = 1;
-	// 							sceneSprite.zIndex = 999;
-	// 							sceneSprite.visible = true;
-	// 							sceneSprite.label = `scene-${scene.id}`;
-
-	// 							app.stage.addChild(sceneSprite);
-	// 							console.log('Scene sprite added to stage');
-	// 						} else {
-	// 							console.warn('Video element has invalid dimensions');
-	// 						}
-	// 					});
-	// 				} else {
-	// 					console.warn('No video element found in MediaPlayerElement');
-	// 				}
-	// 			} else {
-	// 				console.log('Sprite already exists for scene:', scene.id);
-	// 			}
-	// 		} else {
-	// 			console.warn(`No player found for scene: ${scene.id}`);
-	// 		}
-	// 	});
-
-	// 	positionSpritesInGrid();
-	// }
-
-	const positionSpritesInGrid = () => {
-		const sceneDimensions = globals.sceneDimensions;
-		const sceneSprites = app.stage.children.filter((child) => child.label?.startsWith('scene-'));
-		const sceneCount = sceneSprites.length;
-		const sceneWidth = sceneDimensions.stageWidth;
-		const sceneHeight = sceneDimensions.stageHeight;
-
-		const gridSize = Math.ceil(Math.sqrt(sceneCount));
-		const spacing = 2;
-
-		let x = 0;
-		let y = 0;
-
-		sceneSprites.forEach((sceneSprite) => {
-			sceneSprite.x = x * (sceneWidth + spacing);
-			sceneSprite.y = y * (sceneHeight + spacing);
-			x++;
-			if (x >= gridSize) {
-				x = 0;
-				y++;
-			}
-		});
-
-		// Calculate total width and height needed for grid
-		const totalWidth = gridSize * (sceneWidth + spacing) - spacing;
-		const totalHeight = Math.ceil(sceneCount / gridSize) * (sceneHeight + spacing) - spacing;
-
-		// Calculate scale needed to fit everything
-		const scaleX = sceneWidth / totalWidth;
-		const scaleY = sceneHeight / totalHeight;
-		const scale = Math.min(scaleX, scaleY, 1); // Don't scale up past 1
-
-		// Center the grid
-		const offsetX = (sceneWidth - totalWidth * scale) / 2;
-		const offsetY = (sceneHeight - totalHeight * scale) / 2;
-
-		// Apply scale and offset to each sprite
-		sceneSprites.forEach((sprite) => {
-			// sprite.scale.set(scale);
-			sprite.x = sprite.x * scale + offsetX;
-			sprite.y = sprite.y * scale + offsetY;
-		});
-	};
 
 	$: if (globals.currentScene) {
 		if (globals.currentScene.hitboxes) {
@@ -325,12 +165,4 @@
 	}
 </script>
 
-<!-- <div class="pixiContainer" /> -->
-<div class="pixiContainer" />
-
-<style>
-	/* .pixiContainer {
-		position: absolute;
-		z-index: 999;
-	} */
-</style>
+<div class="pixiContainer absolute top-0 left-0 bg-green-500" />
