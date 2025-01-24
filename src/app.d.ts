@@ -61,6 +61,7 @@ declare global {
 		currentScene: SceneObject;
 		loadedScenes: SceneObject[];
 		videoProvider: 'cloudflare' | 'mux';
+		pixiApp: PIXI.Application | null;
 	}
 
 	interface Hitbox {

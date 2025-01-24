@@ -1,7 +1,6 @@
 import { writable } from 'svelte/store';
 import { sceneObjects } from '$lib/game/sceneConfig';
 
-
 // export const gameState = writable<GameState>({
 // 	gameStarted: false,
 // 	currentSceneId: 0,
@@ -18,8 +17,9 @@ export const gameGlobals = writable<GameGlobals>({
 		stageHeight: 0,
 	},
 	currentScene: sceneObjects[0],
-	loadedScenes: [],
 	videoProvider: 'mux',
+	loadedScenes: [],
+	pixiApp: null,
 });
 
 export const hitboxes = writable<Hitbox[]>([]);

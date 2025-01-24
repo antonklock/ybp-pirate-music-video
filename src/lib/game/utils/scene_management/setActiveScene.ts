@@ -8,7 +8,7 @@ export const setActiveScene = (sceneToActivate: SceneObject, preloadDelay: numbe
     scenes.update((scenes) => {
         scenes.forEach((scene) => {
             if (scene.id === sceneToActivate.id) {
-                console.log('Setting scene to active: ' + sceneToActivate.id);
+                // console.log('Setting scene to active: ' + sceneToActivate.id);
                 scene.isActive = true;
             }
         });
@@ -30,7 +30,7 @@ export const setActiveScene = (sceneToActivate: SceneObject, preloadDelay: numbe
     for (const sceneToUnload of loadedScenes) {
         if (sceneToUnload.id !== sceneToActivate.id) {
             if (sceneToUnload.isActive) {
-                console.log(`Unloading active scene ${sceneToUnload.id}`);
+                // console.log(`Unloading active scene ${sceneToUnload.id}`);
                 gameSession.update((session) => {
                     const updatedSession = session.sceneOrder.map((scene) => {
                         if (scene.sceneId === sceneToUnload.id) {
@@ -51,7 +51,7 @@ export const setActiveScene = (sceneToActivate: SceneObject, preloadDelay: numbe
                     };
                 });
             } else {
-                console.log(`Unloading non-active scene ${sceneToUnload.id}`);
+                // console.log(`Unloading non-active scene ${sceneToUnload.id}`);
             }
 
             unloadScene(sceneToUnload.id);
@@ -59,7 +59,7 @@ export const setActiveScene = (sceneToActivate: SceneObject, preloadDelay: numbe
     }
 
     setTimeout(() => {
-        console.log('Loading next scenes: ', sceneToActivate.nextScenes);
+        // console.log('Loading next scenes: ', sceneToActivate.nextScenes);
         for (const nextScene of sceneToActivate.nextScenes) {
             loadScene(nextScene);
         }

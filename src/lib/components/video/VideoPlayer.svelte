@@ -4,6 +4,7 @@
 	import { scenes } from '$lib/stores/gameStore';
 	import { MediaPlayerElement } from 'vidstack/elements';
 	import { getSceneById } from '$lib/game/utils/scene_management/getSceneById';
+	import { addNewPlayerSprite } from '$lib/game/utils/pixiUtils/addNewSprite';
 
 	let videoPlayer: MediaPlayerElement;
 
@@ -49,10 +50,10 @@
 			canPlay: boolean;
 		};
 
-		addPlayerToSceneObject();
+		// addPlayerToSceneObject();
 
 		const scene = getSceneById(id);
-		console.log('scene:', scene);
+		// console.log('scene:', scene);
 
 		unsubscribe = videoPlayer.subscribe(({ currentTime, playing, canPlay }: VpState) => {
 			playerTime = currentTime;
@@ -67,22 +68,27 @@
 		});
 	});
 
-	const addPlayerToSceneObject = () => {
-		scenes.update((scenes) => {
-			scenes.forEach((scene) => {
-				if (scene.id === id) {
-					scene.player = videoPlayer;
-				}
-			});
-			return scenes;
-		});
-	};
+	// const addPlayerToSceneObject = () => {
+	// 	scenes.update((scenes) => {
+	// 		scenes.forEach((scene) => {
+	// 			if (scene.id === id) {
+	// 				scene.player = videoPlayer;
+	// 			}
+	// 		});
+	// 		return scenes;
+	// 	});
+	// };
 
 	$: if (playerCanPlay) {
 		scenes.update((scenes) => {
 			scenes.forEach((scene) => {
 				if (scene.id === id) {
+					// scene.player = videoPlayer;
+					scene.player = videoPlayer;
 					scene.canPlay = playerCanPlay;
+					const videoPlayerElement = videoPlayer.querySelector('video');
+					if (videoPlayerElement) addNewPlayerSprite(scene, videoPlayerElement);
+					else console.warn('No video player found for scene:', scene.id);
 				}
 			});
 			return scenes;

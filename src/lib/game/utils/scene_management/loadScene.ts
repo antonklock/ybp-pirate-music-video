@@ -15,7 +15,7 @@ export const loadScene = (sceneId: string, config: SceneConfig = {}): boolean =>
     try {
         const { play, triggerTime, runFunctionAtTime } = config;
 
-        console.log("Loading scene: ", sceneId);
+        // console.log("Loading scene: ", sceneId);
 
         scenes.update((scenesToUpdate) => {
             return scenesToUpdate.map(scene => {
