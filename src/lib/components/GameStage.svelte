@@ -22,7 +22,7 @@
 <div class="flex flex-col items-center justify-center">
 	<PixiJs />
 	<div
-		class={`videoPlayers grid grid-cols-2 gap-4 ${showVideoPlayers ? 'block' : 'hidden'}`}
+		class={`videoPlayers grid grid-cols-2 gap-4`}
 		style="width: 100%; max-width: 800px; height: 450px;"
 	>
 		{#each $scenes as scene}
@@ -32,6 +32,7 @@
 					url={scene.urls[videoProvider]}
 					triggerTime={scene.triggerTime}
 					runFunctionAtTime={scene.runFunctionAtTime}
+					hidePlayers={!showVideoPlayers}
 				/>
 			{/if}
 		{/each}

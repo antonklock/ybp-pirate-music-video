@@ -10,6 +10,7 @@
 
 	export let id = '';
 	export let url = '';
+	export let hidePlayers = false;
 
 	$: isActive = $scenes.find((scene) => scene.id === id)?.isActive || false;
 
@@ -83,7 +84,6 @@
 		scenes.update((scenes) => {
 			scenes.forEach((scene) => {
 				if (scene.id === id) {
-					// scene.player = videoPlayer;
 					scene.player = videoPlayer;
 					scene.canPlay = playerCanPlay;
 					const videoPlayerElement = videoPlayer.querySelector('video');
@@ -117,17 +117,15 @@
 	}
 </script>
 
-<div
+<!-- <div
 	class="playerContainer {isActive ? 'active' : 'inactive'}"
 	id={`videoPlayer${id}`}
-	style="width: 100%; height: 100%; object-fit: cover;"
->
-	<!-- 
-<div
-	style={`width: ${$gameGlobals.sceneDimensions.stageWidth}px`}
-	class="playerContainer {isActive ? 'active' : 'inactive'}"
-	id={`videoPlayer${id}`}
+	style="width: 100%; height: 100%; object-fit: cover; "
 > -->
+<div
+	class="playerContainer {isActive ? 'active' : 'inactive'} absolute top-0 left-0 w-10 h-10"
+	id={`videoPlayer${id}`}
+>
 	<media-player
 		bind:this={videoPlayer}
 		controls={false}
@@ -135,23 +133,8 @@
 		loop={false}
 		playsInline
 		src={url}
+		style={`opacity: ${hidePlayers ? 0 : 1}`}
 	>
 		<media-provider></media-provider>
 	</media-player>
 </div>
-
-<style lang="scss">
-	// .playerContainer {
-	// 	position: absolute;
-	// 	overflow: hidden;
-	// 	pointer-events: none;
-	// }
-
-	// .active {
-	// 	opacity: 1;
-	// }
-
-	// .inactive {
-	// 	opacity: 0.001;
-	// }
-</style>
