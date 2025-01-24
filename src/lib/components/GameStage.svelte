@@ -9,13 +9,22 @@
 	$: loadedScenes = $scenes.filter((scene) => scene.isLoaded);
 	$: videoProvider = $gameGlobals.videoProvider;
 
+	let previousLoadedScenesLength = 0;
+
+	// $: {
+	// 	if (loadedScenes.length !== previousLoadedScenesLength) {
+	// 		console.log('Loaded scenes: ', loadedScenes);
+	// 		previousLoadedScenesLength = loadedScenes.length;
+	// 	}
+	// }
+
 	let showDebugButtons = true;
 </script>
 
 <PixiJs />
 <div
-	class="videoPlayers"
-	style={`width: ${$gameGlobals.sceneDimensions.stageWidth}px; height: ${$gameGlobals.sceneDimensions.stageHeight}px`}
+	class="videoPlayers grid grid-cols-2 gap-4"
+	style="width: 100%; max-width: 800px; height: 450px;"
 >
 	{#each $scenes as scene}
 		{#if scene.isLoaded}

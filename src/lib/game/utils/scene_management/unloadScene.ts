@@ -1,4 +1,5 @@
 import { scenes } from '$lib/stores/gameStore';
+import { gameGlobals } from '$lib/stores/gameStore';
 
 
 /**
@@ -15,6 +16,13 @@ export const unloadScene = (sceneId: string) => {
                     isCurrent: false,
                     isActive: false
                 }
+
+                gameGlobals.update((gameGlobals) => {
+                    return {
+                        ...gameGlobals,
+                        loadedScenes: gameGlobals.loadedScenes.filter((scene) => scene.id !== sceneId)
+                    }
+                });
             }
             return sceneObject;
         });

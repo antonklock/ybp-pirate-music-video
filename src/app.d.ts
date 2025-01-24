@@ -59,6 +59,7 @@ declare global {
 			stageHeight: number;
 		};
 		currentScene: SceneObject;
+		loadedScenes: SceneObject[];
 		videoProvider: 'cloudflare' | 'mux';
 	}
 

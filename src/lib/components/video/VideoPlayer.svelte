@@ -3,6 +3,7 @@
 	import { gameGlobals } from '$lib/stores/gameStore';
 	import { scenes } from '$lib/stores/gameStore';
 	import { MediaPlayerElement } from 'vidstack/elements';
+	import { getSceneById } from '$lib/game/utils/scene_management/getSceneById';
 
 	let videoPlayer: MediaPlayerElement;
 
@@ -48,6 +49,11 @@
 			canPlay: boolean;
 		};
 
+		addPlayerToSceneObject();
+
+		const scene = getSceneById(id);
+		console.log('scene:', scene);
+
 		unsubscribe = videoPlayer.subscribe(({ currentTime, playing, canPlay }: VpState) => {
 			playerTime = currentTime;
 			isPlaying = playing;
@@ -60,6 +66,17 @@
 			};
 		});
 	});
+
+	const addPlayerToSceneObject = () => {
+		scenes.update((scenes) => {
+			scenes.forEach((scene) => {
+				if (scene.id === id) {
+					scene.player = videoPlayer;
+				}
+			});
+			return scenes;
+		});
+	};
 
 	$: if (playerCanPlay) {
 		scenes.update((scenes) => {
@@ -95,10 +112,16 @@
 </script>
 
 <div
+	class="playerContainer {isActive ? 'active' : 'inactive'}"
+	id={`videoPlayer${id}`}
+	style="width: 100%; height: 100%; object-fit: cover;"
+>
+	<!-- 
+<div
 	style={`width: ${$gameGlobals.sceneDimensions.stageWidth}px`}
 	class="playerContainer {isActive ? 'active' : 'inactive'}"
 	id={`videoPlayer${id}`}
->
+> -->
 	<media-player
 		bind:this={videoPlayer}
 		controls={false}
@@ -112,17 +135,17 @@
 </div>
 
 <style lang="scss">
-	.playerContainer {
-		position: absolute;
-		overflow: hidden;
-		pointer-events: none;
-	}
+	// .playerContainer {
+	// 	position: absolute;
+	// 	overflow: hidden;
+	// 	pointer-events: none;
+	// }
 
-	.active {
-		opacity: 1;
-	}
+	// .active {
+	// 	opacity: 1;
+	// }
 
-	.inactive {
-		opacity: 0.001;
-	}
+	// .inactive {
+	// 	opacity: 0.001;
+	// }
 </style>

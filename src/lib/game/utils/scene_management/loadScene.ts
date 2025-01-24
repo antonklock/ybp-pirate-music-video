@@ -22,6 +22,13 @@ export const loadScene = (sceneId: string, config: SceneConfig = {}): boolean =>
                 if (scene.id === sceneId) {
                     scene.isLoaded = true;
 
+                    gameGlobals.update((gameGlobals) => {
+                        return {
+                            ...gameGlobals,
+                            loadedScenes: [...gameGlobals.loadedScenes, scene]
+                        }
+                    });
+
                     if (triggerTime && runFunctionAtTime) {
                         scene.triggerTime = triggerTime;
                         scene.runFunctionAtTime = runFunctionAtTime;
@@ -54,6 +61,8 @@ export const loadScene = (sceneId: string, config: SceneConfig = {}): boolean =>
                             }));
                         }
                     }
+
+                    // TODO: Add what happens when the scene ends??
                 }
                 return scene;
             });

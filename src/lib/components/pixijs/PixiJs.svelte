@@ -48,8 +48,8 @@
 			: console.error('No container found for PixiJs');
 
 		//// TIMER ////
-		const { timerContainer, timerText, timerBox } = createPixiTimer(app);
-		app.stage.addChild(timerContainer);
+		// const { timerContainer, timerText, timerBox } = createPixiTimer(app);
+		// app.stage.addChild(timerContainer);
 
 		// Reset timer when a new scene is loaded
 		// gameGlobals.subscribe(($gameGlobals) => {
@@ -58,20 +58,20 @@
 		// 	}
 		// });
 
-		timerContainer.interactive = false;
+		// timerContainer.interactive = false;
 
-		app.stage.addChild(timerBox);
-		app.stage.addChild(timerText);
+		// app.stage.addChild(timerBox);
+		// app.stage.addChild(timerText);
 
 		// Update timer in the ticker
 		app.ticker.add(() => {
 			if ($gameSession.startedAt)
 				$gameSession.elapsedTime = (Date.now() - $gameSession.startedAt.getTime()) / 1000;
 
-			const minutes = Math.floor($gameSession.elapsedTime / 60);
-			const seconds = Math.floor($gameSession.elapsedTime % 60);
-			const hundredths = Math.floor(($gameSession.elapsedTime % 1) * 100);
-			timerText.text = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${hundredths.toString().padStart(2, '0')}`;
+			// const minutes = Math.floor($gameSession.elapsedTime / 60);
+			// const seconds = Math.floor($gameSession.elapsedTime % 60);
+			// const hundredths = Math.floor(($gameSession.elapsedTime % 1) * 100);
+			// timerText.text = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${hundredths.toString().padStart(2, '0')}`;
 
 			// Get all hitboxes
 			const allHitboxes = $scenes.flatMap((scene) => scene.hitboxes || []);
@@ -95,6 +95,51 @@
 	});
 
 	const pixiHitboxes: { graphic: PIXI.Graphics; text: PIXI.Text }[] = [];
+
+	let loadedScenes = $gameGlobals.loadedScenes;
+
+	$: if (loadedScenes) {
+		console.log('Loaded scenes: ', globals.loadedScenes);
+		loadedScenes = $gameGlobals.loadedScenes;
+
+		if (app) {
+			if (app.stage) {
+				loadedScenes.forEach((scene) => {
+					console.log('Creating scene sprite for:', scene.id);
+
+					const { sceneDimensions } = globals;
+
+					// Create a texture for the sprite
+					const texture = PIXI.Texture.WHITE; // Using a white texture as a placeholder
+
+					const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+
+					const sceneSprite = new PIXI.Sprite(texture);
+					sceneSprite.width = sceneDimensions.stageWidth;
+					sceneSprite.height = sceneDimensions.stageHeight;
+					sceneSprite.x = 0; // x position
+					sceneSprite.y = 0; // y position
+					sceneSprite.tint = parseInt(randomColor, 16);
+					sceneSprite.alpha = 0.1;
+					sceneSprite.zIndex = 999;
+					sceneSprite.visible = true;
+
+					const existingGraphics = app.stage.getChildByName(`scene-${scene.id}`);
+					if (!existingGraphics) {
+						sceneSprite.label = `scene-${scene.id}`;
+						app.stage.addChild(sceneSprite);
+						console.log('Scene sprite for', scene.id, 'added to stage');
+					} else {
+						console.log('Scene sprite for', scene.id, 'already exists on stage');
+					}
+				});
+			} else {
+				console.warn('No Pixi stage found');
+			}
+		} else {
+			console.warn('No Pixi app found');
+		}
+	}
 
 	$: if (globals.currentScene) {
 		if (globals.currentScene.hitboxes) {
@@ -166,7 +211,7 @@
 	}
 </script>
 
-<div class="pixiContainer"></div>
+<div class="pixiContainer" />
 
 <style>
 	.pixiContainer {
