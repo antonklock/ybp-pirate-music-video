@@ -1,10 +1,9 @@
 <script lang="ts">
+	import * as PIXI from 'pixi.js';
 	import { onMount } from 'svelte';
 	import { gameGlobals } from '$lib/stores/gameStore';
 	import { gameSession } from '$lib/stores/gameSessionStore';
 	import { scenes } from '$lib/stores/gameStore';
-
-	import * as PIXI from 'pixi.js';
 	import { createDebugMenu } from '$lib/game/utils/debug/debugWindow';
 
 	let activeHitboxes: Hitbox[] = [];
@@ -32,9 +31,8 @@
 				width: globals.sceneDimensions.stageWidth,
 				height: globals.sceneDimensions.stageHeight,
 				backgroundAlpha: 0,
-				// antialias: true,
 				autoDensity: true,
-				resolution: 0.5
+				resolution: 1
 			})
 			.then(() => {
 				// console.log('PixiJs initialized');
@@ -50,27 +48,10 @@
 			? pixiCanvas.appendChild(app.canvas)
 			: console.error('No container found for PixiJs');
 
-		// Reset timer when a new scene is loaded
-		// gameGlobals.subscribe(($gameGlobals) => {
-		// 	if ($gameGlobals.currentScene) {
-		// 		$gameSession.startedAt = Date.now();
-		// 	}
-		// });
-
-		// timerContainer.interactive = false;
-
-		// app.stage.addChild(timerBox);
-		// app.stage.addChild(timerText);
-
 		// Update timer in the ticker
 		app.ticker.add(() => {
 			if ($gameSession.startedAt)
 				$gameSession.elapsedTime = (Date.now() - $gameSession.startedAt.getTime()) / 1000;
-
-			// const minutes = Math.floor($gameSession.elapsedTime / 60);
-			// const seconds = Math.floor($gameSession.elapsedTime % 60);
-			// const hundredths = Math.floor(($gameSession.elapsedTime % 1) * 100);
-			// timerText.text = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${hundredths.toString().padStart(2, '0')}`;
 
 			// Get all hitboxes
 			const allHitboxes = $scenes.flatMap((scene) => scene.hitboxes || []);
